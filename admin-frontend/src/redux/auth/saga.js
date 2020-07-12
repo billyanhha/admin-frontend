@@ -13,11 +13,11 @@ function* watchUserLoginWorker(action) {
 
         if (result && result.token) {            
             yield put(userLoginSuccessful(result.token));
-            NotificationManager.success('Thông báo', 'Đăng nhập thành công');
+            NotificationManager.success('Đăng nhập thành công', 'Thông báo');
         }
 
     } catch (error) {
-        NotificationManager.error('Thông báo',error?.response?.data?.err);
+        NotificationManager.error("Sai mật khẩu", 'Thông báo');
         console.log(error);
     } finally {
         yield put(closeLoading())
@@ -32,7 +32,7 @@ function* watchUserLogoutWorker(action) {
         yield put(clearUserInfo());
 
     } catch (error) {
-        NotificationManager.error('Thông báo',error?.response?.data?.err);
+        NotificationManager.error("Hệ thống quá tải", 'Thông báo');
         console.log(error);
     } finally {
         yield put(closeLoading())
