@@ -11,6 +11,8 @@ import { Avatar } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import "./style.css"
 import { userLogout } from '../../redux/auth';
+import { withRouter } from 'react-router-dom';
+import route from "../../config/route";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -44,8 +46,6 @@ const MenuAppBar = (props) => {
         dispatch(userLogout())
     }
 
-
-
     return (
         <Toolbar>
             <IconButton
@@ -60,8 +60,8 @@ const MenuAppBar = (props) => {
                 <MenuIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-                Photos
-          </Typography>
+                {route[props.location.pathname].label}
+            </Typography>
             {auth && (
                 <div>
                     <IconButton
@@ -99,4 +99,4 @@ const MenuAppBar = (props) => {
     );
 }
 
-export default MenuAppBar;
+export default withRouter(MenuAppBar);

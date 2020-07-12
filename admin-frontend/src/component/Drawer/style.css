@@ -2,3 +2,8 @@
     font-size: 18px !important;
     padding-left: 3px
 }
+
+.no-active{
+    text-decoration: none;
+    color: #000;
+}

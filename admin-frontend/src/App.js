@@ -7,6 +7,7 @@ import Home from './page/Home'
 import PrivateRoute from './routeConfig/PrivateRoute'
 import NotificationContainer from 'react-notifications/lib/NotificationContainer';
 import 'react-notifications/lib/notifications.css';
+import Sample from './page/Sample';
 
 const App = () => {
 
@@ -17,6 +18,9 @@ const App = () => {
         <Route exact path="/login" render={(props) => <SystemLogin {...props} />} />
         <PrivateRoute exact path='/'>
           <Home />
+        </PrivateRoute>
+        <PrivateRoute exact path='/sample'>
+          <Sample />
         </PrivateRoute>
         {/* <Route exact path='/new' component={NewFeed} /> */}
       </Switch>
