@@ -1,22 +1,22 @@
-import { DOCTOR_LOGIN, DOCTOR_LOGOUT, DOCTOR_LOGIN_SUCCESSFUL } from "./action"
+import { USER_LOGIN, USER_LOGOUT, USER_LOGIN_SUCCESSFUL } from "./action"
 
 
-export const doctorLogin = (doctor) => {
+export const userLogin = (data) => {
     return {
-        type: DOCTOR_LOGIN,
-        doctor: doctor,
+        type: USER_LOGIN,
+        data: data,
     }
 }
 
-export const doctorLogout = () => {
+export const userLogout = () => {
     return {
-        type: DOCTOR_LOGOUT,
+        type: USER_LOGOUT,
     }
 }
 
-export const doctorLoginSuccessful = (token) => {
+export const userLoginSuccessful = (token) => {
     return {
-        type: DOCTOR_LOGIN_SUCCESSFUL,
+        type: USER_LOGIN_SUCCESSFUL,
         token
     }
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,6 +10,10 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useForm, Controller } from "react-hook-form";
+import LoadingPage from '../../component/BackDrop';
+import { Redirect } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { userLogin } from '../../redux/auth';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -35,15 +39,28 @@ const useStyles = makeStyles((theme) => ({
 const SystemLogin = () => {
     const { control, handleSubmit } = useForm();
     const classes = useStyles();
+        
+    const auth = useSelector(state => state.auth);
+    const dispatch = useDispatch();
+
+    const [disable, setdisable] = useState(false);
 
     const onSubmit = data => {
-        console.log(data)
+        setdisable(true)
+        dispatch(userLogin(data))
+        setTimeout(() => {
+            setdisable(false)
+        }, 1000);
     };
 
+    if (auth.isLoggedIn) {
+        return <Redirect to="/" />
+    }
 
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
+            <LoadingPage disable = {disable}/>
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
                     <LockOutlinedIcon />

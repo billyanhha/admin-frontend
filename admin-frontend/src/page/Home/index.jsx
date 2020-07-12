@@ -1,10 +1,12 @@
 import React from 'react';
 import MiniDrawer from '../../component/Drawer';
+import LoadingPage from '../../component/BackDrop';
 
 const Home = () => {
   return (
     <div>
-        {MiniDrawer()}
+      <LoadingPage />
+      <MiniDrawer />
     </div>
   );
 };

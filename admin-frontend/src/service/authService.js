@@ -4,13 +4,10 @@ import axios from "../axios";
 const authService = {};
 
 
-authService.doctorLogin = (values) => new Promise((resolve, reject) => {
-    const api = '/api/auth/doctor/signin';
-    const params = new URLSearchParams();    
-    params.append("email", values.email);
-    params.append("password", values.password);
+authService.login = (values) => new Promise((resolve, reject) => {
+    const api = '/api/auth/staff/signin';
 
-    axios.post(api, params)
+    axios.post(api, values)
         .then(result => {
             resolve(result.data);
         })

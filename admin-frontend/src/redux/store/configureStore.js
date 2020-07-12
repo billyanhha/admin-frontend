@@ -6,6 +6,7 @@ import { rootSaga } from '../rootSaga';
 import { uiReducer } from '../ui/reducer';
 import { loadingBarReducer } from 'react-redux-loading-bar';
 import { authReducer } from '../auth/reducer';
+import { userReducer } from '../user/reducer';
 
 const persistConfig = {
   key: 'root',
@@ -16,7 +17,8 @@ const persistConfig = {
 const rootReducers = combineReducers({
   loadingBar: loadingBarReducer,
   auth: authReducer,
-  ui: uiReducer
+  ui: uiReducer,
+  user: userReducer
 });
 
 const saga = createSagaMiddleware();
