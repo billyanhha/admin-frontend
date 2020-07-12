@@ -5,7 +5,6 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from "react-redux";
 import configureStore from './redux/store/configureStore';
 import { PersistGate } from 'redux-persist/integration/react';
-import 'antd/dist/antd.css'; // Import Ant Design styles by less entry
 
 const { store, persistor } = configureStore();
 
