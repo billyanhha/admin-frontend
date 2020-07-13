@@ -18,7 +18,7 @@ export default {
         },
         {
             id: '6bb504d9-7788-4959-a9f7-e87e9a2c3c74',
-            msg: 'Gói tôi đã hủy'
+            msg: 'Gói bác sĩ đã hủy'
         },
         {
             id: '1d83ca1b-828f-48dc-a410-372547492599',
@@ -30,7 +30,7 @@ export default {
         },
         {
             id: '5234bcea-1282-4222-b4b6-fde28b3dc93f',
-            msg: 'Gói tôi đã từ chối'
+            msg: 'Gói bác sĩ đã từ chối'
         },
         {
             id: '74f49cdd-598b-4125-babb-14fc4364fcac',
