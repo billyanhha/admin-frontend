@@ -13,6 +13,7 @@ import packageStatus from "../../config/packageStatus";
 import { userLogin } from '../../redux/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPackage } from '../../redux/package';
+import RefreshIcon from '@material-ui/icons/Refresh';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -30,7 +31,7 @@ const Home = () => {
 
   const dispatch = useDispatch();
   const { packages } = useSelector(state => state.package);
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit, reset } = useForm();
   const [status, setstatus] = useState("-1");
   const [query, setquery] = useState('');
   const [page, setpage] = useState(1);
@@ -59,6 +60,13 @@ const Home = () => {
     getPackageData(query, event.target.value, 1)
   };
 
+  const refreshData = () => {
+    setpage(1);
+    reset();
+    setstatus('-1')
+    getPackageData('', '-1', 1)
+  }
+
 
   const onSubmit = data => {
     setquery(data.query)
@@ -67,7 +75,7 @@ const Home = () => {
 
   };
 
-  const renderStatus =  packageStatus.status.map((value, index) => {
+  const renderStatus = packageStatus.status.map((value, index) => {
     return (
       <MenuItem value={value.id}>{value.msg}</MenuItem>
     )
@@ -78,7 +86,7 @@ const Home = () => {
     getPackageData(query, status, newPage)
   };
 
-  const renderPackage = packages.length > 0 ?  packages.map((value, index) => (
+  const renderPackage = packages.length > 0 ? packages.map((value, index) => (
     <div className="package-data-item" key={value.id}>
       <div className="package-data-item-user package-data-top">
         <h3>Người đặt gói : <span className="highlight">{value?.customer_name}</span></h3>
@@ -135,6 +143,16 @@ const Home = () => {
               </Select>
             </FormControl>
           </div>
+          <br/>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick = {refreshData}
+            className={classes.button}
+            startIcon={<RefreshIcon />}
+          >
+            Tải lại
+        </Button>
           <div className="package-data">
             {renderPackage}
           </div>
