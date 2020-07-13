@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import LoadingBar from 'react-redux-loading-bar';
 import './App.css';
 import SystemLogin from './page/SystemLogin'
-import Home from './page/Home'
+import Home from './page/Package'
 import PrivateRoute from './routeConfig/PrivateRoute'
 import NotificationContainer from 'react-notifications/lib/NotificationContainer';
 import 'react-notifications/lib/notifications.css';

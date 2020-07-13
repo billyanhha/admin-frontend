@@ -89,7 +89,7 @@ const MiniDrawer = (props) => {
 
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
@@ -152,7 +152,7 @@ const MiniDrawer = (props) => {
         >
           <div className={classes.toolbar}>
             <IconButton onClick={handleDrawerClose}>
-              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <div><ChevronLeftIcon /></div>}
             </IconButton>
           </div>
           <Divider />
