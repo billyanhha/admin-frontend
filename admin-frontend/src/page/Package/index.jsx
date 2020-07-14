@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const itemsPage = 3;
+const itemsPage = 9;
 
 const Home = (props) => {
 
@@ -123,6 +123,9 @@ const Home = (props) => {
 
   const classes = useStyles();
 
+
+  const count =  parseInt((Number(packages?.[0]?.full_count) / itemsPage), 10) + (Number(packages?.[0]?.full_count) % itemsPage === 0 ? 0 :1)
+
   return (
     <div>
       <LoadingPage />
@@ -171,7 +174,7 @@ const Home = (props) => {
               <Pagination
                 page={page}
                 onChange={handleChangePage}
-                count={Number(packages?.[0]?.full_count) / itemsPage}
+                count={count}
                 rowsPerPage={3}
                 color="primary" />
             ) : ''
