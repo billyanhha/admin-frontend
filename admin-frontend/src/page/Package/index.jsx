@@ -99,8 +99,8 @@ const Home = (props) => {
 
   const renderPackage = packages.length > 0 ? packages.map((value, index) => (
     <div onClick={() => toPackageDetai(value?.id)} className="package-data-item" key={value?.id}>
+              <h4>{moment(value?.created_at).format('DD-MM-YYYY [vào] HH [giờ] mm [phút]')}</h4>
       <div className="package-data-item-user package-data-top">
-        <h4>{moment(value?.created_at).format('DD-MM-YYYY')}</h4>
         <h3>Người đặt gói : <span className="highlight">{value?.customer_name}</span></h3>
         <div>
           <Chip

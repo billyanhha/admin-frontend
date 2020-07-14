@@ -96,7 +96,7 @@ const PackageDetail = (props) => {
                     <div className="package-detail-header">
                         <div className="package-detail-header-info">
                             <div className="package-detail-header-info-item">
-                                Ngày tạo : <span className="highlight"> {moment(packageInfo?.created_at).format('DD-MM-YYYY')}</span>
+                                Ngày tạo : <span className="highlight"> {moment(packageInfo?.created_at).format('DD-MM-YYYY [vào] HH [giờ] mm [phút]')}</span>
                             </div>
                             <div className="package-detail-header-info-item">
                                 Bác sĩ : <span className="highlight">
