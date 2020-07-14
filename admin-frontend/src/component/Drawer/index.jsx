@@ -113,16 +113,18 @@ const MiniDrawer = (props) => {
 
 
   const renderRoute = Object.keys(route).map((value, index) => {
-    return (
-      <Link className="no-active" to={value}>
-        <ListItem
-          selected={value === props.location.pathname}
-          button key={index}>
-          <ListItemIcon>{route[value].icon}</ListItemIcon>
-          <ListItemText primary={route[value].label} />
-        </ListItem>
-      </Link>
-    )
+    if (route[value]?.visible) {
+      return (
+        <Link className="no-active" to={value}>
+          <ListItem
+            selected={value === props.location.pathname}
+            button key={index}>
+            <ListItemIcon>{route[value].icon}</ListItemIcon>
+            <ListItemText primary={route[value].label} />
+          </ListItem>
+        </Link>
+      )
+    }
   })
 
   return (

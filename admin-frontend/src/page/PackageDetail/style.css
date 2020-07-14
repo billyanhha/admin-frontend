@@ -1,0 +1,49 @@
+.package-detail-header{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.package-detail-header-info{
+    display: grid;
+    border: 1px solid #dadada;
+    width: 90%;
+    grid-gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    padding: 30px 20px;
+    margin-bottom: 5px;
+}
+
+.package-detail-header-info-item{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    font-weight: bold;
+}
+
+.package-detail-header-info-item > .highlight {
+    margin-left: 10px;
+}
+
+.package-appointment-list-item{
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 20px 0px;
+    margin-right: 15px;
+    position: relative;
+    font-weight: bold;
+}
+
+.package-appointment-list-item:first-child {
+    margin-top: 0px;
+}
+
+.appointment-list{
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+}

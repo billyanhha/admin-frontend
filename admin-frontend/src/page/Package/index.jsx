@@ -14,6 +14,8 @@ import { userLogin } from '../../redux/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPackage } from '../../redux/package';
 import RefreshIcon from '@material-ui/icons/Refresh';
+import { withRouter } from 'react-router-dom';
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -27,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 
 const itemsPage = 3;
 
-const Home = () => {
+const Home = (props) => {
 
   const dispatch = useDispatch();
   const { packages } = useSelector(state => state.package);
@@ -53,6 +55,8 @@ const Home = () => {
     };
     dispatch(getPackage(data))
   }
+
+
 
   const handleChange = (event) => {
     setstatus(event.target.value);
@@ -86,9 +90,14 @@ const Home = () => {
     getPackageData(query, status, newPage)
   };
 
+  const toPackageDetai = (id) => {
+    props.history.push("/package/" + id);
+  }
+
   const renderPackage = packages.length > 0 ? packages.map((value, index) => (
-    <div className="package-data-item" key={value.id}>
+    <div onClick={() => toPackageDetai(value?.id)} className="package-data-item" key={value?.id}>
       <div className="package-data-item-user package-data-top">
+        <h4>{moment(value?.created_at).format('DD-MM-YYYY')}</h4>
         <h3>Người đặt gói : <span className="highlight">{value?.customer_name}</span></h3>
         <div>
           <Chip
@@ -143,11 +152,11 @@ const Home = () => {
               </Select>
             </FormControl>
           </div>
-          <br/>
+          <br />
           <Button
             variant="contained"
             color="primary"
-            onClick = {refreshData}
+            onClick={refreshData}
             className={classes.button}
             startIcon={<RefreshIcon />}
           >
@@ -174,4 +183,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default withRouter(Home);

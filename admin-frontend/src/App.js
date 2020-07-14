@@ -7,7 +7,8 @@ import Home from './page/Package'
 import PrivateRoute from './routeConfig/PrivateRoute'
 import NotificationContainer from 'react-notifications/lib/NotificationContainer';
 import 'react-notifications/lib/notifications.css';
-import Sample from './page/Sample';
+import PackageDetail from './page/PackageDetail';
+import NoMatch from './page/NoMatch';
 
 const App = () => {
 
@@ -19,10 +20,12 @@ const App = () => {
         <PrivateRoute exact path='/'>
           <Home />
         </PrivateRoute>
-        <PrivateRoute exact path='/sample'>
-          <Sample />
+
+        <PrivateRoute exact path='/package/:id'>
+          <PackageDetail />
         </PrivateRoute>
-        {/* <Route exact path='/new' component={NewFeed} /> */}
+        <Route path="*"><NoMatch /> </Route>
+
       </Switch>
       <NotificationContainer/>
     </BrowserRouter>

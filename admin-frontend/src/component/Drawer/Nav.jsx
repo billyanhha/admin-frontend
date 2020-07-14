@@ -46,6 +46,8 @@ const MenuAppBar = (props) => {
         dispatch(userLogout())
     }
 
+
+
     return (
         <Toolbar>
             <IconButton
@@ -60,7 +62,7 @@ const MenuAppBar = (props) => {
                 <MenuIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-                {route[props.location.pathname].label}
+                {route?.[props.match.path]?.label}
             </Typography>
             {auth && (
                 <div>
