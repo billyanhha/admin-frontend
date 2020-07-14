@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const itemsPage = 9;
+const itemsPage = 6;
 
 const Home = (props) => {
 
@@ -58,7 +58,7 @@ const Home = (props) => {
 
 
 
-  const handleChange = (event) => {
+  const handleChange = (event) => { // change status
     setstatus(event.target.value);
     setpage(1);
     getPackageData(query, event.target.value, 1)
@@ -66,18 +66,25 @@ const Home = (props) => {
 
   const refreshData = () => {
     setpage(1);
-    reset();
+    reset()
+    setquery('')
     setstatus('-1')
     getPackageData('', '-1', 1)
   }
 
 
-  const onSubmit = data => {
+  const onSubmit = data => { // search
     setquery(data.query)
     setpage(1);
     getPackageData(data.query, status, 1)
 
   };
+
+  const handleChangePage = (event, newPage) => { //change page paginaation
+    setpage(newPage);
+    getPackageData(query, status, newPage)
+  };
+
 
   const renderStatus = packageStatus.status.map((value, index) => {
     return (
@@ -85,10 +92,6 @@ const Home = (props) => {
     )
   })
 
-  const handleChangePage = (event, newPage) => {
-    setpage(newPage);
-    getPackageData(query, status, newPage)
-  };
 
   const toPackageDetai = (id) => {
     props.history.push("/package/" + id);
@@ -124,7 +127,7 @@ const Home = (props) => {
   const classes = useStyles();
 
 
-  const count =  parseInt((Number(packages?.[0]?.full_count) / itemsPage), 10) + (Number(packages?.[0]?.full_count) % itemsPage === 0 ? 0 :1)
+  const count = parseInt((Number(packages?.[0]?.full_count) / itemsPage), 10) + (Number(packages?.[0]?.full_count) % itemsPage === 0 ? 0 : 1)
 
   return (
     <div>
@@ -142,7 +145,7 @@ const Home = (props) => {
                 name="query"
                 autoFocus
                 control={control}
-                defaultValue=""
+                defaultValue =''
               />
             </form>
             <FormControl className={classes.formControl}>
