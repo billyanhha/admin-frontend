@@ -6,13 +6,13 @@ import { rootSaga } from '../rootSaga';
 import { uiReducer } from '../ui/reducer';
 import { loadingBarReducer } from 'react-redux-loading-bar';
 import { authReducer } from '../auth/reducer';
-import { userReducer } from '../user/reducer';
+import { userReducer, userStaffReducer } from '../user/reducer';
 import { packageReducer } from '../package/reducer';
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['auth', 'doctor'] // only navigation will be persisted
+  whitelist: ['auth', 'user'] // only navigation will be persisted
 };
 
 const rootReducers = combineReducers({
@@ -20,7 +20,8 @@ const rootReducers = combineReducers({
   auth: authReducer,
   ui: uiReducer,
   user: userReducer,
-  package: packageReducer
+  package: packageReducer,
+  userStaff: userStaffReducer
 });
 
 const saga = createSagaMiddleware();

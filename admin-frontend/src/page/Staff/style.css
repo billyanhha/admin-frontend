@@ -1,0 +1,37 @@
+.staff-avatar{
+    width: 150px;
+    height: 150px
+}
+
+.staff-auth{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.staff-active{
+    color: #0078D7
+}
+
+.staff-deactive{
+    color: red
+}
+
+.staff-password{
+    display: flex;
+    justify-content: space-between;
+}
+
+.staff-password > * {
+    width: 45%;
+}
+
+.staff-gender-select {
+    margin-left: 10px;
+    padding: 5px 15px;
+    border-radius: 5px;
+}
+
+.staff-action{
+    min-width: 150px;
+}

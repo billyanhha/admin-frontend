@@ -2,7 +2,7 @@ import React, { useEffect, useState, Fragment } from 'react';
 import "./style.css"
 import MiniDrawer from '../../component/Drawer';
 import LoadingPage from '../../component/BackDrop';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { Button, Avatar, makeStyles, Tabs, Tab, Paper, useTheme, Chip } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
@@ -36,6 +36,7 @@ const PackageDetail = (props) => {
     const { packageInfo, packageData } = useSelector(state => state.package);
 
     const [tabIndex, settabIndex] = useState(0);
+    const [redirect, setredirect] = useState(false);
     const [dialogVisible, setdialogVisible] = useState(false);
 
     const handleChange = (event, newValue) => {
@@ -51,7 +52,16 @@ const PackageDetail = (props) => {
     }, []);
 
     const goBack = () => {
-        props.history.goBack()
+        setredirect(true)
+    }
+
+    if(redirect) {
+        return <Redirect
+        to={{
+          pathname: "/",
+          state: { from: props.location }
+        }}
+      />
     }
 
     const openDialog = () => {
