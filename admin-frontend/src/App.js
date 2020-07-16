@@ -9,6 +9,9 @@ import NotificationContainer from 'react-notifications/lib/NotificationContainer
 import 'react-notifications/lib/notifications.css';
 import PackageDetail from './page/PackageDetail';
 import NoMatch from './page/NoMatch';
+import Staff from './page/Staff';
+import AdminOnlyRoute from './routeConfig/AdminOnlyRoute';
+import Sample from './page/Sample';
 
 const App = () => {
 
@@ -24,10 +27,17 @@ const App = () => {
         <PrivateRoute exact path='/package/:id'>
           <PackageDetail />
         </PrivateRoute>
-        <Route path="*"><NoMatch /> </Route>
-
+        <AdminOnlyRoute exact path='/staff'>
+          <Staff />
+        </AdminOnlyRoute>
+        <PrivateRoute exact path='/sample'>
+          <Sample />
+        </PrivateRoute>
+        <PrivateRoute exact path="*">
+          <NoMatch />
+        </PrivateRoute>
       </Switch>
-      <NotificationContainer/>
+      <NotificationContainer />
     </BrowserRouter>
   );
 };

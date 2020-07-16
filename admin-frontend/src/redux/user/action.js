@@ -1,4 +1,9 @@
 export const GET_USER = 'GET_USER';
 export const CLEAR_USER_INFO = 'CLEAR_USER_INFO';
 export const GET_USER_SUCCESSFUL = 'GET_USER_SUCCESSFUL';
+export const GET_STAFF = 'GET_STAFF';
+export const SAVE_STAFF = 'SAVE_STAFF';
+export const REGISTER_STAFF = 'REGISTER_STAFF';
+export const EDIT_STAFF = 'EDIT_STAFF';
+export const CHANGE_STAFF_STATUS = 'CHANGE_STAFF_STATUS';
 

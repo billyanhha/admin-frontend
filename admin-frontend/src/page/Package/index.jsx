@@ -40,7 +40,9 @@ const Home = (props) => {
 
   useEffect(() => {
 
-    getPackageData(query, status, page)
+
+      getPackageData(query, status, page)
+
 
 
   }, []);
@@ -97,6 +99,8 @@ const Home = (props) => {
     props.history.push("/package/" + id);
   }
 
+  
+
   const renderPackage = packages.length > 0 ? packages.map((value, index) => (
     <div onClick={() => toPackageDetai(value?.id)} className="package-data-item" key={value?.id}>
               <h4>{moment(value?.created_at).format('DD-MM-YYYY [vào] HH [giờ] mm [phút]')}</h4>
@@ -151,7 +155,7 @@ const Home = (props) => {
             <FormControl className={classes.formControl}>
               <InputLabel>Trạng thái</InputLabel>
               <Select
-                value={status}
+                defaultValue={status}
                 onChange={handleChange}
               >
                 {renderStatus}
@@ -175,7 +179,7 @@ const Home = (props) => {
           {
             packages?.[0]?.full_count ? (
               <Pagination
-                page={page}
+                defaultPage = {page}
                 onChange={handleChangePage}
                 count={count}
                 rowsPerPage={3}
