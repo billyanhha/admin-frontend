@@ -11,7 +11,7 @@ import { Avatar } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import "./style.css"
 import { userLogout } from '../../redux/auth';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useHistory } from 'react-router-dom';
 import route from "../../config/route";
 
 const useStyles = makeStyles((theme) => ({
@@ -33,6 +33,7 @@ const MenuAppBar = (props) => {
     const open = Boolean(anchorEl);
     const { currentUser } = useSelector(state => state.user);
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -46,7 +47,15 @@ const MenuAppBar = (props) => {
         dispatch(userLogout())
     }
 
-
+    const redirectToProfile = () => {
+        history.push('/profile');
+        setAnchorEl(null);
+    }
+    
+    const redirectToAccountPage = () => {
+        history.push('/account');
+        setAnchorEl(null);
+    }
 
     return (
         <Toolbar>
@@ -74,7 +83,7 @@ const MenuAppBar = (props) => {
                         color="inherit"
                     >
                         <Avatar alt="Remy Sharp" src={currentUser?.avatarurl} className={classes.large} />
-                        <span className ="username"> {currentUser?.fullname}</span>
+                        <span className="username"> {currentUser?.fullname}</span>
                     </IconButton>
                     <Menu
                         id="menu-appbar"
@@ -91,8 +100,8 @@ const MenuAppBar = (props) => {
                         open={open}
                         onClose={handleClose}
                     >
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                        <MenuItem onClick={handleClose}>My account</MenuItem>
+                        <MenuItem onClick={() => redirectToProfile()}>Profile</MenuItem>
+                        <MenuItem onClick={() => redirectToAccountPage()}>My account</MenuItem>
                         <MenuItem onClick={logout}>Đăng xuất</MenuItem>
                     </Menu>
                 </div>

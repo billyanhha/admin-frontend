@@ -1,0 +1,233 @@
+.profile-content {
+    background-color: #fff;
+    width: 100%;
+    overflow: auto;
+}
+
+.profile-form {
+    display: flex;
+    align-items: center;
+}
+
+.profile-form-disable-edit form {
+    cursor: default;
+    pointer-events: none;
+}
+
+.profile-form form {
+    width: 100%;
+}
+
+.profile-form-update {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.main-form {
+    width: 50%;
+}
+
+.profile-info {
+    position: relative;
+}
+
+.profile-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    font-size: 1rem;
+    background-color: #fff;
+    outline: none;
+}
+
+.avatar-title {
+    font-size: 1.2rem;
+    margin-top: 10px;
+    padding-left: 20px;
+    padding-bottom: 10px;
+    border-bottom: .5px solid #dadada;
+}
+
+.profile-indentify {
+    display: flex;
+    justify-content: space-between;
+}
+
+.profile-indentify .indentify-item {
+    width: 200px;
+}
+
+.profile-form-end {
+    margin: 40px auto;
+    text-align: center;
+}
+
+.profile-avatar {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    box-shadow: 0 0 8px 2px #dadada;
+    margin: auto;
+}
+
+.profile-avatar:hover #Avatar-icon {
+    /* border: none; */
+    box-shadow: 0 0 8px 2px #dadada;
+}
+
+.avatar-wrapper {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+#Avatar-profile {
+    border-radius: 50%;
+    max-width: 100%;
+    vertical-align: middle;
+}
+
+#Avatar-icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    box-shadow: none;
+    /* border: 2px solid #3f51b5; */
+    border-radius: 50%;
+    transform: translate(10%, 20%);
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+.drop-zone-custom {
+    width: 400px;
+    height: 400px;
+}
+
+.profile-form-label {
+    color: #888888;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-size: 0.8rem;
+}
+
+.profile-form-input {
+    font-size: 1rem;
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #dadada;
+    padding: 5px 0;
+    transition: all 0.2s ease-in-out;
+    outline: none;
+}
+
+.profile-form-input::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #dadada;
+}
+
+.profile-form-input:focus {
+    border: none;
+    border-radius: 0;
+    border-bottom: 2px solid #3f51b5;
+    caret-color: #3f51b5;
+    outline: none;
+}
+
+.avatar-editor {
+    margin: 20px;
+}
+
+.avatar-editor .avatar-editor-zone {
+    display: table;
+    width: 80%;
+    height: 300px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.avatar-editor .avatar-editor-zone .avatar-crop {
+    width: 100%;
+    height: 100%;
+}
+
+.avatar-editor .avatar-editor-zone .avatar-editor-preview {
+    border-radius: 50%;
+}
+
+.avatar-editor .avatar-editor-upload {
+    display: table;
+    padding-top: 40px;
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: -30px;
+}
+
+.avatar-editor .avatar-editor-submit {
+    margin-top: 20px;
+    text-align: right;
+    align-items: baseline;
+}
+
+.avatar-editor .avatar-editor-submit .avatar-button-preview:hover {
+    cursor: pointer;
+    color: #3f51b5;
+}
+
+/* .avatar-editor .avatar-editor-submit button {
+    background-color: white;
+    color: #3f51b5;
+    font-weight: bold;
+    border: 2px solid #3f51b5;
+    border-radius: 10px;
+    width: 100px;
+    height: 30px;
+    transition: all 0.1s ease-in-out;
+    outline: none;
+}
+
+.avatar-editor .avatar-editor-submit button:hover {
+    background-color: #3f51b5;
+    cursor: pointer;
+    color: white;
+} */
+
+.custom-display-flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.avatar-editor-message {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.avatar-editor-message *:hover {
+    cursor: pointer;
+    color: #3f51b5;
+}
+
+.avatar-editor-message svg {
+    width: 50px;
+    height: 50px;
+}
+
+.upload-disable-button {
+    color: #dadada !important;
+    border: 2px solid #dadada !important;
+    pointer-events: none;
+}
+
+.dashboard-component-header {
+    font-size: 2rem;
+}
