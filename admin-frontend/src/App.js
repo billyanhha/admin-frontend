@@ -11,6 +11,9 @@ import PackageDetail from './page/PackageDetail';
 import ProfileStaff from './page/Profile';
 import MyAccount from './page/MyAccount';
 import NoMatch from './page/NoMatch';
+import Staff from './page/Staff';
+import AdminOnlyRoute from './routeConfig/AdminOnlyRoute';
+import Sample from './page/Sample';
 
 const App = () => {
 
@@ -32,10 +35,17 @@ const App = () => {
         <PrivateRoute exact path='/account'>
           <MyAccount />
         </PrivateRoute>
-        <Route path="*"><NoMatch /> </Route>
-
+        <AdminOnlyRoute exact path='/staff'>
+          <Staff />
+        </AdminOnlyRoute>
+        <PrivateRoute exact path='/sample'>
+          <Sample />
+        </PrivateRoute>
+        <PrivateRoute exact path="*">
+          <NoMatch />
+        </PrivateRoute>
       </Switch>
-      <NotificationContainer/>
+      <NotificationContainer />
     </BrowserRouter>
   );
 };

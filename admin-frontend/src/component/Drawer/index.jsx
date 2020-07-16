@@ -92,6 +92,7 @@ const MiniDrawer = (props) => {
   const [open, setOpen] = React.useState(true);
 
   const auth = useSelector(state => state.auth);
+  const {currentUser} = useSelector(state => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -113,7 +114,7 @@ const MiniDrawer = (props) => {
 
 
   const renderRoute = Object.keys(route).map((value, index) => {
-    if (route[value]?.visible) {
+    if (route[value]?.visible && route[value]?.role !== 'admin') {
       return (
         <Link className="no-active" to={value}>
           <ListItem
@@ -124,6 +125,20 @@ const MiniDrawer = (props) => {
           </ListItem>
         </Link>
       )
+    }
+    else if (route[value]?.visible && route[value]?.role === 'admin') {
+      if(currentUser?.role === route[value]?.role){
+        return (
+          <Link className="no-active" to={value}>
+            <ListItem
+              selected={value === props.location.pathname}
+              button key={index}>
+              <ListItemIcon>{route[value].icon}</ListItemIcon>
+              <ListItemText primary={route[value].label} />
+            </ListItem>
+          </Link>
+        )
+      }
     }
   })
 

@@ -16,7 +16,7 @@ function* watchUserLoginWorker(action) {
         }
 
     } catch (error) {
-        NotificationManager.error("Sai mật khẩu", 'Thông báo');
+        NotificationManager.error(error?.response?.data?.err || error?.response?.data?.message, 'Thông báo')
         console.log(error);
     } finally {
         yield put(closeLoading())
@@ -31,7 +31,7 @@ function* watchUserLogoutWorker(action) {
         yield put(clearUserInfo());
 
     } catch (error) {
-        NotificationManager.error("Hệ thống quá tải", 'Thông báo');
+        NotificationManager.error(error?.response?.data?.err || error?.response?.data?.message, 'Thông báo')
         console.log(error);
     } finally {
         yield put(closeLoading())
