@@ -9,28 +9,36 @@ const AdminOnlyRoute = ({ children, ...rest }) => {
     const auth = useSelector(state => state.auth)
     const [redirect, setredirect] = useState(false);
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        if ((_.isEmpty(auth?.token) || currentUser?.role !== 'admin')) {
-            setredirect(true)
-        }
+    //     if ((_.isEmpty(auth?.token) || currentUser?.role !== 'admin')) {
+    //         setredirect(true)
+    //     }
 
-    }, [auth?.token]);
+    // }, [auth?.token]);
 
-    if (redirect) {
-        return <Redirect
-            to={{
-                pathname: "/",
-            }}
-        />
-    }
+    // if (redirect) {
+    //     return <Redirect
+    //         to={{
+    //             pathname: "/",
+    //         }}
+    //     />
+    // }
 
 
     return (
         <Route
             {...rest}
-            render={() => children
-
+            render={() =>
+                !(_.isEmpty(auth?.token) || currentUser?.role !== 'admin') ? (
+                    children
+                ) : (
+                        <Redirect
+                            to={{
+                                pathname: "/",
+                            }}
+                        />
+                    )
             }
         />
     );
