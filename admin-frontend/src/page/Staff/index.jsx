@@ -6,14 +6,14 @@ import MaterialTable from 'material-table';
 import { useSelector, useDispatch } from 'react-redux';
 import { getStaff } from '../../redux/user';
 import Pagination from '@material-ui/lab/Pagination';
-import { Avatar, Button, Select, MenuItem, FormControl, InputLabel, makeStyles, Menu } from '@material-ui/core';
+import { Avatar, Button } from '@material-ui/core';
 import gender from '../../config/gender'
 import AddIcon from '@material-ui/icons/Add';
 import AddStaff from './AddStaff';
 import EditStaff from './EditStaff';
 import ActiveStaff from './ActiveStaff';
 
-const itemsPage = 10
+const itemsPage = 5
 
 const columns = [
     { title: 'ID', field: 'id', editable: 'never' },
@@ -142,7 +142,7 @@ const Staff = () => {
                                         defaultPage={page}
                                         onChange={handleChangePage}
                                         count={count}
-                                        rowsPerPage={3}
+                                        rowsPerPage={itemsPage}
                                         color="primary" />
                                     <br />
                                 </div>

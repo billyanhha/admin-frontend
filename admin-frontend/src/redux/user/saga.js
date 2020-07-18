@@ -21,7 +21,7 @@ function* wachGetUserbWorker(action) {
             }
         }
     } catch (error) {
-        if (error.toString().includes('status code 401')) {
+        if (error.toString().includes('status code 403')) {
             yield put(userLogout());
             NotificationManager.error('Phiên đã hết hạn , vui lòng đăng nhập lại', 'Thông báo')
         }
@@ -37,7 +37,13 @@ function* wachGetStaffbWorker(action) {
         yield put(openLoading())
         const { token } = yield select(state => state.auth)
         const result = yield userService.getStaff(action.data, token);
-        yield put(saveStaff(result?.staff));
+        if(!_.isEmpty(result?.staff)){
+            yield put(saveStaff(result?.staff));
+
+        } else {
+            yield put(saveStaff([]));
+
+        }
     } catch (error) {
         NotificationManager.error(error?.response?.data?.err, 'Thông báo')
         console.log(error);

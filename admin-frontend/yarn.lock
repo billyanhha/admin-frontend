@@ -1019,7 +1019,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.6.0":
+"@babel/runtime@^7.6.0", "@babel/runtime@^7.9.2":
   version "7.10.5"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.10.5.tgz#303d8bd440ecd5a491eae6117fd3367698674c5c"
   integrity sha512-otddXKhdNn7d0ptoFRHtMLa8LqDxLYwTjB4nYgM1yy5N6gU/MUf8zqyyLltCH3yAVitBzmwK4us+DD0l/MauAg==
@@ -9422,6 +9422,14 @@ react-scripts@3.4.1:
     workbox-webpack-plugin "4.3.1"
   optionalDependencies:
     fsevents "2.1.2"
+
+react-select-async-paginate@^0.3.14:
+  version "0.3.14"
+  resolved "https://registry.yarnpkg.com/react-select-async-paginate/-/react-select-async-paginate-0.3.14.tgz#8b42a8fa55bbd6fb3984f82713763e7d27aea05b"
+  integrity sha512-U6r4OF6Jv3sffZtsWCCKVEbk3lJiG5Wkxl4E2vjXadv35DDXevzJZPmUX8UQYkFXh3YzbescgMLXL4Bj/sseBA==
+  dependencies:
+    "@babel/runtime" "^7.9.2"
+    prop-types "^15.7.2"
 
 react-select@^3.1.0:
   version "3.1.0"
