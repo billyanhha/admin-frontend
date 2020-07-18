@@ -1,4 +1,4 @@
-import { SET_CURRENT_SERVICE_PAGE, GET_SERVICE, SAVE_SERVICE, ADD_SERVICE, EDIT_SERVICE, SAVE_SERVICE_CATEGORY, GET_SERVICE_CATEGORY, ADD_SERVICE_CATEGORY } from "./action"
+import { SET_CURRENT_SERVICE_PAGE, GET_SERVICE, SAVE_SERVICE, ADD_SERVICE, EDIT_SERVICE, SAVE_SERVICE_CATEGORY, GET_SERVICE_CATEGORY, ADD_SERVICE_CATEGORY, EDIT_SERVICE_CATEGORY } from "./action"
 
 export const setCurrentServicePage = (index) => {    
     return {
@@ -55,6 +55,15 @@ export const addServiceCategory = (data) => {
         data
     }
 }
+
+
+export const editServiceCategory = (data) => {    
+    return {
+        type: EDIT_SERVICE_CATEGORY,
+        data
+    }
+}
+
 
 
 

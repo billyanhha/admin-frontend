@@ -4,7 +4,7 @@ import { NotificationManager } from 'react-notifications';
 import _ from "lodash"
 import { saveService, getService, saveServiceCategory, getServiceCategory } from '.';
 import sService from '../../service/sService';
-import { GET_SERVICE, ADD_SERVICE, EDIT_SERVICE, GET_SERVICE_CATEGORY, ADD_SERVICE_CATEGORY } from './action';
+import { GET_SERVICE, ADD_SERVICE, EDIT_SERVICE, GET_SERVICE_CATEGORY, ADD_SERVICE_CATEGORY, EDIT_SERVICE_CATEGORY } from './action';
 
 
 function* watchGetServicesWorker(action) {
@@ -110,10 +110,31 @@ function* watchAddServiceCategoryWorker(action) {
     }
 }
 
+function* watchEditServiceCategoryWorker(action) {
+    try {
+        yield put(openLoading())
+        const { token } = yield select(state => state.auth)
+        const result = yield sService.editServiceCategory(action.data, token);
+        if(!_.isEmpty(result)){
+            const data = { itemsPage: 5, page: 1, query: '', active: '' }
+            yield put(getServiceCategory(data))
+            NotificationManager.success('Thêm thành công', 'Thông báo')
+        }
+
+    } catch (error) {
+        NotificationManager.error(error?.response?.data?.err, 'Thông báo')
+        console.log(error);
+    } finally {
+        // do long running stuff
+        yield put(closeLoading())
+    }
+}
+
 export function* serviceSaga() {
     yield takeLatest(GET_SERVICE, watchGetServicesWorker);
     yield takeLatest(ADD_SERVICE, watchAddServicesWorker);
     yield takeLatest(EDIT_SERVICE, watchEditServicesWorker);
     yield takeLatest(GET_SERVICE_CATEGORY, watchGetServicesCategoryWorker);
     yield takeLatest(ADD_SERVICE_CATEGORY, watchAddServiceCategoryWorker);
+    yield takeLatest(EDIT_SERVICE_CATEGORY, watchEditServiceCategoryWorker);
 }
