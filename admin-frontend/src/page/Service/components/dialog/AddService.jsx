@@ -9,9 +9,9 @@ import { useDispatch } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
 import AsyncPaginate from "react-select-async-paginate";
 import { DialogTitle, Avatar } from '@material-ui/core';
-import sService from '../../service/sService';
+import sService from '../../../../service/sService';
 import { NotificationManager } from 'react-notifications';
-import { addService } from '../../redux/service';
+import { addService } from '../../../../redux/service';
 
 const AddService = (props) => {
 

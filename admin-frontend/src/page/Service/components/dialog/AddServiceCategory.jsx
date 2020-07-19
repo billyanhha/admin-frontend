@@ -7,34 +7,32 @@ import DialogContent from '@material-ui/core/DialogContent';
 import { withRouter } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
-import { DialogTitle, Select, MenuItem } from '@material-ui/core';
-import { addServiceCategory, editService, editServiceCategory } from '../../redux/service';
+import { DialogTitle } from '@material-ui/core';
+import { addServiceCategory } from '../../../../redux/service';
 
 
-const EditServiceCategory = (props) => {
+const AddServiceCategory = (props) => {
 
-    const currentCategory = props?.currentCategory
-
-    const { control, handleSubmit, register, reset } = useForm(currentCategory);
+    const { control, handleSubmit, register } = useForm();
     const dispatch = useDispatch()
-    const [imgFile, setfile] = useState(null);
-    const [src, setSrc] = useState('')
+    const [imgFile, setfile] = useState({});
+    const [src, setSrc] = useState('');
+
 
     const onSubmit = data => {
 
         props.setpage(1)
-        data = { ...data, image: imgFile, id: currentCategory?.id }
-        dispatch(editServiceCategory(data));
+        data = {...data , image: imgFile}
+        dispatch(addServiceCategory(data));
         props.closeDialog()
     };
 
 
     useEffect(() => {
-
+        
         setfile({})
-        reset(props?.currentCategory)
-        setSrc(props?.currentCategory?.image)
-
+        setSrc('')
+        
     }, [props.dialogVisible]);
 
     const _handleFileChange = (e) => {
@@ -81,29 +79,15 @@ const EditServiceCategory = (props) => {
                         <input type="file"
                             accept=".jpg, .gif ,.png, .jpeg, .svg"
                             onChange={_handleFileChange}
-                        />
+                            required />
                         <br />                    <br />
-                        <section>
-                            <Controller
-                                as={
-                                    <Select
-                                    >
-                                        <MenuItem value={true}>Hoạt động</MenuItem>
-                                        <MenuItem value={false}>Ngưng hoạt động</MenuItem>
-                                    </Select>
-                                }
-                                name="active"
-                                control={control}
-                            />
-                        </section>
-                        <br />
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"
                         >
-                            Sửa
+                            Thêm
                     </Button>
                     </form>
                 </div>
@@ -117,4 +101,4 @@ const EditServiceCategory = (props) => {
     );
 };
 
-export default withRouter(EditServiceCategory);
+export default withRouter(AddServiceCategory);

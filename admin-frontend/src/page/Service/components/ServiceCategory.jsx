@@ -4,10 +4,10 @@ import MaterialTable from 'material-table';
 import { useForm, Controller } from 'react-hook-form';
 import { TextField, Button, Avatar, Select } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import AddServiceCategory from './AddServiceCategory';
+import AddServiceCategory from './dialog/AddServiceCategory';
 import Pagination from '@material-ui/lab/Pagination';
-import { getServiceCategory } from '../../redux/service';
-import EditServiceCategory from './EditServiceCategory';
+import { getServiceCategory } from '../../../redux/service';
+import EditServiceCategory from './dialog/EditServiceCategory';
 
 const itemsPage = 5
 

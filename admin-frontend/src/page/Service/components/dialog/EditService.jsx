@@ -9,9 +9,9 @@ import { useDispatch } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
 import AsyncPaginate from "react-select-async-paginate";
 import { DialogTitle, Avatar } from '@material-ui/core';
-import sService from '../../service/sService';
+import sService from '../../../../service/sService';
 import { NotificationManager } from 'react-notifications';
-import { addService, editService } from '../../redux/service';
+import { addService, editService } from '../../../../redux/service';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 

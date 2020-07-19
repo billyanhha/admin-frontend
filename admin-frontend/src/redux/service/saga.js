@@ -2,9 +2,9 @@ import { put, takeLatest, select } from 'redux-saga/effects';
 import { openLoading, closeLoading } from '../ui';
 import { NotificationManager } from 'react-notifications';
 import _ from "lodash"
-import { saveService, getService, saveServiceCategory, getServiceCategory } from '.';
+import { saveService, getService, saveServiceCategory, getServiceCategory, saveServiceRequest, getServiceRequest } from '.';
 import sService from '../../service/sService';
-import { GET_SERVICE, ADD_SERVICE, EDIT_SERVICE, GET_SERVICE_CATEGORY, ADD_SERVICE_CATEGORY, EDIT_SERVICE_CATEGORY } from './action';
+import { GET_SERVICE, ADD_SERVICE, EDIT_SERVICE, GET_SERVICE_CATEGORY, ADD_SERVICE_CATEGORY, EDIT_SERVICE_CATEGORY, GET_SERVICE_REQUEST, EDIT_SERVICE_REQUEST } from './action';
 
 
 function* watchGetServicesWorker(action) {
@@ -130,6 +130,47 @@ function* watchEditServiceCategoryWorker(action) {
     }
 }
 
+function* watchGetServiceRequestWorker(action) {
+    try {
+        yield put(openLoading())
+        const { token } = yield select(state => state.auth)
+        const result = yield sService.getServiceRequest(action.data, token);
+        if(!_.isEmpty(result?.serviceRequest)){
+            yield put(saveServiceRequest(result?.serviceRequest))
+        } else {
+            yield put(saveServiceRequest([]))
+
+        }
+    } catch (error) {
+        NotificationManager.error(error?.response?.data?.err, 'Thông báo')
+        console.log(error);
+    } finally {
+        // do long running stuff
+        yield put(closeLoading())
+    }
+}
+
+function* watchEditServiceRequestWorker(action) {
+    try {
+        yield put(openLoading())
+        const { token } = yield select(state => state.auth)
+        const result = yield sService.editServiceRequest(action.data, token);
+        if(!_.isEmpty(result)){
+            const data = { itemsPage: 5, page: 1, query: '' }
+            yield put(getServiceRequest(data))
+            NotificationManager.success('Sửa thành công', 'Thông báo')
+        } 
+    } catch (error) {
+        NotificationManager.error(error?.response?.data?.err, 'Thông báo')
+        console.log(error);
+    } finally {
+        // do long running stuff
+        yield put(closeLoading())
+    }
+}
+
+
+
 export function* serviceSaga() {
     yield takeLatest(GET_SERVICE, watchGetServicesWorker);
     yield takeLatest(ADD_SERVICE, watchAddServicesWorker);
@@ -137,4 +178,6 @@ export function* serviceSaga() {
     yield takeLatest(GET_SERVICE_CATEGORY, watchGetServicesCategoryWorker);
     yield takeLatest(ADD_SERVICE_CATEGORY, watchAddServiceCategoryWorker);
     yield takeLatest(EDIT_SERVICE_CATEGORY, watchEditServiceCategoryWorker);
+    yield takeLatest(GET_SERVICE_REQUEST, watchGetServiceRequestWorker);
+    yield takeLatest(EDIT_SERVICE_REQUEST, watchEditServiceRequestWorker);
 }
