@@ -23,7 +23,9 @@
 
 .profile-form-update {
     display: flex;
-    align-items: center;
+    margin-top: 5vh;
+
+    /* align-items: center; */
     justify-content: space-evenly;
 }
 
@@ -265,7 +267,7 @@
 
 @media screen and (max-width: 1600px) {
     .profile-form {
-        margin-top: 5vh;
+        margin-top: 0;
     }
 }
 
