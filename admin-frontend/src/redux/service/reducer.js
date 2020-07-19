@@ -3,7 +3,7 @@ import { SET_CURRENT_SERVICE_PAGE, SAVE_SERVICE, SAVE_SERVICE_CATEGORY, SAVE_SER
 
 
 const initialState = {
-    currentServicePage: '3',
+    currentServicePage: '1',
     services: [],
     categorires: [],
     requests: []
