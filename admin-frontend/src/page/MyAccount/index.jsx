@@ -4,6 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import { ErrorMessage } from '@hookform/error-message';
 
 import { editStaffProfile, setStatus, changePassword } from '../../redux/staff';
+import { getUser } from '../../redux/user';
 
 import MiniDrawer from '../../component/Drawer';
 import LoadingPage from '../../component/BackDrop';
@@ -27,6 +28,7 @@ const ProfileStaff = () => {
     const { currentUser } = useSelector(state => state.user);
     const uploadStatus = useSelector(state => state.staff.updateStatus);
 
+    const [email, setEmail] = useState(null);
     const [passwordShown, setPasswordShown] = useState({
         password: false,
         new_password: false,
@@ -58,13 +60,15 @@ const ProfileStaff = () => {
     useEffect(() => {
         if (uploadStatus) {
             handleCancelModal();
+            setUpdateToggle(false);
             dispatch(setStatus(false));
+            dispatch(getUser(token));
         }
     }, [uploadStatus]);
 
     useEffect(() => {
-        console.log(currentUser)
-    }, [currentUser])
+        setEmail(currentUser?.email);
+    }, [currentUser]);
 
     return (
         <div>
@@ -82,7 +86,7 @@ const ProfileStaff = () => {
                                         {updateToggle
                                             ?
                                             <>
-                                                <input type="email" className="account-form-input" placeholder="___@___.___" name="email" defaultValue={currentUser?.email ?? ""}
+                                                <input type="email" className="account-form-input" placeholder="___@___.___" name="email" defaultValue={email}
                                                     ref={register({
                                                         pattern: {
                                                             value: /[\S+@\S+\.\S+]{6}/,
