@@ -9,6 +9,8 @@ import { getUser } from '../../redux/user';
 import MiniDrawer from '../../component/Drawer';
 import LoadingPage from '../../component/BackDrop';
 
+import { NotificationContainer, NotificationManager } from 'react-notifications';
+
 import { Modal } from '@material-ui/core';
 import { Visibility, VisibilityOff, Close } from '@material-ui/icons';
 import Button from '@material-ui/core/Button';
@@ -37,6 +39,7 @@ const ProfileStaff = () => {
     const [updateToggle, setUpdateToggle] = useState(false);
     const [visiablePassword, setVisiablePassword] = useState(false);
 
+
     const handleChangePassword = (data) => {
         let formPassword = {
             password: data.old_password,
@@ -55,6 +58,14 @@ const ProfileStaff = () => {
 
     const handleCancelModal = () => {
         setVisiablePassword(false);
+    }
+
+    const handleToggleEmail = () => {
+        if (currentUser?.role === 'admin')
+            setUpdateToggle(true)
+        else {
+            NotificationManager.warning('', 'Chỉ Admin có quyền thay đổi Email!', 3000);
+        }
     }
 
     useEffect(() => {
@@ -110,7 +121,7 @@ const ProfileStaff = () => {
                                             :
                                             <>
                                                 <div>{currentUser?.email ?? ""}</div>
-                                                <div className="account-element-action" onClick={() => setUpdateToggle(true)}>Thay đổi</div>
+                                                <div className="account-element-action" onClick={() => handleToggleEmail()}>Thay đổi</div>
                                             </>
                                         }
                                     </div>
