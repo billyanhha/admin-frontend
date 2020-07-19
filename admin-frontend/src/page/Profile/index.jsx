@@ -151,7 +151,10 @@ const ProfileStaff = () => {
                                         <div className="avatar-wrapper">
                                             <img id="Avatar-profile" src={currentUser?.avatarurl ?? DefaultAvatar} alt="Avatar" />
                                         </div>
-                                        <EditTwoTone id="Avatar-icon" twoToneColor="#00BC9A" onClick={() => setAvatarVisible(true)} />
+                                        <div className={currentUser?.role === "admin" ? 'profile-form-end avatar-action' : 'profile-display-none'}>
+                                            <EditTwoTone id="Avatar-icon" twoToneColor="#00BC9A" onClick={() => setAvatarVisible(true)} /> 
+                                            <div className="avatar-note">Đổi ảnh đại diện</div>
+                                        </div>
                                     </div>
                                     <Modal open={avatarVisible} onClose={() => resetAvatar()}>
                                         <div className="profile-modal">
@@ -244,26 +247,29 @@ const ProfileStaff = () => {
                                     <div className="profile-indentify">
                                         <div className="indentify-item">
                                             <p className="profile-form-label">Giới tính</p>
-                                            <Controller
-                                                as={<Select placeholder="Giới tính" options={options} />}
-                                                name="gender"
-                                                control={control}
-                                                theme={theme => ({
-                                                    ...theme,
-                                                    colors: {
-                                                        ...theme.colors,
-                                                        primary25: '#eef1ff',
-                                                        primary: '#3f51b5',
-                                                    },
-                                                })}
-                                                className="profile-form-gender"
-                                                rules={{ required: "Hãy chọn giới tính" }}
-                                                onChange={([selected]) => {
-                                                    // selected.value === "Male" ? setRelationGender(true) : setRelationGender(false)
-                                                    return selected;
-                                                }}
-                                                defaultValue={null}
-                                            />
+                                            {currentUser?.role === "admin"
+                                                ? <Controller
+                                                    as={<Select placeholder="Giới tính" options={options} />}
+                                                    name="gender"
+                                                    control={control}
+                                                    theme={theme => ({
+                                                        ...theme,
+                                                        colors: {
+                                                            ...theme.colors,
+                                                            primary25: '#eef1ff',
+                                                            primary: '#3f51b5',
+                                                        },
+                                                    })}
+                                                    className="profile-form-gender"
+                                                    rules={{ required: "Hãy chọn giới tính" }}
+                                                    onChange={([selected]) => {
+                                                        return selected;
+                                                    }}
+                                                    defaultValue={null}
+                                                />
+                                                : <span className="role-not-admin">{currentUser?.gender === "Male" ? "Nam" : "Nữ"}</span>
+                                            }
+
                                             <ErrorMessage errors={errors} name="gender">
                                                 {({ messages }) =>
                                                     messages &&
@@ -273,36 +279,6 @@ const ProfileStaff = () => {
                                                 }
                                             </ErrorMessage>
                                         </div>
-                                        {/* <div className="indentify-item">
-                                            <p className="profile-form-label">Sinh nhật</p>
-                                            <Controller
-                                                as={<DatePicker
-                                                    dateFormat="dd/MM/yyyy"
-                                                    peekNextMonth
-                                                    showMonthDropdown
-                                                    showYearDropdown
-                                                    dropdownMode="select"
-                                                    maxDate={new Date(2002, 11, 31)}
-                                                    locale={vi}
-                                                    autoComplete="off"
-                                                    required
-                                                />}
-                                                control={control}
-                                                rules={{ required: "Hãy chọn ngày sinh" }}
-                                                valueName="selected" // DateSelect value's name is selected
-                                                defaultValue={null}
-                                                name="Datepicker"
-                                                placeholderText="Ngày sinh"
-                                            />
-                                            <ErrorMessage errors={errors} name="Datepicker">
-                                                {({ messages }) =>
-                                                    messages &&
-                                                    Object.entries(messages).map(([type, message]) => (
-                                                        <span className="error-text" key={type}>{message}</span>
-                                                    ))
-                                                }
-                                            </ErrorMessage>
-                                        </div> */}
                                     </div>
 
                                     <p className="profile-form-label">Số điện thoại</p>
@@ -340,7 +316,7 @@ const ProfileStaff = () => {
                                             ))
                                         }
                                     </ErrorMessage>
-                                    <div className="profile-form-end">
+                                    <div className={currentUser?.role === "admin" ? 'profile-form-end' : 'profile-display-none'}>
                                         <Button disabled={isLoad} variant="contained" color="primary" type="submit">Cập nhật thông tin</Button>
                                     </div>
                                 </div>
