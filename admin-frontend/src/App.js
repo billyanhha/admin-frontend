@@ -8,6 +8,8 @@ import PrivateRoute from './routeConfig/PrivateRoute'
 import NotificationContainer from 'react-notifications/lib/NotificationContainer';
 import 'react-notifications/lib/notifications.css';
 import PackageDetail from './page/PackageDetail';
+import ProfileStaff from './page/Profile';
+import MyAccount from './page/MyAccount';
 import NoMatch from './page/NoMatch';
 import Staff from './page/Staff';
 import AdminOnlyRoute from './routeConfig/AdminOnlyRoute';
@@ -32,6 +34,15 @@ const App = () => {
         <PrivateRoute exact path='/customer'>
           <Customer />
         </PrivateRoute>
+        <PrivateRoute exact path='/profile'>
+          <ProfileStaff />
+        </PrivateRoute>
+        <PrivateRoute exact path='/account'>
+          <MyAccount />
+        </PrivateRoute>
+        <AdminOnlyRoute exact path='/staff'>
+          <Staff />
+        </AdminOnlyRoute>
         <PrivateRoute exact path='/service'>
           <Service />
         </PrivateRoute>

@@ -10,6 +10,7 @@ import { userReducer, userStaffReducer } from '../user/reducer';
 import { packageReducer } from '../package/reducer';
 import { serviceReducer } from '../service/reducer';
 import { customerReducer } from '../customer/reducer';
+import { staffReducer } from '../staff/reducer';
 
 const persistConfig = {
   key: 'root',
@@ -25,7 +26,8 @@ const rootReducers = combineReducers({
   package: packageReducer,
   userStaff: userStaffReducer,
   service: serviceReducer,
-  customer: customerReducer
+  customer: customerReducer,
+  staff: staffReducer
 });
 
 const saga = createSagaMiddleware();
