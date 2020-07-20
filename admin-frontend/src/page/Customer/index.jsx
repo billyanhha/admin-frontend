@@ -1,0 +1,216 @@
+import React, { useState, useEffect } from 'react';
+import MiniDrawer from '../../component/Drawer';
+import Pagination from '@material-ui/lab/Pagination';
+import MaterialTable from 'material-table';
+import { useForm, Controller } from 'react-hook-form';
+import { TextField, Button, Avatar, Select } from '@material-ui/core';
+import { useSelector, useDispatch } from 'react-redux';
+import gender from "../../config/gender"
+import { getCustomer, changeCustomerStatus } from '../../redux/customer';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
+const itemsPage = 5
+
+const columns = [
+    { title: 'ID', field: 'id', editable: 'never' },
+    {
+        title: 'Trạng thái', field: 'active',
+
+        render: rowData => (
+            <div className={rowData.active ? 'staff-active' : 'staff-deactive'}>
+                {rowData.active ? 'Hoạt động' : 'Chưa phê duyệt'}
+            </div>
+        )
+    },
+    {
+        title: 'Người dùng', field: 'fullname', render: rowData => (
+            <div className="service-category-field">
+                <Avatar style={{ width: '80px', height: '80px' }} alt={rowData.fullname} src={rowData.avatarurl} />
+                <h4>
+                    {rowData.fullname}
+                </h4>
+            </div>
+        )
+    },
+    {
+        title: 'Giới tính', field: 'gender', render: rowData => (
+            gender?.[rowData?.gender]
+        )
+    },
+    {
+        title: 'Địa chỉ', field: 'address'
+    },
+    {
+        title: 'Điện thoại', field: 'phone'
+    },
+    {
+        title: 'Email', field: 'email'
+    },
+    {
+        title: 'Ngày sinh', field: 'dateofbirth'
+    },
+]
+
+const Customer = () => {
+
+
+    const { control, handleSubmit, reset } = useForm();
+
+    const [active, setactive] = useState('');
+    const [page, setpage] = useState(1);
+    const [query, setquery] = useState('');
+    const [dialogVisible, setdialogVisible] = useState(false);
+    const [currentCustomer, setcurrentCustomer] = useState({});
+
+
+    const { isLoad } = useSelector(state => state.ui)
+    const { customers } = useSelector(state => state.customer)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+
+        getCustomerData(1, '', '')
+
+    }, []);
+
+
+    const handleChangePage = (event, newPage) => {
+        setpage(newPage)
+        getCustomerData(newPage, query, active)
+    }
+
+    const onSubmit = data => { // search
+        setquery(data.query)
+        setpage(1)
+        getCustomerData(1, data.query, active)
+    };
+
+
+    const handleActiveChange = (e) => {
+        setactive(e.target.value)
+        setpage(1)
+        getCustomerData(1, query, e.target.value)
+    }
+
+    const getCustomerData = (page, query, active) => {
+        const data = { page: page, query: query, active: active, itemsPage: itemsPage }
+        dispatch(getCustomer(data))
+    }
+
+    const handleClose = () => {
+        setdialogVisible(false)
+    }
+
+    const openDialog = (data) => {
+        setcurrentCustomer(data)
+        setdialogVisible(true)
+    }
+
+    const changeStatus = () => {
+        const queryData = { page: page, query: query, active: active, itemsPage: itemsPage }
+        const data = {query: queryData , id: currentCustomer?.id , active : ((!currentCustomer?.active) + '')}
+        dispatch(changeCustomerStatus(data));
+        handleClose()
+    }
+
+    const count = parseInt((Number(customers?.[0]?.full_count) / itemsPage), 10) + (Number(customers?.[0]?.full_count) % itemsPage === 0 ? 0 : 1)
+
+    return (
+        <div>
+            <Dialog
+                open={dialogVisible}
+                onClose={handleClose}
+            >
+                <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+                    {currentCustomer?.active ? 'Vô hiệu hóa người dùng' : 'Chấp nhận người dùng'}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Bạn có chắc chắn muốn thay đổi trạng thái của người dùng này ?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button autoFocus onClick={handleClose} color="secondary">
+                        Hủy
+                    </Button>
+                    <Button onClick={changeStatus} color="primary">
+                        Đồng ý
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <MiniDrawer>
+                <div className="service-search">
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <Controller
+                            as={TextField}
+                            variant="outlined"
+                            className="packge-search-input"
+                            label="Tìm kiếm"
+                            name="query"
+                            control={control}
+                            defaultValue=''
+                        />
+                    </form>
+                    <Select
+                        native
+                        value={active}
+                        onChange={handleActiveChange}
+                    >
+                        <option value={''}>Tất cả</option>
+                        <option value={false}>Chờ phê duyệt</option>
+                        <option value={true}>Hoạt động</option>
+                    </Select>
+                </div>
+                <br />
+                <MaterialTable
+                    isLoading={isLoad}
+                    title="Danh sách dịch vụ"
+                    options={{
+                        search: false
+                    }}
+                    columns={columns}
+                    data={customers}
+                    actions={[
+                        {
+                            icon: 'save',
+                            tooltip: 'Save User',
+                            onClick: (event, rowData) => { }
+                        }
+                    ]}
+                    components={{
+                        Pagination: props => (
+                            <div>
+                                <Pagination
+                                    defaultPage={page}
+                                    onChange={handleChangePage}
+                                    count={count}
+                                    rowsPerPage={itemsPage}
+                                    color="primary" />
+                                <br />
+                            </div>
+                        ),
+                        Action: props => {
+                            const { data } = props;
+
+                            return (
+                                <div className="staff-action">
+                                    <Button
+                                        onClick={() => openDialog(data)}
+                                        color={data?.active ? "secondary" : "primary"}>
+                                        {data?.active ? 'Vô hiệu hóa' : 'Phê duyệt'}
+                                    </Button>
+                                </div>
+                            )
+                        }
+                    }}
+                />
+            </MiniDrawer>
+        </div>
+    );
+};
+
+export default Customer;

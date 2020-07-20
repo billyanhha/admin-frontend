@@ -13,6 +13,7 @@ import Staff from './page/Staff';
 import AdminOnlyRoute from './routeConfig/AdminOnlyRoute';
 import Sample from './page/Sample';
 import Service from './page/Service';
+import Customer from './page/Customer';
 
 const App = () => {
 
@@ -28,12 +29,12 @@ const App = () => {
         <PrivateRoute exact path='/package/:id'>
           <PackageDetail />
         </PrivateRoute>
-        <AdminOnlyRoute exact path='/staff'>
-          <Staff />
-        </AdminOnlyRoute>
-        <AdminOnlyRoute exact path='/service'>
+        <PrivateRoute exact path='/customer'>
+          <Customer />
+        </PrivateRoute>
+        <PrivateRoute exact path='/service'>
           <Service />
-        </AdminOnlyRoute>
+        </PrivateRoute>
         <PrivateRoute exact path='/sample'>
           <Sample />
         </PrivateRoute>
