@@ -31,4 +31,18 @@ customerService.changeCustomerStatus = (data, token) => new Promise((reslove, re
         .catch(err => reject(err))
 });
 
+customerService.getCustomerPatient = (data, token) => new Promise((reslove, reject) => {
+    const api = `/api/customer/${data.id}/patient`;
+    axios.get(api, {
+        headers: {
+            Authorization: "Bearer " + token,
+            Accept: '*/*'
+        }
+    })
+        .then(result => {
+            reslove(result.data)
+        })
+        .catch(err => reject(err))
+});
+
 export default customerService;

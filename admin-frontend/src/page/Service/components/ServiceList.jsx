@@ -30,7 +30,7 @@ const columns = [
         title: 'Chú thích', field: 'description'
     },
     {
-        title: 'Loại dịch vụ', field: 'category_name', render: rowData => (
+        title: 'Hạng mục dịch vụ', field: 'category_name', render: rowData => (
             <div className="service-category-field">
                 <Avatar style={{ width: '80px', height: '80px' }} alt={rowData.category_name} src={rowData.category_image} />
                 <h4>

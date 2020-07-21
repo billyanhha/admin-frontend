@@ -6,12 +6,14 @@ import { useForm, Controller } from 'react-hook-form';
 import { TextField, Button, Avatar, Select } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import gender from "../../config/gender"
-import { getCustomer, changeCustomerStatus } from '../../redux/customer';
+import { getCustomer, changeCustomerStatus, getCustomerPatient } from '../../redux/customer';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import moment from "moment"
+import PatientDialog from '../../component/PatientDialog';
 
 const itemsPage = 5
 
@@ -24,6 +26,13 @@ const columns = [
             <div className={rowData.active ? 'staff-active' : 'staff-deactive'}>
                 {rowData.active ? 'Hoạt động' : 'Chưa phê duyệt'}
             </div>
+        )
+    },
+    {
+        title: 'Ngày đăng kí', field: 'created_at',
+
+        render: rowData => (
+            moment(rowData?.created_at).format("DD-MM-YYYY [vào lúc] HH [giờ] mm [phút]")
         )
     },
     {
@@ -53,6 +62,15 @@ const columns = [
     {
         title: 'Ngày sinh', field: 'dateofbirth'
     },
+    {
+        title: 'Xem bệnh nhân', field: 'patient',
+
+        render: rowData => (
+            <div className={rowData.active ? 'staff-active' : 'staff-deactive'}>
+                {rowData.active ? 'Hoạt động' : 'Chưa phê duyệt'}
+            </div>
+        )
+    },
 ]
 
 const Customer = () => {
@@ -64,6 +82,7 @@ const Customer = () => {
     const [page, setpage] = useState(1);
     const [query, setquery] = useState('');
     const [dialogVisible, setdialogVisible] = useState(false);
+    const [patientDialogVisible, setpatientDialogVisible] = useState(false);
     const [currentCustomer, setcurrentCustomer] = useState({});
 
 
@@ -103,6 +122,7 @@ const Customer = () => {
 
     const handleClose = () => {
         setdialogVisible(false)
+        setpatientDialogVisible(false)
     }
 
     const openDialog = (data) => {
@@ -110,9 +130,15 @@ const Customer = () => {
         setdialogVisible(true)
     }
 
+    const openPatientDialog = (data) => {
+        setcurrentCustomer(data)
+        dispatch(getCustomerPatient({id: data?.id}))
+        setpatientDialogVisible(true)
+    }
+
     const changeStatus = () => {
         const queryData = { page: page, query: query, active: active, itemsPage: itemsPage }
-        const data = {query: queryData , id: currentCustomer?.id , active : ((!currentCustomer?.active) + '')}
+        const data = { query: queryData, id: currentCustomer?.id, active: ((!currentCustomer?.active) + '') }
         dispatch(changeCustomerStatus(data));
         handleClose()
     }
@@ -121,6 +147,7 @@ const Customer = () => {
 
     return (
         <div>
+            <PatientDialog currentCustomer={currentCustomer} closeDialog={handleClose} dialogVisible={patientDialogVisible} />
             <Dialog
                 open={dialogVisible}
                 onClose={handleClose}
@@ -195,15 +222,19 @@ const Customer = () => {
                         ),
                         Action: props => {
                             const { data } = props;
-
                             return (
                                 <div className="staff-action">
+                                    <Button
+                                        onClick={() => openPatientDialog(data)}>
+                                        Xem bệnh nhân
+                                </Button>
                                     <Button
                                         onClick={() => openDialog(data)}
                                         color={data?.active ? "secondary" : "primary"}>
                                         {data?.active ? 'Vô hiệu hóa' : 'Phê duyệt'}
                                     </Button>
                                 </div>
+
                             )
                         }
                     }}

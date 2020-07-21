@@ -1,7 +1,7 @@
 import { put, takeLatest, select } from 'redux-saga/effects';
-import { GET_CUSTOMER, CHANGE_CUSTOMER_STATUS } from './action';
+import { GET_CUSTOMER, CHANGE_CUSTOMER_STATUS, GET_CUSTOMER_PATIENT } from './action';
 import customerService from '../../service/customerService';
-import { saveCustomer, getCustomer } from '.';
+import { saveCustomer, getCustomer, saveCustomerPatient } from '.';
 import {NotificationManager} from 'react-notifications';
 import { openLoading, closeLoading } from '../ui';
 import _ from "lodash";
@@ -46,7 +46,30 @@ function* watchChangeCustomerStatusWorker(action) {
     }
 }
 
+function* watchgetCustomerPatientStatusWorker(action) {
+    try {
+        yield put(openLoading())
+        const { token } = yield select(state => state.auth)
+        const result = yield customerService.getCustomerPatient(action.data, token);
+        if(!_.isEmpty(result?.patients)){
+            yield put(saveCustomerPatient(result?.patients));
+
+        } else {
+            yield put(saveCustomerPatient([]));
+
+        }
+    } catch (error) {
+        NotificationManager.error(error?.response?.data?.err, 'Thông báo')
+        console.log(error);
+    } finally {
+        // do long running stuff
+        yield put(closeLoading())
+    }
+}
+
 export function* customerSaga() {
     yield takeLatest(GET_CUSTOMER, watchGetCustomerWorker);
     yield takeLatest(CHANGE_CUSTOMER_STATUS, watchChangeCustomerStatusWorker);
+    yield takeLatest(GET_CUSTOMER_PATIENT, watchgetCustomerPatientStatusWorker);
+
 }

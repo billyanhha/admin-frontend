@@ -1,4 +1,4 @@
-import { GET_CUSTOMER, SAVE_CUSTOMER, CHANGE_CUSTOMER_STATUS } from "./action"
+import { GET_CUSTOMER, SAVE_CUSTOMER, CHANGE_CUSTOMER_STATUS, SAVE_CUSTOMER_PATIENT, GET_CUSTOMER_PATIENT } from "./action"
 
 export const getCustomer = (data) => {    
     return {
@@ -20,6 +20,21 @@ export const changeCustomerStatus = (data) => {
         data
     }
 }
+
+export const getCustomerPatient = (data) => {    
+    return {
+        type: GET_CUSTOMER_PATIENT,
+        data
+    }
+}
+
+export const saveCustomerPatient = (patients) => {    
+    return {
+        type: SAVE_CUSTOMER_PATIENT,
+        patients
+    }
+}
+
 
 
 
