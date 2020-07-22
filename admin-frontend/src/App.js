@@ -13,9 +13,9 @@ import MyAccount from './page/MyAccount';
 import NoMatch from './page/NoMatch';
 import Staff from './page/Staff';
 import AdminOnlyRoute from './routeConfig/AdminOnlyRoute';
-import Sample from './page/Sample';
 import Service from './page/Service';
 import Customer from './page/Customer';
+import Form from './page/Form';
 
 const App = () => {
 
@@ -46,8 +46,8 @@ const App = () => {
         <PrivateRoute exact path='/service'>
           <Service />
         </PrivateRoute>
-        <PrivateRoute exact path='/sample'>
-          <Sample />
+        <PrivateRoute exact path='/form'>
+          <Form />
         </PrivateRoute>
         <PrivateRoute exact path="*">
           <NoMatch />

@@ -1,5 +1,5 @@
 
-import InboxIcon from '@material-ui/icons/MoveToInbox';
+import ImportContactsIcon from '@material-ui/icons/ImportContacts';
 import React from 'react';
 import RecentActorsIcon from '@material-ui/icons/RecentActors';
 import AllInboxIcon from '@material-ui/icons/AllInbox';
@@ -32,11 +32,11 @@ const route = {
         icon : <RoomServiceIcon/>,
         visible: true,
     },
-    '/sample' : {
-        label: 'Sample',
-        icon : <InboxIcon/>,
-        visible: true
-    }
+    '/form' : {
+        label: 'Quản lý văn bản',
+        icon : <ImportContactsIcon/>,
+        visible: true,
+    },
 }
 
 
