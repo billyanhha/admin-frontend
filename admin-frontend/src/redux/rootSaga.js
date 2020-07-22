@@ -5,6 +5,7 @@ import { authSaga } from './auth/saga';
 import { userSaga } from './user/saga';
 import { packageSaga } from './package/saga';
 import { staffSaga } from './staff/saga';
+import { statisticSaga } from './statistic/saga';
 
 export function* rootSaga() {
   yield all([
@@ -13,6 +14,8 @@ export function* rootSaga() {
     uiSaga(),
     userSaga(),
     packageSaga(),
-    staffSaga()
+    serviceSaga(),
+    staffSaga(),
+    statisticSaga()
   ]);
 }

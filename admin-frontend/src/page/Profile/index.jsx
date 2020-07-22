@@ -126,8 +126,6 @@ const ProfileStaff = () => {
     }, [uploadStatus]);
 
     useEffect(() => {
-        console.log(currentUser)
-
         //  Update defaultValue/value
         const needReset = {
             gender: currentUser?.gender === "Male" ? { value: "Male", label: "Nam" } : { value: "Female", label: "Nữ" },
