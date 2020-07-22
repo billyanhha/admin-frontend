@@ -4,9 +4,12 @@ import { useForm, Controller } from "react-hook-form";
 import { ErrorMessage } from '@hookform/error-message';
 
 import { editStaffProfile, setStatus, changePassword } from '../../redux/staff';
+import { getUser } from '../../redux/user';
 
 import MiniDrawer from '../../component/Drawer';
 import LoadingPage from '../../component/BackDrop';
+
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 
 import { Modal } from '@material-ui/core';
 import { Visibility, VisibilityOff, Close } from '@material-ui/icons';
@@ -27,6 +30,7 @@ const ProfileStaff = () => {
     const { currentUser } = useSelector(state => state.user);
     const uploadStatus = useSelector(state => state.staff.updateStatus);
 
+    const [email, setEmail] = useState(null);
     const [passwordShown, setPasswordShown] = useState({
         password: false,
         new_password: false,
@@ -34,6 +38,7 @@ const ProfileStaff = () => {
     });
     const [updateToggle, setUpdateToggle] = useState(false);
     const [visiablePassword, setVisiablePassword] = useState(false);
+
 
     const handleChangePassword = (data) => {
         let formPassword = {
@@ -55,16 +60,26 @@ const ProfileStaff = () => {
         setVisiablePassword(false);
     }
 
+    const handleToggleEmail = () => {
+        if (currentUser?.role === 'admin')
+            setUpdateToggle(true)
+        else {
+            NotificationManager.warning('', 'Chỉ Admin có quyền thay đổi Email!', 3000);
+        }
+    }
+
     useEffect(() => {
         if (uploadStatus) {
             handleCancelModal();
+            setUpdateToggle(false);
             dispatch(setStatus(false));
+            dispatch(getUser(token));
         }
     }, [uploadStatus]);
 
     useEffect(() => {
-        console.log(currentUser)
-    }, [currentUser])
+        setEmail(currentUser?.email);
+    }, [currentUser]);
 
     return (
         <div>
@@ -82,7 +97,7 @@ const ProfileStaff = () => {
                                         {updateToggle
                                             ?
                                             <>
-                                                <input type="email" className="account-form-input" placeholder="___@___.___" name="email" defaultValue={currentUser?.email ?? ""}
+                                                <input type="email" className="account-form-input" placeholder="___@___.___" name="email" defaultValue={email}
                                                     ref={register({
                                                         pattern: {
                                                             value: /[\S+@\S+\.\S+]{6}/,
@@ -106,7 +121,7 @@ const ProfileStaff = () => {
                                             :
                                             <>
                                                 <div>{currentUser?.email ?? ""}</div>
-                                                <div className="account-element-action" onClick={() => setUpdateToggle(true)}>Thay đổi</div>
+                                                <div className="account-element-action" onClick={() => handleToggleEmail()}>Thay đổi</div>
                                             </>
                                         }
                                     </div>

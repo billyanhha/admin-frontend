@@ -1,0 +1,18 @@
+.patient-card{
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border: 1px solid #dadada;
+    border-radius: 10px;
+}
+
+.patient-card > *{
+    align-items: flex-start;
+}
+
+.patient-card-data{
+    margin-left: 15px;
+}
+
+.patient-card-data >  *{
+    margin-top: 0 !important;
+}

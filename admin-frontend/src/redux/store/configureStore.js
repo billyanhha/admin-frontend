@@ -8,8 +8,11 @@ import { loadingBarReducer } from 'react-redux-loading-bar';
 import { authReducer } from '../auth/reducer';
 import { userReducer, userStaffReducer } from '../user/reducer';
 import { packageReducer } from '../package/reducer';
+import { serviceReducer } from '../service/reducer';
+import { customerReducer } from '../customer/reducer';
 import { staffReducer } from '../staff/reducer';
 import { statisticReducer } from '../statistic/reducer';
+import { formReducer } from '../form/reducer';
 
 const persistConfig = {
   key: 'root',
@@ -26,7 +29,9 @@ const rootReducers = combineReducers({
   userStaff: userStaffReducer,
   service: serviceReducer,
   staff: staffReducer,
-  statistic: statisticReducer
+  statistic: statisticReducer,
+  customer: customerReducer,
+  form: formReducer
 });
 
 const saga = createSagaMiddleware();

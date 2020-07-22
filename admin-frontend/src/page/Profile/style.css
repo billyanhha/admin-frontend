@@ -1,12 +1,15 @@
 .profile-content {
     background-color: #fff;
     width: 100%;
+    min-height: 80vh;
     overflow: auto;
+    padding: 20px;
 }
 
 .profile-form {
     display: flex;
     align-items: center;
+    margin-top: 15vh;
 }
 
 .profile-form-disable-edit form {
@@ -20,7 +23,9 @@
 
 .profile-form-update {
     display: flex;
-    align-items: center;
+    margin-top: 5vh;
+
+    /* align-items: center; */
     justify-content: space-evenly;
 }
 
@@ -74,9 +79,29 @@
     margin: auto;
 }
 
+.avatar-action {
+    position: relative;
+    margin: 0;
+}
+
+.avatar-action .avatar-note {
+    opacity: 0;
+    position: absolute;
+    right: -45px;
+    margin-top: 5px;
+    padding: 4px;
+    border-radius: 5px;
+    box-shadow: 0 0 8px 1px #f0f0f0;
+    transition: .2s ease-in-out;
+}
+
 .profile-avatar:hover #Avatar-icon {
-    /* border: none; */
+    cursor: pointer;
     box-shadow: 0 0 8px 2px #dadada;
+}
+
+.profile-avatar:hover .avatar-action .avatar-note {
+    opacity: 1;
 }
 
 .avatar-wrapper {
@@ -231,3 +256,35 @@
 .dashboard-component-header {
     font-size: 2rem;
 }
+
+.role-not-admin {
+    font-size: 1.1rem;
+}
+
+.profile-display-none {
+    display: none !important;
+}
+
+@media screen and (max-width: 1600px) {
+    .profile-form {
+        margin-top: 0;
+    }
+}
+
+/* HD monitor & older TV, Wacom */
+@media screen and (max-width: 1366px) {}
+
+/* Ipad Pro, Tablet, Wacom, Monitor */
+@media screen and (max-width: 1280px) {}
+
+/* Ipad Pro, Tablet, Phone */
+@media screen and (max-width: 1024px) {}
+
+/* Ipad */
+@media screen and (max-width: 800px) {}
+
+/* Phone */
+@media screen and (max-width: 600px) {}
+
+/* Smaller phone */
+@media screen and (max-width: 320px) {}

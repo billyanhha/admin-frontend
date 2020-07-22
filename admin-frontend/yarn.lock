@@ -1019,7 +1019,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.6.0":
+"@babel/runtime@^7.6.0", "@babel/runtime@^7.9.2":
   version "7.10.5"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.10.5.tgz#303d8bd440ecd5a491eae6117fd3367698674c5c"
   integrity sha512-otddXKhdNn7d0ptoFRHtMLa8LqDxLYwTjB4nYgM1yy5N6gU/MUf8zqyyLltCH3yAVitBzmwK4us+DD0l/MauAg==
@@ -6622,6 +6622,18 @@ jest@24.9.0:
     import-local "^2.0.0"
     jest-cli "^24.9.0"
 
+jodit-react@^1.0.49:
+  version "1.0.51"
+  resolved "https://registry.yarnpkg.com/jodit-react/-/jodit-react-1.0.51.tgz#1f0b48bdb99879f84173c917409d057b94b3537f"
+  integrity sha512-3njMCCk2adDfWeLRaI1WUzyO0WHjy9Apbj+72PCXV13FH6fesbZcNBTVx5KdGONAVvZBk5fTMIFo76AU4mHSLQ==
+  dependencies:
+    jodit "^3.4.14"
+
+jodit@^3.4.14:
+  version "3.4.14"
+  resolved "https://registry.yarnpkg.com/jodit/-/jodit-3.4.14.tgz#c811ecc807d689f39b28ba1bbf80d9d7a69e0d17"
+  integrity sha512-Mxf3MPr9P+FO8zyRcC4FUJMeGjPMSBenuM5KkB7ZBB1A+2TXDhzq6ACJ6sTXU6u4xWw358zKoBuaARNfdwbcVw==
+
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -9489,6 +9501,14 @@ react-scripts@3.4.1:
     workbox-webpack-plugin "4.3.1"
   optionalDependencies:
     fsevents "2.1.2"
+
+react-select-async-paginate@^0.3.14:
+  version "0.3.14"
+  resolved "https://registry.yarnpkg.com/react-select-async-paginate/-/react-select-async-paginate-0.3.14.tgz#8b42a8fa55bbd6fb3984f82713763e7d27aea05b"
+  integrity sha512-U6r4OF6Jv3sffZtsWCCKVEbk3lJiG5Wkxl4E2vjXadv35DDXevzJZPmUX8UQYkFXh3YzbescgMLXL4Bj/sseBA==
+  dependencies:
+    "@babel/runtime" "^7.9.2"
+    prop-types "^15.7.2"
 
 react-select@^3.1.0:
   version "3.1.0"
