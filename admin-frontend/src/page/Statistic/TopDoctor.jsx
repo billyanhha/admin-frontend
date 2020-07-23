@@ -54,7 +54,7 @@ const TopDoctor = () => {
     };
 
     const handleMonthChange = event => {
-        setWhichMonth(event.target.value);
+        setWhichMonth(event.target.value === 0 ? null : event.target.value ?? null);
         getTopXDoctor(topNum, event.target.value === 0 ? null : event.target.value ?? null, whichStatus);
     };
 
