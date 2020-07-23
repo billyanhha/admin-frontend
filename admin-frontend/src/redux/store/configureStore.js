@@ -11,6 +11,7 @@ import { packageReducer } from '../package/reducer';
 import { serviceReducer } from '../service/reducer';
 import { customerReducer } from '../customer/reducer';
 import { staffReducer } from '../staff/reducer';
+import { statisticReducer } from '../statistic/reducer';
 import { formReducer } from '../form/reducer';
 
 const persistConfig = {
@@ -27,8 +28,9 @@ const rootReducers = combineReducers({
   package: packageReducer,
   userStaff: userStaffReducer,
   service: serviceReducer,
-  customer: customerReducer,
   staff: staffReducer,
+  statistic: statisticReducer,
+  customer: customerReducer,
   form: formReducer
 });
 
