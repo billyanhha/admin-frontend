@@ -53,7 +53,7 @@
     margin-top: 10px;
     padding-left: 20px;
     padding-bottom: 10px;
-    border-bottom: .5px solid #dadada;
+    border-bottom: 0.5px solid #dadada;
 }
 
 .profile-indentify {
@@ -68,6 +68,10 @@
 .profile-form-end {
     margin: 40px auto;
     text-align: center;
+}
+
+.profile-form-end Button {
+    font-weight: bold;
 }
 
 .profile-avatar {
@@ -92,7 +96,7 @@
     padding: 4px;
     border-radius: 5px;
     box-shadow: 0 0 8px 1px #f0f0f0;
-    transition: .2s ease-in-out;
+    transition: 0.2s ease-in-out;
 }
 
 .profile-avatar:hover #Avatar-icon {
@@ -272,19 +276,25 @@
 }
 
 /* HD monitor & older TV, Wacom */
-@media screen and (max-width: 1366px) {}
+@media screen and (max-width: 1366px) {
+}
 
 /* Ipad Pro, Tablet, Wacom, Monitor */
-@media screen and (max-width: 1280px) {}
+@media screen and (max-width: 1280px) {
+}
 
 /* Ipad Pro, Tablet, Phone */
-@media screen and (max-width: 1024px) {}
+@media screen and (max-width: 1024px) {
+}
 
 /* Ipad */
-@media screen and (max-width: 800px) {}
+@media screen and (max-width: 800px) {
+}
 
 /* Phone */
-@media screen and (max-width: 600px) {}
+@media screen and (max-width: 600px) {
+}
 
 /* Smaller phone */
-@media screen and (max-width: 320px) {}
+@media screen and (max-width: 320px) {
+}

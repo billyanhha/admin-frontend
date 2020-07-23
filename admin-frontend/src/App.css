@@ -1,14 +1,18 @@
+html {
+    scroll-behavior: smooth;
+}
+
 .default-div {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .highlight {
-  color: #40A9FF
+    color: #40a9ff;
 }
 
 .error-text {
-  color: red;
-  transition: all 0.5s ease-in-out;
+    color: red;
+    transition: all 0.5s ease-in-out;
 }

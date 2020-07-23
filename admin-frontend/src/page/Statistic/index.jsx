@@ -1,161 +1,109 @@
 import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import MaterialTable from "material-table";
-
-import {getTopDoctor} from "../../redux/statistic";
-
-import packageStatus from "../../config/package_status";
+import PropTypes from "prop-types";
 import MiniDrawer from "../../component/Drawer";
 import LoadingPage from "../../component/BackDrop";
+import TopDoctor from "./TopDoctor";
 
 import DefaultAvatar from "../../assets/image/hhs-default_avatar.jpg";
-import {Avatar, Button} from "@material-ui/core";
-import {Person, AssignmentTurnedIn, AssignmentLate, Close} from "@material-ui/icons";
+import {Fab, Zoom, useScrollTrigger} from "@material-ui/core";
+import {KeyboardArrowUp} from "@material-ui/icons";
+
+import {makeStyles} from "@material-ui/core/styles";
 import "./style.css";
+
 const Statistic = () => {
-    const dispatch = useDispatch();
-    const {isLoad} = useSelector(state => state.ui);
-    const topDoctor = useSelector(state => state.statistic.topDoctor);
-    let statusOption = [
-        {id: packageStatus.done, status: "đã hoàn thành", style: "status-done"},
-        {id: packageStatus.running, status: "đang tiến hành", style: "status-running"},
-        {id: packageStatus.doctorCancel, status: "bác sĩ đã hủy", style: "inherit"},
-        {id: packageStatus.doctorReject, status: "bác sĩ đã từ chối", style: "secondary"},
-        {id: packageStatus.systemCancel, status: "hệ thống đã hủy", style: "inherit"},
-        {id: packageStatus.customerCancel, status: "khách hàng đã hủy", style: "secondary"},
-    ];
+    const [switchStatistic, setSwitchStatistic] = useState(0);
+    let statisticName = ["Thống kê Bác sĩ", "Biểu đồ cuộc hẹn", "Biểu đồ gói", "Thống kê lượt truy cập"];
 
-    const [topNum, setTopNum] = useState(null);
-    const [whichMonth, setWhichMonth] = useState(null);
+    const useStyles = makeStyles(theme => ({
+        root: {
+            position: "fixed",
+            bottom: theme.spacing(2),
+            right: theme.spacing(2),
+        },
+    }));
 
-    const getTopXDoctor = (top, when, statusID) => {
-        dispatch(getTopDoctor(top, when, statusID));
+    const ScrollTop = props => {
+        const {children} = props;
+        const classes = useStyles();
+        const trigger = useScrollTrigger({
+            disableHysteresis: true,
+            threshold: 100,
+        });
+
+        const handleClick = event => {
+            const anchor = (event.target.ownerDocument || document).querySelector("#back-to-top-anchor");
+
+            if (anchor) {
+                anchor.scrollIntoView({behavior: "smooth", block: "start"});
+            }
+        };
+
+        return (
+            <Zoom in={trigger}>
+                <div onClick={handleClick} role="presentation" className={classes.root}>
+                    {children}
+                </div>
+            </Zoom>
+        );
     };
 
-    const renderStatusOption = statusOption.map(values => (
-        <div key={values.id}>
-            <Button
-                className={`statistic-status-button ${values.style !== "status-done" && values.style !== "status-running" ? "" : values.style}`}
-                variant={values.style === "secondary" || values.style === "inherit" ? "outlined" : "contained"}
-                color={values.style === "secondary" ? values.style : "inherit"}
-                onClick={() => getTopXDoctor(topNum, whichMonth, values.id)}
-            >
-                {values.style === "status-done" ? <AssignmentTurnedIn /> : values.style === "inherit" ? <AssignmentLate /> : ""}
-                {values.status === "khách hàng đã hủy" ? <Person /> : values.status.includes("từ chối") ? <Close /> : ""}­ ­
-                {values.status}
-            </Button>
-        </div>
-    ));
+    ScrollTop.propTypes = {
+        children: PropTypes.element.isRequired,
+    };
 
-    useEffect(() => {
-        getTopXDoctor(topNum, whichMonth, packageStatus.done);
-    }, []);
-
+    const renderStatistic = type => {
+        switch (type) {
+            case 0:
+                return <TopDoctor />;
+            default:
+                return <div className="statistic-no-data">Hiện chưa có dữ liệu cho kiểu thống kê này!</div>;
+        }
+    };
     return (
-        <div className="default-div">
+        <div className="default-div" id="back-to-top-anchor">
             <LoadingPage />
             <MiniDrawer>
                 <div className="statistic-wrapper">
-                    Thống kê
-                    {/* <button onClick={() => getTopXDoctor(topNum, whichMonth)}> Statistic </button> */}
                     <div className="all-statistic">
-                        <div className="each-statistic">
+                        <div className="each-statistic" onClick={() => setSwitchStatistic(0)}>
                             <div className="each-statistic-image">
-                                <img className="statistic-image-wrapper" src={DefaultAvatar} alt="" />
+                                <img className="statistic-image-wrapper" src={"https://img.icons8.com/fluent/100/000000/pie-chart-report.png"} alt="" />
                             </div>
-                            <div className="each-statistic-description">Bác Sĩ tích cực</div>
+                            <div className="each-statistic-description">{statisticName[0]}</div>
                         </div>
-                        <div className="each-statistic">
+                        <div className="each-statistic" onClick={() => setSwitchStatistic(1)}>
                             <div className="each-statistic-image">
-                                <img className="statistic-image-wrapper" src={DefaultAvatar} alt="" />
+                                <img className="statistic-image-wrapper" src={"https://img.icons8.com/clouds/100/000000/maintenance-date.png"} alt="" />
                             </div>
-                            <div className="each-statistic-description">Thống kê gói</div>
+                            <div className="each-statistic-description">{statisticName[1]}</div>
                         </div>
-                        <div className="each-statistic">
+                        <div className="each-statistic" onClick={() => setSwitchStatistic(2)}>
                             <div className="each-statistic-image">
-                                <img className="statistic-image-wrapper" src={DefaultAvatar} alt="" />
+                                <img className="statistic-image-wrapper" src={"https://img.icons8.com/dusk/100/000000/package.png"} alt="" />
                             </div>
-                            <div className="each-statistic-description">Thống kê cuộc hẹn</div>
+                            <div className="each-statistic-description">{statisticName[2]}</div>
                         </div>
-                        <div className="each-statistic">
+                        <div className="each-statistic" onClick={() => setSwitchStatistic(3)}>
                             <div className="each-statistic-image">
-                                <img className="statistic-image-wrapper" src={DefaultAvatar} alt="" />
+                                <img className="statistic-image-wrapper" src={"https://img.icons8.com/fluent/100/000000/conference-call.png"} alt="" />
                             </div>
-                            <div className="each-statistic-description">Xếp hạng Bác Sĩ tích cực</div>
+                            <div className="each-statistic-description">{statisticName[3]}</div>
                         </div>
                     </div>
-                    <div>
-                        {topDoctor ? (
-                            <div className="statistic-table-wrapper">
-                                Thống kê theo gói:
-                                <div className="statistic-button-wrapper">{renderStatusOption}</div>
-                                <MaterialTable
-                                    isLoading={isLoad}
-                                    title={"Thống kê theo gói " + topDoctor?.[0]?.status_name.toUpperCase()}
-                                    columns={columns}
-                                    data={topDoctor}
-                                    localization={{
-                                        body: {
-                                            emptyDataSourceMessage: "Không có dữ liệu",
-                                        },
-                                        pagination: {
-                                            labelDisplayedRows: "{from}-{to} / {count}",
-                                            labelRowsSelect: "hàng",
-                                        },
-                                        toolbar: {
-                                            searchPlaceholder: "Tìm kiếm tên/ID bác sĩ",
-                                            exportAriaLabel: "Xuất file",
-                                            exportName: "Xuất file",
-                                            exportTitle: "Xuất file",
-                                        },
-                                    }}
-                                    options={{
-                                        headerStyle: {
-                                            textAlign: "center",
-                                        },
-                                        cellStyle: {
-                                            textAlign: "center",
-                                        },
-                                        exportButton: true,
-                                    }}
-                                />
-                            </div>
-                        ) : (
-                            ""
-                        )}
+                    <div className="statistic-specific-wrapper">
+                        <div className="statistic-name">{statisticName[switchStatistic]}</div>
+                        {renderStatistic(switchStatistic)}
                     </div>
+                    <ScrollTop>
+                        <Fab color="primary" size="small" aria-label="scroll back to top">
+                            <KeyboardArrowUp  />
+                        </Fab>
+                    </ScrollTop>
                 </div>
             </MiniDrawer>
         </div>
     );
 };
 
-const columns = [
-    // {
-    //     title: "STT",
-    //     field: "tableData.id",
-    //     render: rowData => <p>{rowData??""}</p>,
-    // },
-    {
-        title: "Bác Sĩ",
-        field: "doctor_name",
-        render: rowData => (
-            <div className="statistic-table-avatar">
-                <Avatar style={{width: "80px", height: "80px", borderRadius: "50%"}} alt={rowData.doctor_name} src={rowData.avatarurl} />
-                <span>{rowData.doctor_name}</span>
-            </div>
-        ),
-        sorting: false,
-    },
-    {
-        title: "ID",
-        field: "doctor_id",
-        sorting: false,
-    },
-    {
-        title: "Số lượng gói",
-        field: "status_count",
-        searchable: false,
-    },
-];
 export default Statistic;
