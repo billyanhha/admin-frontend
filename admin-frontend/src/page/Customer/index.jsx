@@ -62,15 +62,6 @@ const columns = [
     {
         title: 'Ngày sinh', field: 'dateofbirth'
     },
-    {
-        title: 'Xem bệnh nhân', field: 'patient',
-
-        render: rowData => (
-            <div className={rowData.active ? 'staff-active' : 'staff-deactive'}>
-                {rowData.active ? 'Hoạt động' : 'Chưa phê duyệt'}
-            </div>
-        )
-    },
 ]
 
 const Customer = () => {
