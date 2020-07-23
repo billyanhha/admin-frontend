@@ -186,7 +186,7 @@ const Customer = () => {
                 <br />
                 <MaterialTable
                     isLoading={isLoad}
-                    title="Danh sách dịch vụ"
+                    title="Danh sách người dùng"
                     options={{
                         search: false
                     }}
