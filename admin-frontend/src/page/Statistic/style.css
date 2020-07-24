@@ -60,6 +60,7 @@
 
 .statistic-type-active {
     border-bottom: 2px solid #218db4 !important;
+    color: #218db4;
 }
 
 .statistic-image-wrapper {
@@ -92,19 +93,25 @@
     margin-top: 10px;
 }
 
+.statistic-time-filter {
+    display: flex;
+    justify-content: space-between;
+    text-align: right;
+}
+
 .statistic-filter-name {
     margin-top: 20px;
     color: #999999;
 }
 
-.statistic-time-filter {
-    text-align: right;
+.statistic-filter-name span {
+    color: #000;
 }
 
 .statistic-button-wrapper {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 10px;
+    margin-top: 40px;
 }
 
 .statistic-button-wrapper Button {
@@ -123,7 +130,7 @@
     color: #fff !important;
     background-color: #1fc8db !important;
     /* background: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%); */
-    background: linear-gradient(to right, #72d8e4 35%, #1fc8db 40%, #2cb5e8 75%);
+    background: linear-gradient(to right, #72d8e4 35%, #1fc8db 50%, #2cb5e8 75%);
     background-size: 300% 300%;
     animation: processing 2.5s ease infinite;
 }

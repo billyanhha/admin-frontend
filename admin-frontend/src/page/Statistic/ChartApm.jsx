@@ -1,6 +1,6 @@
 import React from 'react'
 
-const StatisticDetail = () => {
+const ChartApm = () => {
     return (
         <div>
             
@@ -8,4 +8,4 @@ const StatisticDetail = () => {
     )
 }
 
-export default StatisticDetail;
+export default ChartApm;
