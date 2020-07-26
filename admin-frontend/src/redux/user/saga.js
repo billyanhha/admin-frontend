@@ -21,7 +21,7 @@ function* wachGetUserbWorker(action) {
             }
         }
     } catch (error) {
-        if (error.toString().includes('status code 403')) {
+        if (error?.response?.data?.err?.toString().includes('Phiên đăng nhập đã hết hạn')) {
             yield put(userLogout());
             NotificationManager.error('Phiên đã hết hạn , vui lòng đăng nhập lại', 'Thông báo')
         }
