@@ -312,6 +312,7 @@ const ChartApmPkg = () => {
             getChartData(null, whichYear, type === 0 ? packageStatus.done : apmStatus.done, type);
             setWhichMonth(null);
             setWhichStatus(packageStatus.done);
+            setStatusName("đã hoàn thành")
         }
     }, [type, viewOption]);
 
