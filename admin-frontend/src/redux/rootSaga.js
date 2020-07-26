@@ -7,6 +7,7 @@ import { packageSaga } from './package/saga';
 import { serviceSaga } from './service/saga';
 import { customerSaga } from './customer/saga';
 import { staffSaga } from './staff/saga';
+import { statisticSaga } from './statistic/saga';
 import { formSaga } from './form/saga';
 
 export function* rootSaga() {
@@ -17,8 +18,9 @@ export function* rootSaga() {
     userSaga(),
     packageSaga(),
     serviceSaga(),
-    customerSaga(),
     staffSaga(),
+    statisticSaga(),
+    customerSaga(),
     formSaga()
   ]);
 }
