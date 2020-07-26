@@ -10,11 +10,11 @@ function* watchGetTopDoctor(action) {
     try {
         yield put(openLoading());
         const result = yield statisticService.getTopDoctor(action);
-        if (result.result) {
-            yield put(getTopDoctorSuccessful(result.result));
+        if (result?.result) {
+            yield put(getTopDoctorSuccessful(result?.result));
         }
     } catch (error) {
-        NotificationManager.error(error?.response?.data?.err ?? "Hệ thống quá tải", "Thông báo");
+        NotificationManager.error(error?.response?.data?.err ?? "Hệ thống quá tải hoặc mạng bị gián đoạn", "Thông báo");
     } finally {
         yield put(closeLoading());
     }
@@ -24,12 +24,11 @@ function* watchGetStatisticDataApmPkg(action) {
     try {
         yield put(openLoading());
         const result = yield statisticService.getStatisticDataApmPkg(action);
-        console.log(result);
-        if (result.result) {
-            yield put(getStatisticDataApmPkgSuccessful(result.result));
+        if (result?.result) {
+            yield put(getStatisticDataApmPkgSuccessful(result?.result));
         }
     } catch (error) {
-        NotificationManager.error(error?.response?.data?.err ?? "Hệ thống quá tải", "Thông báo");
+        NotificationManager.error(error?.response?.data?.err ?? "Hệ thống quá tải hoặc mạng bị gián đoạn", "Thông báo");
     } finally {
         yield put(closeLoading());
     }

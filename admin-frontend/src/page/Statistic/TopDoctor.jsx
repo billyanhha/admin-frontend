@@ -8,11 +8,11 @@ import packageStatus from "../../config/package_status";
 import apmStatus from "../../config/appointment_status";
 
 import {Avatar, Button, Select, MenuItem} from "@material-ui/core";
-import {Person, AssignmentTurnedIn, AssignmentLate, Close, Timer, Today, Healing} from "@material-ui/icons";
-
-const scrollToRef = ref => window.scrollTo(0, ref?.current?.offsetTop);
+import {Person, AssignmentTurnedIn, AssignmentLate, Close, Timer, Today, Star} from "@material-ui/icons";
 
 const TopDoctor = () => {
+    const scrollToRef = ref => window.scrollTo(0, ref?.current?.offsetTop);
+
     const dispatch = useDispatch();
     const {isLoad} = useSelector(state => state.ui);
     const topDoctor = useSelector(state => state.statistic.topDoctor);
@@ -23,6 +23,7 @@ const TopDoctor = () => {
     const [type, setType] = useState(0);
     const [topNum, setTopNum] = useState(null);
     const [whichMonth, setWhichMonth] = useState(null);
+    const [whichYear, setWhichYear] = useState(2020);
     const [whichStatus, setWhichStatus] = useState(packageStatus.done);
 
     const statusOption = type => {
@@ -62,18 +63,18 @@ const TopDoctor = () => {
         return monthSelect;
     };
 
-    const getTopXDoctor = (top, when, statusID) => {
-        dispatch(getTopDoctor(top, when, statusID, type));
+    const getTopXDoctor = (top, month, year, statusID) => {
+        dispatch(getTopDoctor(top, month, year, statusID, type));
     };
 
     const handleStatusChange = statusID => {
         setWhichStatus(statusID);
-        getTopXDoctor(topNum, whichMonth, statusID);
+        getTopXDoctor(topNum, whichMonth, whichYear, statusID);
     };
 
     const handleMonthChange = event => {
         setWhichMonth(event.target.value === 0 ? null : event.target.value ?? null);
-        getTopXDoctor(topNum, event.target.value === 0 ? null : event.target.value ?? null, whichStatus);
+        getTopXDoctor(topNum, event.target.value === 0 ? null : event.target.value ?? null, whichYear, whichStatus);
     };
 
     const renderStatusOption = statusOption(type).map(values => (
@@ -99,25 +100,30 @@ const TopDoctor = () => {
 
     useEffect(() => {
         if (type === 0) {
-            getTopXDoctor(topNum, whichMonth, packageStatus.done);
+            getTopXDoctor(topNum, whichMonth, whichYear, packageStatus.done);
             setWhichStatus(packageStatus.done);
         } else {
-            getTopXDoctor(topNum, whichMonth, apmStatus.done);
+            getTopXDoctor(topNum, whichMonth, whichYear, apmStatus.done);
             setWhichStatus(apmStatus.done);
         }
     }, [type]);
 
-    useEffect(() => {
-        scrollToRef(myRef);
-    }, [topDoctor]);
+    // useEffect(() => {
+    //     scrollToRef(myRef);
+    // }, [topDoctor]);
 
     useEffect(() => {
-        getTopXDoctor(topNum, whichMonth, packageStatus.done);
+        if (!isLoad) scrollToRef(myRef);
+    }, [isLoad]);
+
+    useEffect(() => {
+        getTopXDoctor(topNum, whichMonth, whichYear, packageStatus.done);
     }, []);
 
     if (topDoctor)
         return (
             <div>
+                <div className="statistic-name">Thống kê Bác sĩ</div>
                 <div className="statistic-type" ref={myRef}>
                     <div className={type === 0 ? "statistic-type-active" : ""} onClick={() => setType(0)}>
                         {statisticType[0]}
@@ -140,11 +146,12 @@ const TopDoctor = () => {
                                       ?.status.toUpperCase()}
                         </span>
                     </div>
-                    <div>
+                    <div className="statistic-filter-right-part">
                         <div className="statistic-filter-name">Lọc theo thời gian</div>
                         <Select defaultValue={0} onChange={handleMonthChange} style={{width: "100px"}}>
                             {renderMonth}
                         </Select>
+                        ­ Năm 2020
                     </div>
                 </div>
                 <MaterialTable
@@ -222,9 +229,13 @@ const columns = [
     },
     {
         title: "Đánh giá trung bình",
-        field: "star",
-        searchable: false,
-        sorting: false
+        field: "average_rating",
+        render: rowData => (
+            <div>
+                <Star style={{color: "#fadb14", fontSize: "20px"}} /> ­ {rowData.average_rating ? rowData.average_rating + " / 5" : ""}
+            </div>
+        ),
+        searchable: false
     }
 ];
 
