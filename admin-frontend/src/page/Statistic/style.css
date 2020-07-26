@@ -41,7 +41,7 @@
 
 .statistic-type {
     display: flex;
-    margin-top: 40px;
+    margin: 40px 0;
     font-size: 1rem;
     border-bottom: 1px solid #f0f0f0;
 }
@@ -60,6 +60,7 @@
 
 .statistic-type-active {
     border-bottom: 2px solid #218db4 !important;
+    color: #218db4;
 }
 
 .statistic-image-wrapper {
@@ -92,19 +93,34 @@
     margin-top: 10px;
 }
 
+.statistic-time-filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.statistic-filter-right-part {
+    text-align: right;
+}
+
+.statistic-filter-left-part {
+    text-align: left;
+}
+
 .statistic-filter-name {
     margin-top: 20px;
+    margin-bottom: 5px;
     color: #999999;
 }
 
-.statistic-time-filter {
-    text-align: right;
+.statistic-filter-name span {
+    color: #000;
 }
 
 .statistic-button-wrapper {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 10px;
 }
 
 .statistic-button-wrapper Button {
@@ -123,7 +139,7 @@
     color: #fff !important;
     background-color: #1fc8db !important;
     /* background: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%); */
-    background: linear-gradient(to right, #72d8e4 35%, #1fc8db 40%, #2cb5e8 75%);
+    background: linear-gradient(to right, #72d8e4 35%, #1fc8db 50%, #2cb5e8 75%);
     background-size: 300% 300%;
     animation: processing 2.5s ease infinite;
 }
@@ -137,6 +153,47 @@
     color: #3f51b5;
     font-size: 1.5rem;
     text-align: center;
+}
+
+.statistic-view-each-status {
+    margin-bottom: 20px;
+}
+
+.chart-wrapper {
+    min-height: 380px;
+}
+
+.chart-switch-type {
+    font-weight: bold !important;
+    background-color: #fff !important;
+    color: #218db4 !important;
+}
+
+.statistic-switch-button {
+    width: 60px;
+    height: 40px;
+    border: 0.5px solid #cccccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #218db4;
+    cursor: pointer;
+    outline: none;
+    transition: 0.2s ease-in;
+}
+
+.statistic-switch-button:hover {
+    box-shadow: 0 0 5px 3px #f0f0f0;
+}
+
+.chart-switch-actived {
+    border: 0.5px solid #f0f0f0;
+    background-color: #f0f0f0 !important;
+    cursor: default;
+    pointer-events: none;
+}
+
+.chart-hidden {
+    display: none;
 }
 
 @keyframes processing {
