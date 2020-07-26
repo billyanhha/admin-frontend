@@ -194,7 +194,8 @@ const ChartApmPkg = () => {
             fontSize: "16px",
             zoom: {
                 enabled: false
-            }
+            },
+            offsetX: viewOption === 0 ? 0 : 5
         },
         noData: {
             text: "Không có dữ liệu",
