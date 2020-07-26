@@ -232,7 +232,7 @@ const ChartApmPkg = () => {
                     fontSize: "14px"
                 },
                 formatter: value => {
-                    return ~~value;     //☢ Caution: ❝  ~~ : This thing will cut out all number after "," without rounding!❞
+                    return ~~value; //☢ Caution: ❝  ~~ : This thing will cut out all number after "," without rounding!❞
                 }
             },
             title: {
@@ -305,8 +305,7 @@ const ChartApmPkg = () => {
 
     useEffect(() => {
         if (viewOption === 0) {
-            getChartData(null, whichYear, null, type);
-            setWhichMonth(null);
+            getChartData(whichMonth, whichYear, null, type);
             setWhichStatus(null);
         } else {
             getChartData(null, whichYear, type === 0 ? packageStatus.done : apmStatus.done, type);
