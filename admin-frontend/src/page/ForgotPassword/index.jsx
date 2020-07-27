@@ -1,9 +1,8 @@
-import React, {useState, useEffect} from "react";
+import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Link, useHistory, withRouter, Redirect} from "react-router-dom";
 import {useForm, Controller} from "react-hook-form";
 import {ErrorMessage} from "@hookform/error-message";
-// import queryString from "query-string";
 
 import {CircularProgress, Button, TextField} from "@material-ui/core";
 
@@ -41,10 +40,7 @@ const ForgotPassword = props => {
     }, [resetPasswordStatus]);
 
     useEffect(() => {
-        console.log("expiredStatus ", expiredStatus);
-    }, [expiredStatus]);
 
-    useEffect(() => {
         if (tokenUser) {
             history.push("/");
         } else {
