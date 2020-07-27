@@ -195,7 +195,7 @@ const ChartApmPkg = () => {
             zoom: {
                 enabled: false
             },
-            offsetX: viewOption === 0 ? 0 : 5
+            offsetX: switchChartType === 0 ? 0 : 5
         },
         noData: {
             text: "Không có dữ liệu",
