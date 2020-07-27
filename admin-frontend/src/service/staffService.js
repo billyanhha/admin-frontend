@@ -44,7 +44,7 @@ staffService.sendMailReset = (data) =>
 
 staffService.sendPasswordReset = (token, data) =>
     new Promise((resolve, reject) => {
-        const api = `/api/auth/doctor/account/reset-password/${token}`;
+        const api = `/api/auth/staff/account/reset-password/${token}`;
         axios
             .put(api, data)
             .then(result => {

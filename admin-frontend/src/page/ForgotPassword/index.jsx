@@ -121,7 +121,7 @@ const ForgotPassword = props => {
                                         className="forgot-button"
                                         variant="outlined"
                                         color="inherit"
-                                        onClick={() => <Redirect to="/login" />}
+                                        onClick={() => history.push("/login")}
                                     >
                                         Đến trang đăng nhập
                                     </Button>
