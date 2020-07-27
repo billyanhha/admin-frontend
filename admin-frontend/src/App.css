@@ -13,6 +13,6 @@ html {
 }
 
 .error-text {
-    color: red;
+    color: red !important;
     transition: all 0.5s ease-in-out;
 }
