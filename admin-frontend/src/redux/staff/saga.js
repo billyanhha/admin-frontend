@@ -56,7 +56,6 @@ function* watchSendPasswordReset(action) {
     try {
         yield put(openLoading());
         const result = yield staffService.sendPasswordReset(action.token, action.data);
-        console.log(result);
         if (result) {
             yield put(sendPasswordResetSuccessful());
             NotificationManager.success("Đặt lại mật khẩu thành công!", "", 3000);
@@ -71,13 +70,11 @@ function* watchCheckEmailExpired(action) {
     try {
         yield put(openLoading());
         const result = yield staffService.checkEmailExpired(action.token);
-        console.log(result);
         if (result) {
             yield put(checkEmailExpiredSuccessful(true));
         }
     } catch (error) {
         yield put(checkEmailExpiredSuccessful(false));
-        console.log(error?.response?.data?.err)
         // NotificationManager.error(error?.response?.data?.err ?? "Hệ thống quá tải", "Thông báo");
         NotificationManager.error("Email xác nhận đã hết hạn, Xin hãy gửi lại yêu cầu!", "Thông báo", 5000);
     } finally {
