@@ -1,263 +1,209 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
-import { useForm, Controller, ErrorMessage } from "react-hook-form";
-import { forgotPasswordSendPhone, forgotPasswordSendOTP, forgotPasswordSetStep, forgotPasswordCancel, resetPassword } from '../../redux/auth';
-import InputMask from 'react-input-mask';
-import Countdown from 'react-countdown';
+import React, {useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {Link, useHistory, withRouter, Redirect} from "react-router-dom";
+import {useForm, Controller} from "react-hook-form";
+import {ErrorMessage} from "@hookform/error-message";
+
+import {CircularProgress, Button, TextField} from "@material-ui/core";
+
+import {sendMailReset, sendPasswordReset, checkEmailExpired} from "../../redux/staff";
 
 import "./style.css";
 
-const ForgotPassword = () => {
-    const dispatch = useDispatch();
+const ForgotPassword = props => {
+    const {isLoad} = useSelector(state => state.ui);
+    const sendMailStatus = useSelector(state => state.staff.sendMailStatus);
+    const resetPasswordStatus = useSelector(state => state.staff.resetPassStatus);
+    const expiredStatus = useSelector(state => state.staff.expiredStatus);
+    const tokenUser = useSelector(state => state.auth.token);
+
+    const tokenMail = props.match.params?.token === "privacy" ? null : props.match.params?.token;
+
     const history = useHistory();
-    const { register, handleSubmit, watch, errors, control } = useForm({ validateCriteriaMode: "all" });
-    const { isLoad } = useSelector(state => state.ui);
-    const currentStep = useSelector(state => state.auth.stepRecoverPassword);
-    const isSuccessful = useSelector(state => state.auth.isResetPasswordSuccess);
-    const otpID = useSelector(state => state.auth.otpID);
+    const dispatch = useDispatch();
+    const {register, handleSubmit, watch, errors, control} = useForm({validateCriteriaMode: "all"});
 
-    const password = useRef({});
-    password.current = watch("password", "");
-    const [countTime, setCountTime] = useState(0);
-    const [startCountdown, setStartCountdown] = useState(false);
-
-    const handleRequestOTP = (data) => {
-        dispatch(forgotPasswordSendPhone(data.phone.replace(/\s+/g, '').substring(1)));
-        setCountTime(Date.now())
-        setStartCountdown(true)
-    }
-
-    const handleVerifyOTP = (data) => {
-        if (otpID != '') {
-            dispatch(forgotPasswordSendOTP(otpID, data.otp));
-            setStartCountdown(false)
-            setCountTime(0)
-        }
-    }
-
-    const handleResetPassword = (data) => {
-        if (otpID != '')
-            dispatch(resetPassword(otpID, data.password, data.password_repeat));
-    }
-
-    const cancelRequest = () => {
-        if (otpID != '') {
-            dispatch(forgotPasswordCancel(otpID));
-            setStartCountdown(false)
-            setCountTime(0)
-        }
-    }
-
-    const renderer = ({ minutes, seconds, completed }) => {
-        if (completed) {
-            return <button style={{ display: "none" }} onClick={cancelRequest()}></button>;
-        } else {
-            return (
-                <span>
-                    OTP gửi đến SĐT của bạn sẽ hết hạn trong {minutes * 60 + seconds} giây
-                </span>
-            );
-        }
+    const handleSendEmail = data => {
+        let request = {role: "staff", recipient: data.email};
+        dispatch(sendMailReset(request));
     };
 
-    const renderer2 = ({ seconds, completed }) => {
-        if (completed) {
-            return <button className="register-back-button" onClick={() => cancelRequest()}>🢤 Huỷ yêu cầu</button>;
-        } else {
-            return (
-                <button className="register-back-button-disabled" disabled>Sau {seconds} giây có thể huỷ yêu cầu</button>
-            );
-        }
+    const handleResetPassword = data => {
+        let request = {new_password: data.password, confirm_password: data.password_repeat};
+        dispatch(sendPasswordReset(tokenMail, request));
     };
 
-    const redirectToLogin = () => {
-        if (isSuccessful) {
+    useEffect(() => {
+        if (resetPasswordStatus) {
             history.push("/login");
-            dispatch(forgotPasswordSetStep(0));
+        }
+    }, [resetPasswordStatus]);
+
+    useEffect(() => {
+
+        if (tokenUser) {
+            history.push("/");
+        } else {
+            if (tokenMail) dispatch(checkEmailExpired(tokenMail));
+        }
+    }, []);
+
+    if (tokenMail) {
+        if (expiredStatus === false) {
+            return <Redirect to="/forgot-password/privacy" />;
+        } else if (expiredStatus === null) {
+            return "";
         }
     }
 
-    const steps = [
-        {
-            title: 'Nhập SĐT',
-            content:
+    return (
+        <div className="forgot-password-page">
+            <div className="forgot-password-wrapper">
                 <div>
-                    <form onSubmit={handleSubmit(handleRequestOTP)}>
-                        <div className="recovery-form-field">
-                            <p className="register-form-label">Số điện thoại</p>
-                            <Controller
-                                as={InputMask}
-                                className="register-form-input"
-                                name="phone"
-                                control={control}
-                                mask="+84 999 999 999"
-                                placeholder="+84 912 345 678"
-                                autoComplete="off"
-                                autoFocus
-                                maskChar={null}
-                                rules={{ required: "Bạn hãy điền số điện thoại " }}
-                            />
-                            <ErrorMessage errors={errors} name="phone">
-                                {({ messages }) =>
-                                    messages &&
-                                    Object.entries(messages).map(([type, message]) => (
-                                        <span className="error-text" key={type}>{message}</span>
-                                    ))
-                                }
-                            </ErrorMessage>
-                        </div>
-                        <div className="recovery-form-submit">
-                            <button disabled={isLoad} className="recovery-button" type="submit">{isLoad ? <LoadingOutlined /> : ""} Gửi mã xác nhận</button>
-                        </div>
-                    </form>
+                    <div className="forgot-password-img">
+                        <img src="https://img.icons8.com/nolan/100/forgot-password.png" />
+                    </div>
+                    <div className="forgot-password-title"> {!sendMailStatus ? "Đặt lại mật khẩu" : "Đã gửi Email xác nhận"}</div>
 
-                    <div className="recovery-form-field register-div-login-suggest">
-                        <span>Quay về trang <Link to="/login">Đăng nhập</Link> </span>
-                    </div>
-                </div>
-        },
-        {
-            title: 'Xác thực OTP',
-            content:
-                <div>
-                    <div className="OTP-status">
-                        {startCountdown && (<Countdown date={countTime + 120000} renderer={renderer} />)}
-                    </div>
-                    <div>
-                        <form onSubmit={handleSubmit(handleVerifyOTP)}>
-                            <div className="recovery-form-field">
-                                <p className="register-form-label">Mã OTP</p>
-                                <input type="number" className="register-form-input" name="otp" autoComplete="off" autoFocus
+                    {!tokenMail ? (
+                        <div>
+                            {!sendMailStatus ? (
+                                <div>
+                                    <form onSubmit={handleSubmit(handleSendEmail)}>
+                                        <div className="forgot-form-field">
+                                            <Controller
+                                                as={TextField}
+                                                variant="outlined"
+                                                margin="normal"
+                                                required
+                                                fullWidth
+                                                label="Email"
+                                                name="email"
+                                                type="email"
+                                                autoFocus
+                                                control={control}
+                                                defaultValue=""
+                                                ref={register({
+                                                    required: "Bạn hãy nhập Email "
+                                                })}
+                                            />
+                                            <ErrorMessage errors={errors} name="email">
+                                                {({messages}) =>
+                                                    messages &&
+                                                    Object.entries(messages).map(([type, message]) => (
+                                                        <span className="error-text" key={type}>
+                                                            {message}
+                                                        </span>
+                                                    ))
+                                                }
+                                            </ErrorMessage>
+                                        </div>
+                                        <div className="forgot-form-submit">
+                                            <Button disabled={isLoad} className="forgot-button" variant="outlined" color="inherit" type="submit">
+                                                {isLoad ? <CircularProgress size={20} /> : ""} ­ Gửi yêu cầu
+                                            </Button>
+                                        </div>
+                                    </form>
+                                    <div className="link-to-login">
+                                        <Link to="/login">Đến trang đăng nhập</Link>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div>
+                                    <div className="forgot-msg">
+                                        Email sẽ hết hạn trong <span>3 phút!</span>
+                                        <br />
+                                        <br />
+                                        Xin kiểm tra mục Thư rác (SPAM) hoặc Quảng cáo nếu bạn không thấy Email gửi đến sau 30 giây.
+                                    </div>
+                                    <Button
+                                        disabled={isLoad}
+                                        className="forgot-button"
+                                        variant="outlined"
+                                        color="inherit"
+                                        onClick={() => history.push("/login")}
+                                    >
+                                        Đến trang đăng nhập
+                                    </Button>
+                                </div>
+                            )}
+                        </div>
+                    ) : (
+                        <form onSubmit={handleSubmit(handleResetPassword)}>
+                            <div className="forgot-form-field">
+                                <Controller
+                                    as={TextField}
+                                    variant="outlined"
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    name="password"
+                                    label="Mật khẩu mới"
+                                    type="password"
+                                    defaultValue=""
+                                    control={control}
                                     ref={register({
-                                        required: "Bạn hãy điền OTP ",
+                                        required: "Bạn hãy nhập mật khẩu ",
                                         minLength: {
-                                            value: 4,
-                                            message: "OTP phải có ít nhất 4 chữ số "
-                                        }, maxLength: {
-                                            value: 4,
-                                            message: "OTP nhiều nhất là 4 chữ số "
+                                            value: 6,
+                                            message: "Mật khẩu phải có ít nhất 6 kí tự "
+                                        },
+                                        maxLength: {
+                                            value: 14,
+                                            message: "Mật khẩu nhiều nhất là 14 kí tự "
                                         }
                                     })}
                                 />
-                                <ErrorMessage errors={errors} name="otp">
-                                    {({ messages }) =>
+                                <ErrorMessage errors={errors} name="password">
+                                    {({messages}) =>
                                         messages &&
                                         Object.entries(messages).map(([type, message]) => (
-                                            <span className="error-text" key={type}>{message}</span>
+                                            <span className="error-text" key={type}>
+                                                {message}
+                                            </span>
+                                        ))
+                                    }
+                                </ErrorMessage>
+
+                                <Controller
+                                    as={TextField}
+                                    variant="outlined"
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    name="password_repeat"
+                                    label="Xác nhận mật khẩu"
+                                    type="password"
+                                    defaultValue=""
+                                    control={control}
+                                    rules={{validate: value => value === watch("password", "") || "Mật khẩu không khớp "}}
+                                />
+                                <ErrorMessage errors={errors} name="password_repeat">
+                                    {({messages}) =>
+                                        messages &&
+                                        Object.entries(messages).map(([type, message]) => (
+                                            <span className="error-text" key={type}>
+                                                {message}
+                                            </span>
                                         ))
                                     }
                                 </ErrorMessage>
                             </div>
-                            <div className="recovery-form-submit">
-                                <button disabled={isLoad} className="recovery-button" type="submit">{isLoad ? <LoadingOutlined /> : ""} Xác nhận</button>
+                            <div className="forgot-form-submit">
+                                <Button disabled={isLoad} className="forgot-button" variant="outlined" color="inherit" type="submit">
+                                    {isLoad ? <CircularProgress size={20} /> : ""} Đặt lại mật khẩu
+                                </Button>
+                            </div>
+
+                            <div className="link-to-login">
+                                <Link to="/login">Đến trang đăng nhập</Link>
                             </div>
                         </form>
-
-                        <div className="recovery-form-field">
-                            {currentStep > 0 &&
-                                startCountdown && (<Countdown date={countTime + 30000} renderer={renderer2} />)
-                            }
-                        </div>
-                    </div>
+                    )}
                 </div>
-        },
-        {
-            title: 'Đặt mật khẩu mới',
-            content:
-                <div>
-                    <form onSubmit={handleSubmit(handleResetPassword)}>
-                        <div className="recovery-form-field">
-                            <p className="register-form-label">Mật khẩu mới</p>
-                            <input type="password" className="register-form-input" name="password" autoFocus
-                                ref={register({
-                                    required: "Bạn hãy điền mật khẩu ",
-                                    minLength: {
-                                        value: 6,
-                                        message: "Mật khẩu phải có ít nhất 6 kí tự "
-                                    }, maxLength: {
-                                        value: 14,
-                                        message: "Mật khẩu nhiều nhất là 14 kí tự "
-                                    }
-                                })}
-                            />
-                            <ErrorMessage errors={errors} name="password">
-                                {({ messages }) =>
-                                    messages &&
-                                    Object.entries(messages).map(([type, message]) => (
-                                        <span className="error-text" key={type}>{message}</span>
-                                    ))
-                                }
-                            </ErrorMessage>
-                            <p className="register-form-label">Nhập lại mật khẩu</p>
-                            <input
-                                name="password_repeat"
-                                className="register-form-input"
-                                type="password"
-                                ref={register({
-                                    // required: "Bạn hãy điền mật khẩu ",
-                                    validate: value =>
-                                        value === password.current || "Mật khẩu không khớp "
-                                })}
-                            />
-                            <ErrorMessage errors={errors} name="password_repeat">
-                                {({ messages }) =>
-                                    messages &&
-                                    Object.entries(messages).map(([type, message]) => (
-                                        <span className="error-text" key={type}>{message}</span>
-                                    ))
-                                }
-                            </ErrorMessage>
-                        </div>
-                        <div className="recovery-form-submit">
-                            <button disabled={isLoad} className={`recovery-button ${!isLoad ? "" : "recovery-button-disabled"}`} type="submit">{isLoad ? <LoadingOutlined /> : ""} Gửi mã xác nhận</button>
-                        </div>
-                        <div className="recovery-form-field"></div>
-                    </form>
-                </div>
-        }
-    ];
+            </div>
+        </div>
+    );
+};
 
-    useEffect(() => {
-        if (isSuccessful)
-            dispatch(forgotPasswordSetStep(0));
-        if (currentStep === 1 && otpID != '')
-            dispatch(forgotPasswordSetStep(0));
-    }, []);
-
-    return (
-        <div className="recovery">
-            <Spin size="large" spinning={isLoad}  >
-                <Navbar />
-                <div className="recovery-wrapper">
-                    {isSuccessful ?
-                        <div className="recovery-form">
-                            <Result
-                                status="success"
-                                title="Đặt lại mật khẩu thành công!"
-                                subTitle={'Bạn có thể dùng mật khẩu mới để đăng nhập.'}
-                                extra={[
-                                    <button className="recovery-button-done" onClick={() => redirectToLogin()}>Đăng nhập</button>
-                                ]}
-                            />
-                        </div> :
-                        <div className="recovery-form">
-                            <h2>Đặt lại mật khẩu</h2>
-                            <div>Xác thực SĐT và nhập mật khẩu mới</div>
-                            <div className="recovery-form-custom">
-                                <Steps size="small" current={currentStep}>
-                                    {steps.map(item => (
-                                        <Step key={item.title} title={item.title} />
-                                    ))}
-                                </Steps>
-                                <div className="steps-content">{steps[currentStep]?.content}</div>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </Spin>
-        </div >
-    )
-}
-
-export default ForgotPassword;
+export default withRouter(ForgotPassword);

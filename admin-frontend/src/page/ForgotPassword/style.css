@@ -1,180 +1,106 @@
-.recovery {
-    background: url('../../assest/image/404-Background.png') center;
-    background-size: cover;
-    min-height: 100vh;
-    width: 100vw;
-    max-width: 100vw;
-}
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap");
 
-.OTP-status {
-    margin-top: 30px;
-}
-
-.recovery-wrapper {
+.forgot-password-page {
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    width: 100%;
-    min-height: 85vh;
-}
+    align-items: center;
+    height: 90vh;
 
-.recovery-form {
-    width: 40%;
-    margin: 0 auto;
-    padding: 40px 60px 0 60px;
-    background-color: #FFF;
-    border-radius: 20px;
-    box-shadow: 0 0 8px 0.5px #eeeeee;
-}
-
-.recovery-form h2 {
+    font-family: "Open Sans", sans-serif;
     font-weight: 600;
-    font-size: 2rem;
 }
 
-.recovery-form-custom {
-    margin-top: 20px;
+.forgot-password-wrapper {
+    width: 20vw;
+    margin-top: -10vh;
 }
 
-.recovery-form-field {
-    margin: 40px 0px;
-}
-
-.recovery-form-submit {
+.forgot-password-wrapper div {
     text-align: center;
 }
 
-.recovery-button {
-    padding: 10px 0px;
-    width: 200px;
-    color: #FFF;
-    font-weight: bold;
-    background-color: #00BC9A;
-    border: 1px solid transparent;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.1s ease-in;
-    outline: none;
+.forgot-password-img img {
+    height: 100px;
+    width: 100px;
 }
 
-.recovery-button-disabled{
-    cursor: default;
-    pointer-events: none;
-    opacity: 0.5;
+.forgot-password-title {
+    margin-bottom: 40px;
+    font-size: 2rem;
 }
 
-.recovery-button:hover {
-    background-color: #FFF;
-    border: 1px solid #00BC9A;
-    color: #00BC9A;
-}
-
-.recovery-button-done {
+.forgot-form-submit {
     margin-top: 20px;
-    padding: 5px 0px;
-    width: 120px;
-    background-color: #FFF;
-    border: 1px solid #00BC9A;
-    border-radius: 10px;
-    font-weight: bold;
-    color: #00BC9A;
-    cursor: pointer;
-    transition: all 0.1s ease-in;
-    outline: none;
 }
 
-.recovery-button-done:hover {
-    background-color: #00BC9A;
-    border: 1px solid #FFF;
-    color: #FFF;
+.forgot-button {
+    font-weight: bold !important;
+    background-color: #fff !important;
+    color: #218db4 !important;
 }
 
-.ant-steps-item-process .ant-steps-item-icon {
-    background: #00BC9A !important;
-    border-color: #00BC9A !important;
+.forgot-button:hover {
+    background-color: #dff7ff !important;
 }
 
-.ant-steps-item-finish .ant-steps-item-icon {
-    border-color: #00BC9A !important;
+.link-to-login {
+    margin-top: 40px;
+    font-size: 1rem;
+    text-align: left !important;
 }
 
-.ant-steps-finish-icon {
-    color: #00BC9A !important;
+.link-to-login * {
+    color: #218db4;
 }
 
-.ant-steps-item-finish .ant-steps-item-container .ant-steps-item-content .ant-steps-item-title::after {
-    background-color: #00BC9A !important;
+.forgot-msg {
+    margin: 40px 0;
 }
 
-.ant-result-success .ant-result-icon .anticon {
-    color: #00bc6e !important;
+.forgot-msg span {
+    color: #40a9ff;
 }
 
 @media screen and (max-width: 1600px) {
-    .recovery-form {
-        width: 50%;
+    .forgot-password-wrapper {
+        width: 40vw;
     }
 }
 
 /* HD monitor & older TV, Wacom */
 @media screen and (max-width: 1366px) {
-    .recovery-form {
-        width: 60%;
-    }
 }
 
 /* Ipad Pro, Tablet, Wacom, Monitor */
-@media screen and (max-width: 1280px) {}
+@media screen and (max-width: 1280px) {
+}
 
 /* Ipad Pro, Tablet, Phone */
 @media screen and (max-width: 1024px) {
-    .recovery {
-        background: url('../../assest/image/404-Background.png') left repeat-y;
-        background-size: cover;
-    }
-
-    .recovery-form {
-        width: 70%;
-    }
 }
 
 /* Ipad */
 @media screen and (max-width: 800px) {
-    .recovery-form {
-        width: 80%;
+    .forgot-password-title {
+        font-size: 1.5rem;
+    }
+
+    .forgot-password-wrapper {
+        width: 60vw;
+    }
+
+    .forgot-msg {
+        font-size: 0.8rem;
     }
 }
 
-/* Iphone */
+/* Phone */
 @media screen and (max-width: 600px) {
-    .recovery {
-        background: none;
-    }
-
-    .recovery-form h2 {
-        font-size: 1.8rem;
-    }
-
-    .recovery-form {
-        padding: 10% 30px;
-        width: 100%;
-        box-shadow: none;
+    .forgot-password-wrapper {
+        width: 90vw;
     }
 }
 
 /* Smaller phone */
 @media screen and (max-width: 320px) {
-    .recovery-form {
-        padding: 8% 30px;
-        width: 100%;
-        box-shadow: none;
-    }
-
-    .recovery-form h2 {
-        font-size: 1.5rem;
-    }
-
-    .register-div-login-suggest {
-        margin: 10px 0;
-    }
 }

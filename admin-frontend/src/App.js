@@ -17,6 +17,7 @@ import Service from "./page/Service";
 import Statistic from "./page/Statistic";
 import Customer from "./page/Customer";
 import Form from "./page/Form";
+import ForgotPassword from "./page/ForgotPassword";
 
 const App = () => {
     return (
@@ -24,13 +25,14 @@ const App = () => {
             <LoadingBar showFastActions className="loading-bar" />
             <Switch>
                 <Route exact path="/login" render={props => <SystemLogin {...props} />} />
+                <Route exact path="/forgot-password/:token" render={props => <ForgotPassword {...props} />} />
                 <PrivateRoute exact path="/">
                     <Home />
                 </PrivateRoute>
                 <PrivateRoute exact path="/customer">
                     <Customer />
                 </PrivateRoute>
-                
+
                 <PrivateRoute exact path="/package/:id">
                     <PackageDetail />
                 </PrivateRoute>

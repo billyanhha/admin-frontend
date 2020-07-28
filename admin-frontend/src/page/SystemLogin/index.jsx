@@ -105,7 +105,7 @@ const SystemLogin = () => {
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link href="#" variant="body2">
+                            <Link href="/forgot-password/privacy" variant="body2">
                                 Quên mật khẩu?
                             </Link>
                         </Grid>
