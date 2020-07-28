@@ -100,8 +100,8 @@ const MenuAppBar = (props) => {
                         open={open}
                         onClose={handleClose}
                     >
-                        <MenuItem onClick={() => redirectToProfile()}>Profile</MenuItem>
-                        <MenuItem onClick={() => redirectToAccountPage()}>My account</MenuItem>
+                        <MenuItem onClick={() => redirectToProfile()}>Thông tin cá nhân</MenuItem>
+                        <MenuItem onClick={() => redirectToAccountPage()}>Cài đặt</MenuItem>
                         <MenuItem onClick={logout}>Đăng xuất</MenuItem>
                     </Menu>
                 </div>
