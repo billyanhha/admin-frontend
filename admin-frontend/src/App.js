@@ -45,9 +45,9 @@ const App = () => {
                 <AdminOnlyRoute exact path="/staff">
                     <Staff />
                 </AdminOnlyRoute>
-                <AdminOnlyRoute exact path="/service">
+                <PrivateRoute exact path="/service">
                     <Service />
-                </AdminOnlyRoute>
+                </PrivateRoute>
                 <PrivateRoute exact path="/statistic">
                     <Statistic />
                 </PrivateRoute>
