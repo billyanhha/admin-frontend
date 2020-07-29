@@ -29,8 +29,8 @@ const columns = [
     {
         title: 'Tên', field: 'fullname', render: rowData => (
             <div className="staff-auth">
-                <Avatar style={{ width: '80px', height: '80px' }} alt={rowData.fullname} src={rowData.avatarurl} />
-                <h4>
+                <Avatar style={{ width: '80px', height: '80px', marginRight: '10px' }} alt={rowData.fullname} src={rowData.avatarurl} />
+                <h4 style={{marginRight: 'auto'}}>
                     {rowData.fullname}
                 </h4>
             </div>
