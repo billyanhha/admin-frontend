@@ -3,45 +3,50 @@ import React from "react";
 import RecentActorsIcon from "@material-ui/icons/RecentActors";
 import AllInboxIcon from "@material-ui/icons/AllInbox";
 import RoomServiceIcon from "@material-ui/icons/RoomService";
-import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
-import {BarChart} from "@material-ui/icons";
+import {BarChart,Person, PeopleOutline} from "@material-ui/icons";
 
 const route = {
     "/": {
         label: "Quản lý gói",
         icon: <AllInboxIcon />,
-        visible: true,
+        visible: true
     },
     "/package/:id": {
         label: "Quản lý gói",
-        icon: <AllInboxIcon />,
+        icon: <AllInboxIcon />
     },
     "/customer": {
         label: "Quản lý người dùng",
-        icon: <PeopleAltIcon />,
-        visible: true,
+        icon: <Person />,
+        visible: true
     },
     "/staff": {
         label: "Quản lý nhân viên",
         icon: <RecentActorsIcon />,
         visible: true,
-        role: "admin",
+        role: "admin"
+    },
+    "/doctor": {
+        label: "Quản lý bác sĩ",
+        icon: <PeopleOutline />,
+        visible: true,
+        role: "admin"
     },
     "/service": {
         label: "Quản lý dịch vụ",
         icon: <RoomServiceIcon />,
-        visible: true,
+        visible: true
     },
     "/form": {
         label: "Quản lý văn bản",
         icon: <ImportContactsIcon />,
-        visible: true,
+        visible: true
     },
     "/statistic": {
         label: "Thống kê",
         icon: <BarChart />,
-        visible: true,
-    },
+        visible: true
+    }
 };
 
 export default route;

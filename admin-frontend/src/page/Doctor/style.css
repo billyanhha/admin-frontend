@@ -1,0 +1,100 @@
+.doctor-loading {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    height: 90vh;
+}
+
+.doctor-form-input {
+    font-size: 1rem;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #555555;
+    padding: 5px 0;
+    transition: all 0.2s ease-in-out;
+    outline: none;
+}
+
+.doctor-form-input::placeholder {
+    color: #dadada;
+}
+
+.doctor-form-input:focus {
+    border: none;
+    border-radius: 0;
+    border-bottom: 2px solid #3f51b5;
+    caret-color: #3f51b5;
+    outline: none;
+}
+
+.doctor-form-label {
+    font-size: 12px;
+    color: #0000008a;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.doctor-create-session {
+    margin: 40px 0;
+}
+
+.doctor-create-title {
+    font-size: 1rem;
+    font-weight: bold;
+    padding-top: 10px;
+    border-top: 0.5px solid #eeeeee;
+}
+
+.doctor-table-action {
+    min-width: 200px;
+}
+
+.doctor-table-action button {
+    width: 100%;
+    margin: 5px 0;
+}
+.doctor-table-action .doctor-action-active {
+    color: #00bc9a !important;
+    background-color: #fff !important;
+}
+
+.doctor-info-basic {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: bold;
+    padding: 0;
+}
+
+.doctor-sex-session {
+    margin-top: 20px;
+    font-size: 12px;
+}
+
+.doctor-sex-session select {
+    display: block;
+    margin: 5px 0;
+}
+
+.doctor-sex-session span {
+    font-size: 1rem;
+}
+
+.doctor-submit-session {
+    margin: 20px 30%;
+    margin-bottom: 0;
+}
+
+.doctor-form-disable-edit form{
+    pointer-events: none;
+}
+
+.doctor-edit-button {
+    padding: 0 5px 10px 15px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}

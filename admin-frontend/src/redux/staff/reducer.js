@@ -4,7 +4,10 @@ import {
     CHANGE_PASSWORD_SUCCESSFUL,
     FORGOT_PASSWORD_SEND_MAIL_SUCCESSFUL,
     FORGOT_PASSWORD_SEND_PASSWORD_SUCCESSFUL,
-    CHECK_EMAIL_EXPIRED_SUCCESSFUL
+    CHECK_EMAIL_EXPIRED_SUCCESSFUL,
+    GET_DOCTOR_SUCCESSFUL,
+    CREATE_DOCTOR_SUCCESSFUL,
+    UPDATE_DOCTOR_SUCCESSFUL
 } from "./action";
 
 import _ from "lodash";
@@ -14,6 +17,12 @@ const initialState = {
     sendMailStatus: false,
     resetPassStatus: false,
     expiredStatus: null
+};
+
+const doctorState = {
+    doctors: null,
+    status: false,
+    updateStatus: false,
 };
 
 export const staffReducer = (state = initialState, action) => {
@@ -45,5 +54,24 @@ export const staffReducer = (state = initialState, action) => {
         default: {
             return state;
         }
+    }
+};
+
+export const doctorReducer = (state = doctorState, action) => {
+    switch (action.type) {
+        case GET_DOCTOR_SUCCESSFUL: {
+            state = {...state, doctors: action?.result};
+            return state;
+        }
+        case CREATE_DOCTOR_SUCCESSFUL: {
+            state = {...state, status: action?.result};
+            return state;
+        }
+        case UPDATE_DOCTOR_SUCCESSFUL: {
+            state = {...state, updateStatus: action?.result};
+            return state;
+        }
+        default:
+            return state;
     }
 };
