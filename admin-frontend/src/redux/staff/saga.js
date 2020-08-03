@@ -1,4 +1,5 @@
 import {put, takeLatest, select} from "redux-saga/effects";
+import _ from "lodash";
 
 import {
     EDIT_PROFILE,
@@ -8,8 +9,14 @@ import {
     CHECK_EMAIL_EXPIRED,
     GET_DOCTOR,
     CREATE_DOCTOR,
-    UPDATE_DOCTOR
+    UPDATE_DOCTOR,
+    GET_DOCTOR_EXPERIENCE,
+    GET_DOCTOR_LANGUAGE,
+    GET_ALL_LANGUAGE,
+    UPDATE_DOCTOR_LANGUAGE,
+    UPDATE_DOCTOR_EXPERIENCE
 } from "./action";
+
 import {
     editStaffProfileSuccessful,
     changePasswordSuccessful,
@@ -18,8 +25,14 @@ import {
     checkEmailExpiredSuccessful,
     getAllDoctorSuccessful,
     createDoctorSuccessful,
-    updateDoctorSuccessful
+    updateDoctorSuccessful,
+    getDoctorExperienceSuccessful,
+    getDoctorLanguageSuccessful,
+    getAllLanguageSuccessful,
+    updateDoctorLanguageSuccessful,
+    updateDoctorExperienceSuccessful
 } from ".";
+
 import staffService from "../../service/staffService";
 
 import {NotificationManager} from "react-notifications";
@@ -140,7 +153,83 @@ function* watchUpdateDoctor(action) {
         const result = yield staffService.updateDoctor(token, action.data);
         if (result?.doctorUpdated) {
             yield put(updateDoctorSuccessful(true));
-            NotificationManager.success("Cập nhật thông tin thành công!", "", 3000);
+            NotificationManager.success("Cập nhật thông tin thành công!", "", 5000);
+        }
+    } catch (error) {
+        NotificationManager.error(error?.response?.data?.err ?? "Hệ thống quá tải", "Thông báo");
+    } finally {
+        yield put(closeLoading());
+    }
+}
+
+function* watchGetDoctorExperience(action) {
+    try {
+        yield put(openLoading());
+        const result = yield staffService.getDoctorExperience(action.id);
+        if (result?.doctorExperience) {
+            yield put(getDoctorExperienceSuccessful(result?.doctorExperience));
+        }
+    } catch (error) {
+        NotificationManager.error(error?.response?.data?.err ?? "Hệ thống quá tải", "Thông báo");
+    } finally {
+        yield put(closeLoading());
+    }
+}
+
+function* watchUpdateDoctorExperience(action) {
+    try {
+        yield put(openLoading());
+        const {token} = yield select(state => state.auth);
+        const result = yield staffService.updateDoctorExperience(token, action.id, action.data);
+        console.log(result);
+        // if (!_.isEmpty(result?.doctorLanguageCreated)) {
+        //     yield put(updateDoctorExperienceSuccessful(true));
+        //     NotificationManager.success("Thành công cập nhật kĩ năng ngôn ngữ!", "", 4000);
+        // }
+    } catch (error) {
+        NotificationManager.error(error?.response?.data?.err ?? "Hệ thống quá tải", "Thông báo");
+    } finally {
+        yield put(closeLoading());
+    }
+}
+
+function* watchGetDoctorLanguage(action) {
+    try {
+        yield put(openLoading());
+        const result = yield staffService.getDoctorLanguage(action.id);
+        if (result?.doctorLanguage) {
+            yield put(getDoctorLanguageSuccessful(result?.doctorLanguage));
+        }
+    } catch (error) {
+        NotificationManager.error(error?.response?.data?.err ?? "Hệ thống quá tải", "Thông báo");
+    } finally {
+        yield put(closeLoading());
+    }
+}
+
+function* watchUpdateDoctorLanguage(action) {
+    try {
+        yield put(openLoading());
+        const {token} = yield select(state => state.auth);
+        const result = yield staffService.updateDoctorLanguage(token, action.id, action.data);
+        if (!_.isEmpty(result?.doctorLanguageCreated)) {
+            yield put(updateDoctorLanguageSuccessful(true));
+            NotificationManager.success("Thành công cập nhật kĩ năng ngôn ngữ!", "", 4000);
+        }
+    } catch (error) {
+        NotificationManager.error(error?.response?.data?.err ?? "Hệ thống quá tải", "Thông báo");
+    } finally {
+        yield put(closeLoading());
+    }
+}
+
+function* watchGetAllLanguage(action) {
+    try {
+        yield put(openLoading());
+        const {token} = yield select(state => state.auth);
+        const result = yield staffService.getAllLanguage(token);
+        if (!_.isEmpty(result?.languages)) {
+            yield put(getAllLanguageSuccessful(result.languages));
         }
     } catch (error) {
         NotificationManager.error(error?.response?.data?.err ?? "Hệ thống quá tải", "Thông báo");
@@ -158,4 +247,9 @@ export function* staffSaga() {
     yield takeLatest(GET_DOCTOR, watchGetAllDoctor);
     yield takeLatest(CREATE_DOCTOR, watchCreateDoctor);
     yield takeLatest(UPDATE_DOCTOR, watchUpdateDoctor);
+    yield takeLatest(GET_DOCTOR_EXPERIENCE, watchGetDoctorExperience);
+    yield takeLatest(UPDATE_DOCTOR_EXPERIENCE, watchUpdateDoctorExperience);
+    yield takeLatest(GET_DOCTOR_LANGUAGE, watchGetDoctorLanguage);
+    yield takeLatest(UPDATE_DOCTOR_LANGUAGE, watchUpdateDoctorLanguage);
+    yield takeLatest(GET_ALL_LANGUAGE, watchGetAllLanguage);
 }

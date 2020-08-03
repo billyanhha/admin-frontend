@@ -15,7 +15,17 @@ import {
     CREATE_DOCTOR,
     CREATE_DOCTOR_SUCCESSFUL,
     UPDATE_DOCTOR,
-    UPDATE_DOCTOR_SUCCESSFUL
+    UPDATE_DOCTOR_SUCCESSFUL,
+    GET_DOCTOR_EXPERIENCE,
+    GET_DOCTOR_EXPERIENCE_SUCCESSFUL,
+    GET_DOCTOR_LANGUAGE,
+    GET_DOCTOR_LANGUAGE_SUCCESSFUL,
+    GET_ALL_LANGUAGE,
+    GET_ALL_LANGUAGE_SUCCESSFUL,
+    UPDATE_DOCTOR_LANGUAGE,
+    UPDATE_DOCTOR_LANGUAGE_SUCCESSFUL,
+    UPDATE_DOCTOR_EXPERIENCE,
+    UPDATE_DOCTOR_EXPERIENCE_SUCCESSFUL
 } from "./action";
 
 export const editStaffProfile = (token, id, data) => {
@@ -113,7 +123,7 @@ export const getAllDoctorSuccessful = result => {
     };
 };
 
-export const createDoctor = (data) => {
+export const createDoctor = data => {
     return {
         type: CREATE_DOCTOR,
         data
@@ -127,7 +137,7 @@ export const createDoctorSuccessful = result => {
     };
 };
 
-export const updateDoctor = (data) => {
+export const updateDoctor = data => {
     return {
         type: UPDATE_DOCTOR,
         data
@@ -137,6 +147,77 @@ export const updateDoctor = (data) => {
 export const updateDoctorSuccessful = result => {
     return {
         type: UPDATE_DOCTOR_SUCCESSFUL,
+        result
+    };
+};
+
+export const getDoctorExperience = id => {
+    return {
+        type: GET_DOCTOR_EXPERIENCE,
+        id
+    };
+};
+
+export const getDoctorExperienceSuccessful = result => {
+    return {
+        type: GET_DOCTOR_EXPERIENCE_SUCCESSFUL,
+        result
+    };
+};
+
+export const updateDoctorExperience = (id, data) => {
+    return {
+        type: UPDATE_DOCTOR_EXPERIENCE,
+        id,
+        data
+    };
+};
+
+export const updateDoctorExperienceSuccessful = result => {
+    return {
+        type: UPDATE_DOCTOR_EXPERIENCE_SUCCESSFUL,
+        result
+    };
+};
+
+export const getDoctorLanguage = id => {
+    return {
+        type: GET_DOCTOR_LANGUAGE,
+        id
+    };
+};
+
+export const getDoctorLanguageSuccessful = result => {
+    return {
+        type: GET_DOCTOR_LANGUAGE_SUCCESSFUL,
+        result
+    };
+};
+
+export const updateDoctorLanguage = (id, data) => {
+    return {
+        type: UPDATE_DOCTOR_LANGUAGE,
+        id,
+        data
+    };
+};
+
+export const updateDoctorLanguageSuccessful = result => {
+    return {
+        type: UPDATE_DOCTOR_LANGUAGE_SUCCESSFUL,
+        result
+    };
+};
+
+export const getAllLanguage = () => {
+    return {
+        type: GET_ALL_LANGUAGE
+    };
+};
+
+export const getAllLanguageSuccessful = result => {
+    return {
+        type: GET_ALL_LANGUAGE_SUCCESSFUL,
         result
     };
 };

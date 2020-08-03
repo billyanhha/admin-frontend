@@ -1,0 +1,45 @@
+.doctor-spec-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+}
+
+.doctor-spec-language {
+    padding: 0 20px;
+    max-width: 400px;
+    box-shadow: 0 0 8px 2px #f0f0f0;
+    border-radius: 5px;
+}
+
+.doctor-spec-language p {
+    font-size: 0.8rem;
+}
+
+.doctor-spec-language b {
+    color: #ff6347;
+}
+
+.doctor-spec-language-added {
+    margin-left: 50px;
+}
+
+.doctor-spec-content {
+    margin-top: 20px;
+    display: flex;
+    flex-flow: wrap;
+}
+
+.doctor-spec-chip {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.spec-chip {
+    font-size: 1rem !important;
+    border-width: 1.5px !important;
+}
+
+.chip-added {
+    background-color: #00bc9a !important;
+    color: #fff !important;
+}

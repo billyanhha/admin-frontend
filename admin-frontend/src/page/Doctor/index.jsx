@@ -12,7 +12,7 @@ import EditDoctor from "./EditDoctor";
 import ActiveDoctor from "./ActiveDoctor";
 import SpecificationDoctor from "./SpecificationDoctor";
 
-import {getAllDoctor} from "../../redux/staff";
+import {getAllDoctor, getAllLanguage} from "../../redux/staff";
 
 import "./style.css";
 
@@ -64,6 +64,12 @@ const columns = [
         field: "active",
         width: 200,
         searchable: false,
+        headerStyle: {
+            textAlign: "center"
+        },
+        cellStyle: {
+            textAlign: "center"
+        },
 
         render: rowData => (
             <div className={rowData.active ? "staff-active" : "staff-deactive"}>{rowData.active ? "Hoạt động" : "Ngưng hoạt động"}</div>
@@ -84,6 +90,7 @@ const Doctor = () => {
     const [specDialogVisible, setSpecDialogVisible] = useState(false);
     const [currentData, setCurrentData] = useState({});
     const [currentSpec, setCurrentSpec] = useState({});
+    const [specType, setSpecType] = useState(null);
 
     const openAddDialog = () => {
         setDialogVisible(true);
@@ -105,15 +112,16 @@ const Doctor = () => {
         setActiveDialogVisible(false);
     };
 
-    const openSpecDialog = data => {
+    const openSpecDialog = (type, data) => {
         setEditDialogVisible(false);
         setSpecDialogVisible(true);
         setCurrentSpec(data);
+        setSpecType(type);
     };
 
     const closeSpecDialog = () => {
         setSpecDialogVisible(false);
-        openEditDialog(currentData);
+        setSpecType(null);
     };
 
     useEffect(() => {
@@ -125,6 +133,7 @@ const Doctor = () => {
     }, [addDocStatus, updateDocStatus]);
 
     useEffect(() => {
+        dispatch(getAllLanguage());
         dispatch(getAllDoctor());
     }, []);
 
@@ -133,7 +142,13 @@ const Doctor = () => {
             <MiniDrawer>
                 <AddDoctor closeDialog={closeDialog} dialogVisible={dialogVisible} />
                 <EditDoctor data={currentData} closeDialog={closeDialog} dialogVisible={editDialogVisible} openSpecification={openSpecDialog} />
-                <SpecificationDoctor data={currentSpec} closeDialog={closeSpecDialog} dialogVisible={specDialogVisible} />
+                <SpecificationDoctor
+                    data={currentSpec}
+                    doctorID={currentData?.id}
+                    type={specType}
+                    closeDialog={closeSpecDialog}
+                    dialogVisible={specDialogVisible}
+                />
                 <ActiveDoctor data={currentData} closeDialog={closeDialog} dialogVisible={activeDialogVisible} />
                 {doctors ? (
                     <div>
@@ -170,7 +185,7 @@ const Doctor = () => {
 
                                     return (
                                         <div className="doctor-table-action">
-                                            <Button size="small" onClick={() => openEditDialog(data)} color="primary">
+                                            <Button disabled={isLoad} size="small" onClick={() => openEditDialog(data)} color="primary">
                                                 <InfoOutlined /> ­ Thông tin Bác sĩ
                                             </Button>
                                             {data?.active ? (

@@ -111,7 +111,7 @@ staffService.updateDoctor = (token, data) =>
             .catch(err => reject(err));
     });
 
-staffService.getDoctorExperience = (id) =>
+staffService.getDoctorExperience = id =>
     new Promise((resolve, reject) => {
         const api = `/api/doctor/${id}/experiences`;
         axios
@@ -138,11 +138,11 @@ staffService.createDoctorExperience = (token, id, content) =>
             .catch(err => reject(err));
     });
 
-staffService.updateDoctorExperience = (token, id, content) =>
+staffService.updateDoctorExperience = (token, doc_id, data) =>
     new Promise((resolve, reject) => {
-        const api = `/api/doctor/experiences/${id}`;
+        const api = `/api/doctor/${doc_id}/experiences`;
         axios
-            .put(api, content, {
+            .post(api, data, {
                 headers: {
                     Authorization: "Bearer " + token,
                     Accept: "*/*"
@@ -170,7 +170,7 @@ staffService.deleteDoctorExperience = (token, id) =>
             .catch(err => reject(err));
     });
 
-staffService.getDoctorLanguage = (id) =>
+staffService.getDoctorLanguage = id =>
     new Promise((resolve, reject) => {
         const api = `/api/doctor/${id}/languages`;
         axios
@@ -181,7 +181,23 @@ staffService.getDoctorLanguage = (id) =>
             .catch(err => reject(err));
     });
 
-staffService.addDoctorLanguage = (id,language_id) =>
+staffService.updateDoctorLanguage = (token, doc_id, data) =>
+    new Promise((resolve, reject) => {
+        const api = `/api/doctor/${doc_id}/languages`;
+        axios
+            .post(api, data, {
+                headers: {
+                    Authorization: "Bearer " + token,
+                    Accept: "*/*"
+                }
+            })
+            .then(result => {
+                resolve(result.data);
+            })
+            .catch(err => reject(err));
+    });
+
+staffService.addDoctorLanguage = (id, language_id) =>
     new Promise((resolve, reject) => {
         const api = `/api/doctor/${id}/languages/${language_id}`;
         axios
@@ -192,11 +208,27 @@ staffService.addDoctorLanguage = (id,language_id) =>
             .catch(err => reject(err));
     });
 
-staffService.removeDoctorLanguage = (id,language_id) =>
+staffService.removeDoctorLanguage = (id, language_id) =>
     new Promise((resolve, reject) => {
         const api = `/api/doctor/${id}/languages/${language_id}`;
         axios
             .delete(api)
+            .then(result => {
+                resolve(result.data);
+            })
+            .catch(err => reject(err));
+    });
+
+staffService.getAllLanguage = token =>
+    new Promise((resolve, reject) => {
+        const api = "/api/language";
+        axios
+            .get(api, {
+                headers: {
+                    Authorization: "Bearer " + token,
+                    Accept: "*/*"
+                }
+            })
             .then(result => {
                 resolve(result.data);
             })

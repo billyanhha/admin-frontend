@@ -7,7 +7,11 @@ import {
     CHECK_EMAIL_EXPIRED_SUCCESSFUL,
     GET_DOCTOR_SUCCESSFUL,
     CREATE_DOCTOR_SUCCESSFUL,
-    UPDATE_DOCTOR_SUCCESSFUL
+    UPDATE_DOCTOR_SUCCESSFUL,
+    GET_DOCTOR_EXPERIENCE_SUCCESSFUL,
+    GET_DOCTOR_LANGUAGE_SUCCESSFUL,
+    GET_ALL_LANGUAGE_SUCCESSFUL,
+    UPDATE_DOCTOR_LANGUAGE_SUCCESSFUL
 } from "./action";
 
 import _ from "lodash";
@@ -23,6 +27,9 @@ const doctorState = {
     doctors: null,
     status: false,
     updateStatus: false,
+    experience: null,
+    language: null,
+    allLanguage: null
 };
 
 export const staffReducer = (state = initialState, action) => {
@@ -69,6 +76,22 @@ export const doctorReducer = (state = doctorState, action) => {
         }
         case UPDATE_DOCTOR_SUCCESSFUL: {
             state = {...state, updateStatus: action?.result};
+            return state;
+        }
+        case GET_DOCTOR_EXPERIENCE_SUCCESSFUL: {
+            state = {...state, experience: action?.result};
+            return state;
+        }
+        case GET_DOCTOR_LANGUAGE_SUCCESSFUL: {
+            state = {...state, language: action?.result};
+            return state;
+        }
+        case UPDATE_DOCTOR_LANGUAGE_SUCCESSFUL: {
+            state = {...state, updateStatus: action?.result};
+            return state;
+        }
+        case GET_ALL_LANGUAGE_SUCCESSFUL: {
+            state = {...state, allLanguage: action?.result};
             return state;
         }
         default:
