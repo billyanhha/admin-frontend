@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -7,12 +7,13 @@ import MenuIcon from '@material-ui/icons/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import clsx from 'clsx';
-import { Avatar } from '@material-ui/core';
+import { Avatar, Badge } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import "./style.css"
 import { userLogout } from '../../redux/auth';
 import { withRouter, useHistory } from 'react-router-dom';
 import route from "../../config/route";
+import { countUnreadNotify } from '../../redux/notification';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -32,8 +33,18 @@ const MenuAppBar = (props) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const { currentUser } = useSelector(state => state.user);
+    const { unreadNotifyNumber } = useSelector(state => state.notify);
     const dispatch = useDispatch();
     const history = useHistory();
+
+
+    useEffect(() => {
+
+        if (currentUser?.id) {
+            const data = { receiver_id: currentUser?.id }
+            dispatch(countUnreadNotify(data))
+        }
+    }, [currentUser]);
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -51,11 +62,12 @@ const MenuAppBar = (props) => {
         history.push('/profile');
         setAnchorEl(null);
     }
-    
+
     const redirectToAccountPage = () => {
         history.push('/account');
         setAnchorEl(null);
     }
+
 
     return (
         <Toolbar>
@@ -82,7 +94,9 @@ const MenuAppBar = (props) => {
                         onClick={handleMenu}
                         color="inherit"
                     >
-                        <Avatar alt="Remy Sharp" src={currentUser?.avatarurl} className={classes.large} />
+                        <Badge badgeContent={unreadNotifyNumber} max={100}>
+                            <Avatar alt="Remy Sharp" src={currentUser?.avatarurl} className={classes.large} />
+                        </Badge>
                         <span className="username"> {currentUser?.fullname}</span>
                     </IconButton>
                     <Menu
