@@ -29,7 +29,7 @@ function* watchUserLogoutWorker(action) {
     try {
         yield put(openLoading())
         yield put(clearUserInfo());
-
+        window.location.pathname = "/login"
     } catch (error) {
         NotificationManager.error(error?.response?.data?.err || error?.response?.data?.message, 'Thông báo')
         console.log(error);

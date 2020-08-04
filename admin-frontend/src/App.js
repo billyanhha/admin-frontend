@@ -1,5 +1,5 @@
 import React from "react";
-import {BrowserRouter, Switch, Route} from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import LoadingBar from "react-redux-loading-bar";
 import "./App.css";
 import SystemLogin from "./page/SystemLogin";
@@ -18,10 +18,15 @@ import Statistic from "./page/Statistic";
 import Customer from "./page/Customer";
 import Form from "./page/Form";
 import ForgotPassword from "./page/ForgotPassword";
+import Notify from "./component/Notify";
+
+require('dotenv').config()
+
 
 const App = () => {
     return (
         <BrowserRouter>
+            <Notify />
             <LoadingBar showFastActions className="loading-bar" />
             <Switch>
                 <Route exact path="/login" render={props => <SystemLogin {...props} />} />
