@@ -68,6 +68,9 @@ const MenuAppBar = (props) => {
         setAnchorEl(null);
     }
 
+    const toNotifiPage = () => {
+        history.push('/notification');
+    }
 
     return (
         <Toolbar>
@@ -94,7 +97,7 @@ const MenuAppBar = (props) => {
                         onClick={handleMenu}
                         color="inherit"
                     >
-                        <Badge badgeContent={unreadNotifyNumber} max={100}>
+                        <Badge badgeContent={unreadNotifyNumber} max={100} color="secondary">
                             <Avatar alt="Remy Sharp" src={currentUser?.avatarurl} className={classes.large} />
                         </Badge>
                         <span className="username"> {currentUser?.fullname}</span>
@@ -114,6 +117,7 @@ const MenuAppBar = (props) => {
                         open={open}
                         onClose={handleClose}
                     >
+                        <MenuItem onClick={() => toNotifiPage()}><span className = "highlight">{unreadNotifyNumber || ''} Thông báo</span></MenuItem>
                         <MenuItem onClick={() => redirectToProfile()}>Thông tin cá nhân</MenuItem>
                         <MenuItem onClick={() => redirectToAccountPage()}>Cài đặt</MenuItem>
                         <MenuItem onClick={logout}>Đăng xuất</MenuItem>

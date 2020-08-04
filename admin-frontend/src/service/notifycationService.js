@@ -4,7 +4,7 @@ const notifycationService = {};
 // item perpage : 6
 
 notifycationService.getCustomerNotify = (data, token) => new Promise((reslove, reject) => {
-    const url = `/api/customer/${data.id}/notification`
+    const url = `/api/staff/${data.id}/notification`
     axios.get(url, {
         params: data,
         headers: {

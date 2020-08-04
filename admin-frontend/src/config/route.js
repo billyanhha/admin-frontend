@@ -32,6 +32,10 @@ const route = {
         icon: <RoomServiceIcon />,
         visible: true,
     },
+    "/notification": {
+        label: "Thông báo",
+        icon: <ImportContactsIcon />,
+    },
     "/form": {
         label: "Quản lý văn bản",
         icon: <ImportContactsIcon />,

@@ -19,7 +19,7 @@ import Customer from "./page/Customer";
 import Form from "./page/Form";
 import ForgotPassword from "./page/ForgotPassword";
 import Notify from "./component/Notify";
-
+import Notification from "./page/Notification";
 require('dotenv').config()
 
 
@@ -43,6 +43,9 @@ const App = () => {
                 </PrivateRoute>
                 <PrivateRoute exact path="/profile">
                     <ProfileStaff />
+                </PrivateRoute>
+                <PrivateRoute exact path="/notification">
+                    <Notification />
                 </PrivateRoute>
                 <PrivateRoute exact path="/account">
                     <MyAccount />
