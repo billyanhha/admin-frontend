@@ -10,6 +10,40 @@
     height: 90vh;
 }
 
+.doctor-management {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.doctor-management span {
+    margin: 0 10px;
+    background-color: #f0f0f0;
+    height: 25px;
+    width: 1px;
+}
+
+.doctor-management-field-active {
+    border-bottom: 2px solid #3f51b5;
+    color: #3f51b5;
+}
+
+.doctor-management-field-active:hover {
+    border-bottom: 2px solid #3f51b5;
+    color: #3f51b5;
+}
+
+.doctor-management .doctor-management-field {
+    padding: 5px;
+    font-size: 1.2rem;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.doctor-management .doctor-management-field:hover {
+    color: #8794da;
+}
+
 .doctor-form-input {
     font-size: 1rem;
     width: 100%;
@@ -219,4 +253,14 @@
 
 button {
     font-family: "Open Sans", sans-serif !important;
+}
+
+.doctor-active-msg-warning {
+    font-size: 0.8rem;
+}
+
+.doctor-active-msg {
+    margin: 20px 0;
+    text-align: center;
+    font-size: 1.2rem;
 }

@@ -25,7 +25,22 @@ import {
     UPDATE_DOCTOR_LANGUAGE,
     UPDATE_DOCTOR_LANGUAGE_SUCCESSFUL,
     UPDATE_DOCTOR_EXPERIENCE,
-    UPDATE_DOCTOR_EXPERIENCE_SUCCESSFUL
+    UPDATE_DOCTOR_EXPERIENCE_SUCCESSFUL,
+    CHANGE_DOCTOR_STATUS,
+    CHANGE_DOCTOR_STATUS_SUCCESSFUL,
+    CREATE_LANGUAGE,
+    CREATE_LANGUAGE_SUCCESSFUL,
+    UPDATE_LANGUAGE,
+    UPDATE_LANGUAGE_SUCCESSFUL,
+    DELETE_LANGUAGE,
+    DELETE_LANGUAGE_SUCCESSFUL,
+    GET_ALL_DEGREE,
+    GET_ALL_DEGREE_SUCCESSFUL,
+    CREATE_DEGREE,
+    CREATE_DEGREE_SUCCESSFUL,
+    UPDATE_DEGREE,
+    UPDATE_DEGREE_SUCCESSFUL,
+    DELETE_DEGREE
 } from "./action";
 
 export const editStaffProfile = (token, id, data) => {
@@ -137,9 +152,10 @@ export const createDoctorSuccessful = result => {
     };
 };
 
-export const updateDoctor = data => {
+export const updateDoctor = (id, data) => {
     return {
         type: UPDATE_DOCTOR,
+        id,
         data
     };
 };
@@ -218,6 +234,105 @@ export const getAllLanguage = () => {
 export const getAllLanguageSuccessful = result => {
     return {
         type: GET_ALL_LANGUAGE_SUCCESSFUL,
+        result
+    };
+};
+
+export const createLanguage = data => {
+    return {
+        type: CREATE_LANGUAGE,
+        data
+    };
+};
+
+export const createLanguageSuccessful = result => {
+    return {
+        type: CREATE_LANGUAGE_SUCCESSFUL,
+        result
+    };
+};
+
+export const updateLanguage = (lang_id, data) => {
+    return {
+        type: UPDATE_LANGUAGE,
+        lang_id,
+        data
+    };
+};
+
+export const updateLanguageSuccessful = result => {
+    return {
+        type: UPDATE_LANGUAGE_SUCCESSFUL,
+        result
+    };
+};
+
+export const deleteLanguage = lang_id => {
+    return {
+        type: DELETE_LANGUAGE,
+        lang_id
+    };
+};
+
+export const getAllDegree = () => {
+    return {
+        type: GET_ALL_DEGREE
+    };
+};
+
+export const getAllDegreeSuccessful = result => {
+    return {
+        type:GET_ALL_DEGREE_SUCCESSFUL,
+        result
+    };
+};
+
+export const createDegree = data => {
+    return {
+        type: CREATE_DEGREE,
+        data
+    };
+};
+
+export const createDegreeSuccessful = result => {
+    return {
+        type: CREATE_DEGREE_SUCCESSFUL,
+        result
+    };
+};
+
+export const updateDegree = (degree_id, data) => {
+    return {
+        type: UPDATE_DEGREE,
+        degree_id,
+        data
+    };
+};
+
+export const updateDegreeSuccessful = result => {
+    return {
+        type: UPDATE_DEGREE_SUCCESSFUL,
+        result
+    };
+};
+
+export const deleteDegree = degree_id => {
+    return {
+        type: DELETE_DEGREE,
+        degree_id
+    };
+};
+
+export const changeDocStatus = data => {
+    return {
+        type: CHANGE_DOCTOR_STATUS,
+        data
+    };
+};
+
+export const changeDocStatusSuccessful = result => {
+    return {
+        type: CHANGE_DOCTOR_STATUS_SUCCESSFUL,
         result
     };
 };

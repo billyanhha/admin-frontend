@@ -11,7 +11,13 @@ import {
     GET_DOCTOR_EXPERIENCE_SUCCESSFUL,
     GET_DOCTOR_LANGUAGE_SUCCESSFUL,
     GET_ALL_LANGUAGE_SUCCESSFUL,
-    UPDATE_DOCTOR_LANGUAGE_SUCCESSFUL
+    UPDATE_DOCTOR_LANGUAGE_SUCCESSFUL,
+    UPDATE_DOCTOR_EXPERIENCE_SUCCESSFUL,
+    UPDATE_LANGUAGE_SUCCESSFUL,
+    CREATE_LANGUAGE_SUCCESSFUL,
+    GET_ALL_DEGREE_SUCCESSFUL,
+    CREATE_DEGREE_SUCCESSFUL,
+    UPDATE_DEGREE_SUCCESSFUL
 } from "./action";
 
 import _ from "lodash";
@@ -29,7 +35,10 @@ const doctorState = {
     updateStatus: false,
     experience: null,
     language: null,
-    allLanguage: null
+    allLanguage: null,
+    manageLang:false,
+    allDegree: null,
+    manageDegree:false
 };
 
 export const staffReducer = (state = initialState, action) => {
@@ -82,6 +91,10 @@ export const doctorReducer = (state = doctorState, action) => {
             state = {...state, experience: action?.result};
             return state;
         }
+        case UPDATE_DOCTOR_EXPERIENCE_SUCCESSFUL: {
+            state = {...state, updateStatus: action?.result};
+            return state;
+        }
         case GET_DOCTOR_LANGUAGE_SUCCESSFUL: {
             state = {...state, language: action?.result};
             return state;
@@ -92,6 +105,26 @@ export const doctorReducer = (state = doctorState, action) => {
         }
         case GET_ALL_LANGUAGE_SUCCESSFUL: {
             state = {...state, allLanguage: action?.result};
+            return state;
+        }
+        case CREATE_LANGUAGE_SUCCESSFUL: {
+            state = {...state, manageLang: action?.result};
+            return state;
+        }
+        case UPDATE_LANGUAGE_SUCCESSFUL: {
+            state = {...state, manageLang: action?.result};
+            return state;
+        }
+        case GET_ALL_DEGREE_SUCCESSFUL: {
+            state = {...state, allDegree: action?.result};
+            return state;
+        }
+        case CREATE_DEGREE_SUCCESSFUL: {
+            state = {...state, manageDegree: action?.result};
+            return state;
+        }
+        case UPDATE_DEGREE_SUCCESSFUL: {
+            state = {...state, manageDegree: action?.result};
             return state;
         }
         default:

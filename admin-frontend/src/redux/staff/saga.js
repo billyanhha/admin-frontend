@@ -14,7 +14,15 @@ import {
     GET_DOCTOR_LANGUAGE,
     GET_ALL_LANGUAGE,
     UPDATE_DOCTOR_LANGUAGE,
-    UPDATE_DOCTOR_EXPERIENCE
+    UPDATE_DOCTOR_EXPERIENCE,
+    CHANGE_DOCTOR_STATUS,
+    CREATE_LANGUAGE,
+    UPDATE_LANGUAGE,
+    DELETE_LANGUAGE,
+    GET_ALL_DEGREE,
+    DELETE_DEGREE,
+    UPDATE_DEGREE,
+    CREATE_DEGREE
 } from "./action";
 
 import {
@@ -30,7 +38,15 @@ import {
     getDoctorLanguageSuccessful,
     getAllLanguageSuccessful,
     updateDoctorLanguageSuccessful,
-    updateDoctorExperienceSuccessful
+    updateDoctorExperienceSuccessful,
+    createLanguageSuccessful,
+    updateLanguageSuccessful,
+    deleteLanguageSuccessful,
+    getAllLanguage,
+    getAllDegreeSuccessful,
+    getAllDegree,
+    createDegreeSuccessful,
+    updateDegreeSuccessful
 } from ".";
 
 import staffService from "../../service/staffService";
@@ -150,7 +166,7 @@ function* watchUpdateDoctor(action) {
     try {
         yield put(openLoading());
         const {token} = yield select(state => state.auth);
-        const result = yield staffService.updateDoctor(token, action.data);
+        const result = yield staffService.updateDoctor(token, action.id, action.data);
         if (result?.doctorUpdated) {
             yield put(updateDoctorSuccessful(true));
             NotificationManager.success("Cập nhật thông tin thành công!", "", 5000);
@@ -181,11 +197,10 @@ function* watchUpdateDoctorExperience(action) {
         yield put(openLoading());
         const {token} = yield select(state => state.auth);
         const result = yield staffService.updateDoctorExperience(token, action.id, action.data);
-        console.log(result);
-        // if (!_.isEmpty(result?.doctorLanguageCreated)) {
-        //     yield put(updateDoctorExperienceSuccessful(true));
-        //     NotificationManager.success("Thành công cập nhật kĩ năng ngôn ngữ!", "", 4000);
-        // }
+        if (result?.expsCreated) {
+            yield put(updateDoctorExperienceSuccessful(true));
+            NotificationManager.success("Thành công cập nhật kinh nghiệm!", "", 4000);
+        }
     } catch (error) {
         NotificationManager.error(error?.response?.data?.err ?? "Hệ thống quá tải", "Thông báo");
     } finally {
@@ -223,6 +238,24 @@ function* watchUpdateDoctorLanguage(action) {
     }
 }
 
+function* watchChangeDoctorStatus(action) {
+    try {
+        yield put(openLoading());
+        const {token} = yield select(state => state.auth);
+        const result = yield staffService.updateDoctor(token, action.data);
+        if (result?.doctorUpdated) {
+            yield put(updateDoctorSuccessful(true));
+            NotificationManager.success("Cập nhật thông tin thành công!", "", 5000);
+        }
+    } catch (error) {
+        NotificationManager.error(error?.response?.data?.err, "Thông báo");
+        console.log(error);
+    } finally {
+        // do long running stuff
+        yield put(closeLoading());
+    }
+}
+
 function* watchGetAllLanguage(action) {
     try {
         yield put(openLoading());
@@ -230,6 +263,119 @@ function* watchGetAllLanguage(action) {
         const result = yield staffService.getAllLanguage(token);
         if (!_.isEmpty(result?.languages)) {
             yield put(getAllLanguageSuccessful(result.languages));
+        }
+    } catch (error) {
+        NotificationManager.error(error?.response?.data?.err ?? "Hệ thống quá tải", "Thông báo");
+    } finally {
+        yield put(closeLoading());
+    }
+}
+
+function* watchCreateLanguage(action) {
+    try {
+        yield put(openLoading());
+        const {token} = yield select(state => state.auth);
+        const result = yield staffService.createLanguage(token, action.data);
+        if (result?.languageCreated) {
+            yield put(createLanguageSuccessful(true));
+            yield put(getAllLanguage());
+            NotificationManager.success("Thêm ngôn ngữ thành công!", "", 3000);
+        }
+    } catch (error) {
+        NotificationManager.error(error?.response?.data?.err ?? "Hệ thống quá tải", "Thông báo");
+    } finally {
+        yield put(closeLoading());
+    }
+}
+function* watchUpdateLanguage(action) {
+    try {
+        yield put(openLoading());
+        const {token} = yield select(state => state.auth);
+        const result = yield staffService.updateLanguage(token, action.lang_id, action.data);
+        if (!_.isEmpty(result?.languageUpdated)) {
+            yield put(updateLanguageSuccessful(true));
+            yield put(getAllLanguage());
+            NotificationManager.success("Sửa ngôn ngữ thành công!", "", 3000);
+        }
+    } catch (error) {
+        NotificationManager.error(error?.response?.data?.err ?? "Hệ thống quá tải", "Thông báo");
+    } finally {
+        yield put(closeLoading());
+    }
+}
+
+function* watchDeleteLanguage(action) {
+    try {
+        yield put(openLoading());
+        const {token} = yield select(state => state.auth);
+        const result = yield staffService.removeLanguage(token, action.lang_id);
+        if (!_.isEmpty(result?.languageDeleted)) {
+            yield put(getAllLanguage());
+            NotificationManager.success("Xoá ngôn ngữ thành công!", "", 3000);
+        }
+    } catch (error) {
+        NotificationManager.error(error?.response?.data?.err ?? "Hệ thống quá tải", "Thông báo");
+    } finally {
+        yield put(closeLoading());
+    }
+}
+
+function* watchGetAllDegree(action) {
+    try {
+        yield put(openLoading());
+        const {token} = yield select(state => state.auth);
+        const result = yield staffService.getAllDegree(token);
+        if (!_.isEmpty(result?.degrees)) {
+            yield put(getAllDegreeSuccessful(result.degrees));
+        }
+    } catch (error) {
+        NotificationManager.error(error?.response?.data?.err ?? "Hệ thống quá tải", "Thông báo");
+    } finally {
+        yield put(closeLoading());
+    }
+}
+
+function* watchCreateDegree(action) {
+    try {
+        yield put(openLoading());
+        const {token} = yield select(state => state.auth);
+        const result = yield staffService.createDegree(token, action.data);
+        if (result?.degreeCreated) {
+            yield put(createDegreeSuccessful(true));
+            yield put(getAllDegree());
+            NotificationManager.success("Thêm ngôn ngữ thành công!", "", 3000);
+        }
+    } catch (error) {
+        NotificationManager.error(error?.response?.data?.err ?? "Hệ thống quá tải", "Thông báo");
+    } finally {
+        yield put(closeLoading());
+    }
+}
+function* watchUpdateDegree(action) {
+    try {
+        yield put(openLoading());
+        const {token} = yield select(state => state.auth);
+        const result = yield staffService.updateDegree(token, action.degree_id, action.data);
+        if (!_.isEmpty(result?.degreeUpdated)) {
+            yield put(updateDegreeSuccessful(true));
+            yield put(getAllDegree());
+            NotificationManager.success("Sửa thành công!", "", 3000);
+        }
+    } catch (error) {
+        NotificationManager.error(error?.response?.data?.err ?? "Hệ thống quá tải", "Thông báo");
+    } finally {
+        yield put(closeLoading());
+    }
+}
+
+function* watchDeleteDegree(action) {
+    try {
+        yield put(openLoading());
+        const {token} = yield select(state => state.auth);
+        const result = yield staffService.removeDegree(token, action.degree_id);
+        if (!_.isEmpty(result?.degreeDeleted)) {
+            yield put(getAllDegree());
+            NotificationManager.success("Xoá thành công!", "", 3000);
         }
     } catch (error) {
         NotificationManager.error(error?.response?.data?.err ?? "Hệ thống quá tải", "Thông báo");
@@ -252,4 +398,12 @@ export function* staffSaga() {
     yield takeLatest(GET_DOCTOR_LANGUAGE, watchGetDoctorLanguage);
     yield takeLatest(UPDATE_DOCTOR_LANGUAGE, watchUpdateDoctorLanguage);
     yield takeLatest(GET_ALL_LANGUAGE, watchGetAllLanguage);
+    yield takeLatest(CREATE_LANGUAGE, watchCreateLanguage);
+    yield takeLatest(UPDATE_LANGUAGE, watchUpdateLanguage);
+    yield takeLatest(DELETE_LANGUAGE, watchDeleteLanguage);
+    yield takeLatest(GET_ALL_DEGREE, watchGetAllDegree);
+    yield takeLatest(CREATE_DEGREE, watchCreateDegree);
+    yield takeLatest(UPDATE_DEGREE, watchUpdateDegree);
+    yield takeLatest(DELETE_DEGREE, watchDeleteDegree);
+    yield takeLatest(CHANGE_DOCTOR_STATUS, watchChangeDoctorStatus);
 }

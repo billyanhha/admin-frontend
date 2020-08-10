@@ -2,6 +2,7 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 40px;
+    transition: 0.2s ease;
 }
 
 .doctor-spec-language {
@@ -42,4 +43,162 @@
 .chip-added {
     background-color: #00bc9a !important;
     color: #fff !important;
+}
+
+.doctor-spec-exp {
+    transition: 0.5s ease;
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.doctor-exp-content {
+    flex-flow: nowrap;
+    text-align: center;
+}
+
+.doctor-spec-exp-field {
+    width: 100%;
+}
+
+.doctor-exp-preview-toggle {
+    cursor: pointer;
+    color: #3f51b5;
+    font-size: 0.9rem !important;
+}
+
+.doctor-spec-preview {
+    padding: 20px;
+    overflow: hidden;
+    height: fit-content;
+    max-height: 40vh;
+    width: 40%;
+    box-shadow: 0 0 8px 2px #f0f0f0;
+    border-radius: 5px;
+    visibility: visible;
+    transition: visibility 0.8s ease-in-out 0.4s, width 0.4s ease-in-out;
+}
+
+.doctor-spec-preview-fadeout {
+    visibility: hidden;
+    width: 0;
+    padding: 0;
+    transition: all 0.2s ease-in;
+}
+
+.doctor-spec-preview div {
+    margin-bottom: 5px;
+}
+
+.doctor-accepted-spec {
+    margin: 40px 0;
+    font-size: 1rem;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #cccccc;
+}
+
+.doctor-spec-hint {
+    font-size: 0.9rem;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: -30px;
+}
+
+.doctor-spec-desc {
+    font-size: 0.9rem;
+    margin-bottom: 40px;
+}
+
+.doctor-accepted-spec-title {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #3f51b5;
+    margin-bottom: 10px;
+}
+
+.doctor-accepted-cancel {
+    font-size: 1rem;
+    color: #ff6347;
+    cursor: pointer;
+}
+
+.doctor-accepted-edit {
+    font-size: 1rem;
+    color: #000;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+.doctor-accepted-edit:hover {
+    color: #8390da;
+}
+
+.doctor-accepted-edit:hover::before {
+    content: "✎";
+}
+
+.doctor-accepted-language {
+    display: flex;
+    margin: 20px 0;
+}
+
+.doctor-accepted-language div {
+    margin-right: 10px;
+}
+
+.doctor-language-edit {
+    text-align: center;
+}
+
+.doctor-language-add{
+    display: flex;
+    max-width: 500px;
+    margin: 20px 0;
+}
+
+.doctor-all-degree-input{
+    display: flex;
+}
+
+.doctor-accepted-degree{
+    margin-top: 20px;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+    column-gap: 10px;
+    row-gap: 20px;
+}
+.doctor-accepted-degree div{
+    width: 100%;
+}
+
+.doctor-all-degree{
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 8px 2px #f0f0f0;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: default;
+    transition: 0.2s ease;
+}
+
+.doctor-all-degree:hover{
+    box-shadow: 0 0 5px 4px #f0f0f0;
+}
+
+@media screen and (max-width: 1600px) {
+    .doctor-spec-preview {
+        max-height: 60vh;
+    }
+}
+
+/* HD monitor & older TV, Wacom */
+@media screen and (max-width: 1366px) {
+}
+
+/* Ipad Pro, Tablet, Wacom, Monitor */
+@media screen and (max-width: 1280px) {
 }

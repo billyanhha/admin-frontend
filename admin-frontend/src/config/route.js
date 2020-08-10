@@ -3,7 +3,7 @@ import React from "react";
 import RecentActorsIcon from "@material-ui/icons/RecentActors";
 import AllInboxIcon from "@material-ui/icons/AllInbox";
 import RoomServiceIcon from "@material-ui/icons/RoomService";
-import {BarChart,Person, PeopleOutline} from "@material-ui/icons";
+import {BarChart, Person, PeopleOutline, FolderSpecial} from "@material-ui/icons";
 
 const route = {
     "/": {

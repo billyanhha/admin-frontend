@@ -58,7 +58,7 @@ const EditDoctor = props => {
             doctorAvatar: data.avatarurl
         };
 
-        dispatch(updateDoctor(req));
+        dispatch(updateDoctor(data.id, req));
     };
 
     //Avatar handle function
@@ -139,7 +139,11 @@ const EditDoctor = props => {
             <div>Chưa có dữ liệu</div>
         )
     ) : (
-        language?.map(data => <div key={data.language_id}><b>{data.language_name}</b></div>)
+        language?.map(data => (
+            <div key={data.language_id}>
+                <b>{data.language_name}</b>
+            </div>
+        ))
     );
 
     useEffect(() => {

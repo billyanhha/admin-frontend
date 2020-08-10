@@ -11,6 +11,7 @@ import AddDoctor from "./AddDoctor";
 import EditDoctor from "./EditDoctor";
 import ActiveDoctor from "./ActiveDoctor";
 import SpecificationDoctor from "./SpecificationDoctor";
+import ManageSpecification from "./ManageSpecification";
 
 import {getAllDoctor, getAllLanguage} from "../../redux/staff";
 
@@ -91,6 +92,7 @@ const Doctor = () => {
     const [currentData, setCurrentData] = useState({});
     const [currentSpec, setCurrentSpec] = useState({});
     const [specType, setSpecType] = useState(null);
+    const [switchField, setSwitchField] = useState(0);
 
     const openAddDialog = () => {
         setDialogVisible(true);
@@ -124,6 +126,104 @@ const Doctor = () => {
         setSpecType(null);
     };
 
+    const toggleManagement = type => {
+        if (type !== switchField) {
+            setSwitchField(type);
+        }
+    };
+
+    const renderManagement = type => {
+        switch (type) {
+            case 0:
+                return (
+                    <>
+                        {doctors ? (
+                            <div>
+                                <Button variant="contained" color="primary" onClick={openAddDialog} startIcon={<Add />}>
+                                    Thêm bác sĩ
+                                </Button>
+                                <MaterialTable
+                                    isLoading={isLoad}
+                                    title="Đội ngũ Bác sĩ"
+                                    columns={columns}
+                                    data={doctors}
+                                    actions={[{}]}
+                                    localization={{
+                                        body: {
+                                            emptyDataSourceMessage: "Không có dữ liệu"
+                                        },
+                                        pagination: {
+                                            labelDisplayedRows: "{from}-{to} / tổng {count} bác sĩ",
+                                            labelRowsSelect: "hàng"
+                                        },
+                                        toolbar: {
+                                            searchPlaceholder: "Tìm kiếm",
+                                            exportAriaLabel: "Xuất file",
+                                            exportName: "Xuất file",
+                                            exportTitle: "Xuất file"
+                                        },
+                                        header: {
+                                            actions: "Tài khoản"
+                                        }
+                                    }}
+                                    components={{
+                                        Action: props => {
+                                            const {data} = props;
+
+                                            return (
+                                                <div className="doctor-table-action">
+                                                    <Button disabled={isLoad} size="small" onClick={() => openEditDialog(data)} color="primary">
+                                                        <InfoOutlined /> ­ Thông tin Bác sĩ
+                                                    </Button>
+                                                    {data?.active ? (
+                                                        <Button
+                                                            size="small"
+                                                            className="doctor-action-ban"
+                                                            onClick={() => openActiveDialog(data)}
+                                                            color="secondary"
+                                                        >
+                                                            <Block /> ­ Vô hiệu hóa
+                                                        </Button>
+                                                    ) : (
+                                                        <Button
+                                                            size="small"
+                                                            className="doctor-action-active"
+                                                            onClick={() => openActiveDialog(data)}
+                                                            color="inherit"
+                                                        >
+                                                            {/* <Check /> */}­ Kích hoạt tài khoản
+                                                        </Button>
+                                                    )}
+                                                </div>
+                                            );
+                                        }
+                                    }}
+                                    options={{
+                                        actionsColumnIndex: -1,
+                                        exportButton: true,
+                                        headerStyle: {
+                                            fontWeight: "600"
+                                        }
+                                    }}
+                                    style={{marginTop: "20px"}}
+                                />
+                            </div>
+                        ) : (
+                            <div className="doctor-loading">
+                                <CircularProgress size={40} />
+                                <br />
+                                Đang lấy dữ liệu
+                            </div>
+                        )}
+                    </>
+                );
+            case 1:
+                return <ManageSpecification />;
+            default:
+                return <div className="statistic-no-data">Hiện chưa có dữ liệu cho kiểu thống kê này!</div>;
+        }
+    };
+
     useEffect(() => {
         console.log(doctors);
     }, [doctors]);
@@ -149,85 +249,23 @@ const Doctor = () => {
                     closeDialog={closeSpecDialog}
                     dialogVisible={specDialogVisible}
                 />
-                <ActiveDoctor data={currentData} closeDialog={closeDialog} dialogVisible={activeDialogVisible} />
-                {doctors ? (
-                    <div>
-                        <Button variant="contained" color="primary" onClick={openAddDialog} startIcon={<Add />}>
-                            Thêm bác sĩ
-                        </Button>
-                        <MaterialTable
-                            isLoading={isLoad}
-                            title="Đội ngũ Bác sĩ"
-                            columns={columns}
-                            data={doctors}
-                            actions={[{}]}
-                            localization={{
-                                body: {
-                                    emptyDataSourceMessage: "Không có dữ liệu"
-                                },
-                                pagination: {
-                                    labelDisplayedRows: "{from}-{to} / tổng {count} bác sĩ",
-                                    labelRowsSelect: "hàng"
-                                },
-                                toolbar: {
-                                    searchPlaceholder: "Tìm kiếm",
-                                    exportAriaLabel: "Xuất file",
-                                    exportName: "Xuất file",
-                                    exportTitle: "Xuất file"
-                                },
-                                header: {
-                                    actions: "Tài khoản"
-                                }
-                            }}
-                            components={{
-                                Action: props => {
-                                    const {data} = props;
-
-                                    return (
-                                        <div className="doctor-table-action">
-                                            <Button disabled={isLoad} size="small" onClick={() => openEditDialog(data)} color="primary">
-                                                <InfoOutlined /> ­ Thông tin Bác sĩ
-                                            </Button>
-                                            {data?.active ? (
-                                                <Button
-                                                    size="small"
-                                                    className="doctor-action-ban"
-                                                    onClick={() => openActiveDialog(data)}
-                                                    color="secondary"
-                                                >
-                                                    <Block /> ­ Vô hiệu hóa
-                                                </Button>
-                                            ) : (
-                                                <Button
-                                                    size="small"
-                                                    className="doctor-action-active"
-                                                    onClick={() => openActiveDialog(data)}
-                                                    color="inherit"
-                                                >
-                                                    {/* <Check /> */}­ Kích hoạt tài khoản
-                                                </Button>
-                                            )}
-                                        </div>
-                                    );
-                                }
-                            }}
-                            options={{
-                                actionsColumnIndex: -1,
-                                exportButton: true,
-                                headerStyle: {
-                                    fontWeight: "600"
-                                }
-                            }}
-                            style={{marginTop: "20px"}}
-                        />
+                <ActiveDoctor data={currentData} doctorID={currentData?.id} closeDialog={closeDialog} dialogVisible={activeDialogVisible} />
+                <div className="doctor-management">
+                    <div
+                        className={`doctor-management-field ${switchField === 0 ? "doctor-management-field-active" : ""}`}
+                        onClick={() => toggleManagement(0)}
+                    >
+                        Thông tin bác sĩ
                     </div>
-                ) : (
-                    <div className="doctor-loading">
-                        <CircularProgress size={40} />
-                        <br />
-                        Đang lấy dữ liệu
+                    <span></span>
+                    <div
+                        className={`doctor-management-field ${switchField === 1 ? "doctor-management-field-active" : ""}`}
+                        onClick={() => toggleManagement(1)}
+                    >
+                        Quản lý kĩ năng
                     </div>
-                )}
+                </div>
+                {renderManagement(switchField)}
             </MiniDrawer>
         </div>
     );
