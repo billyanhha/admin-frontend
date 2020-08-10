@@ -111,10 +111,10 @@ const ForgotPassword = props => {
                             ) : (
                                 <div>
                                     <div className="forgot-msg">
-                                        Email sẽ hết hạn trong <span>3 phút!</span>
+                                        Email sẽ hết hạn trong <span>10 phút!</span>
                                         <br />
                                         <br />
-                                        Xin kiểm tra mục Thư rác (SPAM) hoặc Quảng cáo nếu bạn không thấy Email gửi đến sau 30 giây.
+                                        Xin kiểm tra mục Thư rác (SPAM) hoặc Quảng cáo nếu bạn không thấy Email gửi đến sau 1 phút.
                                     </div>
                                     <Button
                                         disabled={isLoad}

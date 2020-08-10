@@ -2,6 +2,10 @@ html {
     scroll-behavior: smooth;
 }
 
+body{
+    font-family: "Open Sans", sans-serif !important;
+}
+
 .default-div {
     display: flex;
     flex-direction: column;

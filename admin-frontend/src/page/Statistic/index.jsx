@@ -19,7 +19,7 @@ import "./style.css";
 const Statistic = () => {
     const [switchStatistic, setSwitchStatistic] = useState(0);
 
-    let statisticName = ["Thống kê Bác sĩ", "Biểu đồ gói / cuộc hẹn", "Thống kê truy cập & Đánh giá Website"];
+    let statisticName = ["Thống kê Bác sĩ tích cực", "Biểu đồ gói / cuộc hẹn", "Thống kê truy cập & Đánh giá Website"];
 
     const useStyles = makeStyles(theme => ({
         root: {

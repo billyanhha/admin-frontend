@@ -10,7 +10,7 @@ import { userReducer, userStaffReducer } from '../user/reducer';
 import { packageReducer } from '../package/reducer';
 import { serviceReducer } from '../service/reducer';
 import { customerReducer } from '../customer/reducer';
-import { staffReducer } from '../staff/reducer';
+import { staffReducer,doctorReducer } from '../staff/reducer';
 import { statisticReducer } from '../statistic/reducer';
 import { formReducer } from '../form/reducer';
 import { notifyReducer } from '../notification/reducer';
@@ -30,6 +30,7 @@ const rootReducers = combineReducers({
   userStaff: userStaffReducer,
   service: serviceReducer,
   staff: staffReducer,
+  doctor: doctorReducer,
   statistic: statisticReducer,
   customer: customerReducer,
   form: formReducer,

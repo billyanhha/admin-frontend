@@ -123,7 +123,7 @@ const TopDoctor = () => {
     if (topDoctor)
         return (
             <div>
-                <div className="statistic-name">Thống kê Bác sĩ</div>
+                <div className="statistic-name">Thống kê Bác sĩ thi đua</div>
                 <div className="statistic-type" ref={myRef}>
                     <div className={type === 0 ? "statistic-type-active" : ""} onClick={() => setType(0)}>
                         {statisticType[0]}
@@ -225,6 +225,7 @@ const columns = [
     {
         title: "Số lượng",
         field: "status_count",
+        type: 'numeric',
         searchable: false
     },
     {
