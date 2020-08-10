@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {isEmpty, debounce, throttle} from "lodash";
 
-import {Done, Add, Clear} from "@material-ui/icons";
+import {Done, Add, Clear, CancelRounded} from "@material-ui/icons";
 import {Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Chip, CircularProgress} from "@material-ui/core";
 import {updateDoctorLanguage, updateDoctorLanguageSuccessful, updateDoctorExperience, updateDoctorExperienceSuccessful} from "../../redux/staff";
 
@@ -263,15 +263,21 @@ const SpecificationDoctor = props => {
                     <div className="doctor-spec-wrapper">
                         <div className="doctor-spec-language-added">
                             <div className="doctor-specification-name">Khả năng ngôn ngữ hiện tại</div>
+                            <div className="doctor-spec-desc">
+                                Nhấn <CancelRounded style={{fontSize: "16px", color: "#f50057"}} /> để xoá ngôn ngữ.
+                            </div>
                             <div className="doctor-spec-content">{renderSpec}</div>
                         </div>
                         <div className="doctor-spec-language">
                             <div className="doctor-specification-name">
                                 Danh sách ngôn ngữ<b>*</b>
                             </div>
+                            <div className="doctor-spec-desc">
+                                Vào mục <i>Quản lý Kĩ năng</i> ­ để cập nhật ngôn ngữ.
+                            </div>
                             <div className="doctor-spec-content">{renderLanguagePool}</div>
                             <p>
-                                <b>*</b>: Được chấp nhận bởi hệ thống
+                                <b>*</b>: Chỉ ngôn ngữ được chấp nhận bởi hệ thống
                             </p>
                         </div>
                     </div>

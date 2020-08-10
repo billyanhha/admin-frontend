@@ -63,6 +63,7 @@ const ManageSpecification = () => {
         } else {
             if (editDegree) {
                 setEditDegree(false);
+                if (degreeID) setDegreeID(null);
                 if (openAlert && (!editLang || !editDegree)) setOpenAlert(false);
             } else {
                 setEditDegree(true);
@@ -106,7 +107,7 @@ const ManageSpecification = () => {
         if (!isLoad) dispatch(deleteLanguage(deleteLang.id));
     };
 
-    const handleManagementDegree = (action, id) => { 
+    const handleManagementDegree = (action, id) => {
         if (degreeRef?.current?.value) {
             let data = {name: degreeRef.current.value};
             if (action === 0) {
