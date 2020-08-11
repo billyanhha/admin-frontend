@@ -125,9 +125,10 @@ export const checkEmailExpiredSuccessful = result => {
     };
 };
 
-export const getAllDoctor = () => {
+export const getAllDoctor = (data) => {
     return {
-        type: GET_DOCTOR
+        type: GET_DOCTOR,
+        data
     };
 };
 

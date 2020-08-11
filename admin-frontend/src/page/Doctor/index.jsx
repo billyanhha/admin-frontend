@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import MaterialTable from "material-table";
 import Pagination from "@material-ui/lab/Pagination";
-import {Avatar, Button, CircularProgress} from "@material-ui/core";
-import {Add, InfoOutlined, Block, Check} from "@material-ui/icons";
+import {Avatar, Button, TextField, InputAdornment, Tooltip} from "@material-ui/core";
+import {Add, InfoOutlined, Block, Search} from "@material-ui/icons";
+import {debounce} from "lodash";
 
 import MiniDrawer from "../../component/Drawer";
 import gender from "../../config/gender";
@@ -41,11 +42,13 @@ const columns = [
     },
     {
         title: "Email",
-        field: "email"
+        field: "email",
+        width: 200
     },
     {
         title: "Giới tính",
         field: "gender",
+        width: 100,
         render: rowData => <div>{gender[rowData.gender]}</div>,
         searchable: false
     },
@@ -85,6 +88,11 @@ const Doctor = () => {
     const updateDocStatus = useSelector(state => state.doctor.updateStatus);
     const addDocStatus = useSelector(state => state.doctor.status);
 
+    const [page, setPage] = useState(1);
+    const [itemsPage, setItemsPage] = useState(5);
+    const count = parseInt(Number(doctors?.[0]?.full_count) / itemsPage, 10) + (Number(doctors?.[0]?.full_count) % itemsPage === 0 ? 0 : 1);
+    const [searchData, setSearchData] = useState(null);
+
     const [dialogVisible, setDialogVisible] = useState(false);
     const [editDialogVisible, setEditDialogVisible] = useState(false);
     const [activeDialogVisible, setActiveDialogVisible] = useState(false);
@@ -94,13 +102,31 @@ const Doctor = () => {
     const [specType, setSpecType] = useState(null);
     const [switchField, setSwitchField] = useState(0);
 
+    const delayCallSearchApi = useRef(
+        //wait 1s (after user input done) then auto trigger call api
+        debounce(data => {
+            setSearchData(data);
+        }, 1000)
+    ).current;
+
+    const handleSearchInput = e => {
+        let data = {query: e.target?.value, itemsPage: itemsPage, page: 1}; //no need to change page state (setPage(1))
+        delayCallSearchApi(data);
+    };
+
+    const getDoctorData = () => {
+        let data = {itemsPage: itemsPage, page: page};
+        dispatch(getAllDoctor(data));
+    };
+
     const openAddDialog = () => {
         setDialogVisible(true);
     };
 
-    const openEditDialog = data => {
+    const openEditDialog = (action, data) => {
         setEditDialogVisible(true);
-        setCurrentData(data);
+        if (action === 0) setCurrentData(data);
+        if (specDialogVisible) setSpecDialogVisible(false);
     };
 
     const openActiveDialog = data => {
@@ -132,11 +158,15 @@ const Doctor = () => {
         }
     };
 
+    const handleChangePage = (e, newPage) => {
+        setPage(newPage);
+    };
+
     const renderManagement = type => {
         switch (type) {
             case 0:
                 return (
-                    <>
+                    <div>
                         {doctors ? (
                             <div>
                                 <Button variant="contained" color="primary" onClick={openAddDialog} startIcon={<Add />}>
@@ -152,10 +182,10 @@ const Doctor = () => {
                                         body: {
                                             emptyDataSourceMessage: "Không có dữ liệu"
                                         },
-                                        pagination: {
-                                            labelDisplayedRows: "{from}-{to} / tổng {count} bác sĩ",
-                                            labelRowsSelect: "hàng"
-                                        },
+                                        // pagination: {
+                                        //     labelDisplayedRows: "{from}-{to} / tổng {count} bác sĩ",
+                                        //     labelRowsSelect: "hàng"
+                                        // },
                                         toolbar: {
                                             searchPlaceholder: "Tìm kiếm",
                                             exportAriaLabel: "Xuất file",
@@ -167,12 +197,50 @@ const Doctor = () => {
                                         }
                                     }}
                                     components={{
+                                        Toolbar: props => (
+                                            <div className="doctor-table-header">
+                                                <div className="doctor-table-title">Đội ngũ Bác sĩ</div>
+                                                <div className="doctor-table-searchBar">
+                                                    <Tooltip title={searchData?.query ? "Xoá hết để hiện tất cả" : ""}>
+                                                        <TextField
+                                                            fullWidth
+                                                            size="small"
+                                                            placeholder="Tìm kiếm tên, địa chỉ,..."
+                                                            defaultValue={searchData?.query ?? ""}
+                                                            variant="outlined"
+                                                            onChange={e => handleSearchInput(e)}
+                                                            InputProps={{
+                                                                startAdornment: (
+                                                                    <InputAdornment position="start">
+                                                                        <Search />
+                                                                    </InputAdornment>
+                                                                )
+                                                            }}
+                                                        />
+                                                    </Tooltip>
+                                                </div>
+                                            </div>
+                                        ),
+                                        Pagination: props => (
+                                            <div>
+                                                <br />
+                                                <Pagination
+                                                    disabled={isLoad}
+                                                    defaultPage={page}
+                                                    onChange={handleChangePage}
+                                                    count={count}
+                                                    rowsPerPage={5}
+                                                    color="primary"
+                                                />
+                                                <br />
+                                            </div>
+                                        ),
                                         Action: props => {
                                             const {data} = props;
 
                                             return (
                                                 <div className="doctor-table-action">
-                                                    <Button disabled={isLoad} size="small" onClick={() => openEditDialog(data)} color="primary">
+                                                    <Button disabled={isLoad} size="small" onClick={() => openEditDialog(0, data)} color="primary">
                                                         <InfoOutlined /> ­ Thông tin Bác sĩ
                                                     </Button>
                                                     {data?.active ? (
@@ -200,7 +268,7 @@ const Doctor = () => {
                                     }}
                                     options={{
                                         actionsColumnIndex: -1,
-                                        exportButton: true,
+                                        search: false,
                                         headerStyle: {
                                             fontWeight: "600"
                                         }
@@ -209,13 +277,9 @@ const Doctor = () => {
                                 />
                             </div>
                         ) : (
-                            <div className="doctor-loading">
-                                <CircularProgress size={40} />
-                                <br />
-                                Đang lấy dữ liệu
-                            </div>
+                            ""
                         )}
-                    </>
+                    </div>
                 );
             case 1:
                 return <ManageSpecification />;
@@ -225,8 +289,13 @@ const Doctor = () => {
     };
 
     useEffect(() => {
-        console.log(doctors);
-    }, [doctors]);
+        dispatch(getAllDoctor(searchData));
+    }, [searchData]);
+
+    useEffect(() => {
+        dispatch(getAllLanguage());
+        getDoctorData();
+    }, [page, itemsPage]);
 
     useEffect(() => {
         if (updateDocStatus || addDocStatus) dispatch(getAllDoctor());
@@ -234,7 +303,7 @@ const Doctor = () => {
 
     useEffect(() => {
         dispatch(getAllLanguage());
-        dispatch(getAllDoctor());
+        getDoctorData();
     }, []);
 
     return (
@@ -244,8 +313,9 @@ const Doctor = () => {
                 <EditDoctor data={currentData} closeDialog={closeDialog} dialogVisible={editDialogVisible} openSpecification={openSpecDialog} />
                 <SpecificationDoctor
                     data={currentSpec}
-                    doctorID={currentData?.id}
+                    doctorData={currentData}
                     type={specType}
+                    openPreviousDialog={openEditDialog}
                     closeDialog={closeSpecDialog}
                     dialogVisible={specDialogVisible}
                 />

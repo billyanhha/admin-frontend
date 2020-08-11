@@ -1,18 +1,17 @@
-import React, {useState, useEffect, useMemo, useCallback, useRef} from "react";
+import React, {useState, useEffect, useMemo, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {isEmpty, debounce, throttle} from "lodash";
 
-import {Done, Add, Clear, CancelRounded} from "@material-ui/icons";
-import {Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Chip, CircularProgress} from "@material-ui/core";
+import {Done, Add, Clear, CancelRounded, ArrowBack} from "@material-ui/icons";
+import Alert from "@material-ui/lab/Alert";
+import {Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Chip, CircularProgress, Tooltip} from "@material-ui/core";
 import {updateDoctorLanguage, updateDoctorLanguageSuccessful, updateDoctorExperience, updateDoctorExperienceSuccessful} from "../../redux/staff";
 
 const SpecificationDoctor = props => {
     let typeSpec = props.type ?? 1;
 
     const {isLoad} = useSelector(state => state.ui);
-    const experience = useSelector(state => state.doctor.experience);
-    const language = useSelector(state => state.doctor.language);
     const allLanguage = useSelector(state => state.doctor.allLanguage);
     const status = useSelector(state => state.doctor.updateStatus);
 
@@ -21,10 +20,20 @@ const SpecificationDoctor = props => {
     const [langPool, setLangPool] = useState([{}]);
     const [expChange, setExpChange] = useState([]);
     const [preview, setPreview] = useState(false);
+    const [confirm, setConfirm] = useState(false);
 
     const handleCloseDialog = () => {
         props.closeDialog();
         setPreview(false);
+        setConfirm(false);
+        setSpecData([{}]);
+        setLangPool([{}]);
+    };
+
+    const openPrevDialog = () => {
+        props.openPreviousDialog(1);
+        setPreview(false);
+        setConfirm(false);
         setSpecData([{}]);
         setLangPool([{}]);
     };
@@ -32,6 +41,12 @@ const SpecificationDoctor = props => {
     const delayedUpdatePreview = useRef(
         throttle(data => {
             setExpChange(data);
+        }, 2000)
+    ).current;
+
+    const delayedUpdateData = useRef(
+        debounce(data => {
+            setSpecData(data);
         }, 1000)
     ).current;
 
@@ -43,7 +58,7 @@ const SpecificationDoctor = props => {
         watch[index] = e.target.value ?? "";
 
         // exp.splice(index, 1, e.target.value ?? "");
-        setSpecData(exp);
+        delayedUpdateData(exp);
         delayedUpdatePreview(watch);
     };
 
@@ -81,7 +96,7 @@ const SpecificationDoctor = props => {
                     }
                 });
 
-            dispatch(updateDoctorExperience(props.doctorID, submitExp));
+            dispatch(updateDoctorExperience(props.doctorData?.id, submitExp));
         } else if (typeSpec === 2) {
             let submitLang = {languages: []};
             if (!isEmpty(specData))
@@ -89,7 +104,7 @@ const SpecificationDoctor = props => {
                     submitLang.languages.push({language_id: data.language_id});
                 });
 
-            dispatch(updateDoctorLanguage(props.doctorID, submitLang));
+            dispatch(updateDoctorLanguage(props.doctorData?.id, submitLang));
         }
     };
 
@@ -215,10 +230,6 @@ const SpecificationDoctor = props => {
               </div>
           ));
 
-    // useEffect(() => {
-    //     console.log(expChange);
-    // }, [expChange]);
-
     useEffect(() => {
         if (status) {
             handleCloseDialog();
@@ -235,15 +246,19 @@ const SpecificationDoctor = props => {
 
     return (
         <Dialog fullWidth={true} maxWidth="lg" open={props.dialogVisible} onClose={() => handleCloseDialog()} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">{typeSpec === 1 ? "" : "Chỉnh sửa khả năng ngôn ngữ"}</DialogTitle>
+            <DialogTitle id="form-dialog-title">
+                {typeSpec === 1 ? "" : "Chỉnh sửa khả năng ngôn ngữ Bác sĩ " + props.doctorData?.fullname}
+            </DialogTitle>
             <DialogContent>
                 {typeSpec === 1 ? (
                     <>
                         <div className="doctor-spec-wrapper">
-                            <div className="doctor-specification-name">Cập nhật kinh nghiệm</div>
-                            <div className="doctor-specification-name doctor-exp-preview-toggle" onClick={() => togglePreview()}>
-                                {preview ? "Đóng xem trước" : "Xem trước chỉnh sửa"}
-                            </div>
+                            <div className="doctor-specification-name">Cập nhật kinh nghiệm Bác sĩ {props.doctorData?.fullname}</div>
+                            <Tooltip title={preview ? "" : "Tính năng thử nghiệm"}>
+                                <div className="doctor-specification-name doctor-exp-preview-toggle" onClick={() => togglePreview()}>
+                                    {preview ? "Đóng xem trước" : "Xem trước chỉnh sửa"}
+                                </div>
+                            </Tooltip>
                         </div>
                         <div className="doctor-spec-wrapper">
                             <div className="doctor-spec-exp-field">
@@ -283,15 +298,45 @@ const SpecificationDoctor = props => {
                     </div>
                 )}
                 <div className="doctor-specification-button">
-                    <Button disabled={isLoad} variant="outlined" onClick={() => handleSubmit()} color="primary">
-                        {isLoad ? <CircularProgress size={20} /> : ""} ­ Cập nhật
-                    </Button>
+                    {confirm ? (
+                        <div className="doctor-spec-alert">
+                            <Alert
+                                severity="warning"
+                                action={
+                                    <div>
+                                        <Tooltip title={isLoad ? "Đang gửi yêu cầu" : "Xác nhận"}>
+                                            <Button color="primary" size="small" onClick={() => handleSubmit()}>
+                                                {isLoad ? <CircularProgress size={20} /> : <Done />}
+                                            </Button>
+                                        </Tooltip>
+                                        <Tooltip title="Huỷ">
+                                            <Button color="secondary" size="small" disableElevation onClick={() => setConfirm(false)}>
+                                                <Clear />
+                                            </Button>
+                                        </Tooltip>
+                                    </div>
+                                }
+                            >
+                                Xác nhận <strong>cập nhật</strong> {typeSpec === 1 ? "kinh nghiệm" : "khả năng ngôn ngữ"} của BS{" "}
+                                {props.doctorData?.fullname ?? "này"} như trên?
+                            </Alert>
+                        </div>
+                    ) : (
+                        <Button disabled={isLoad} variant="outlined" onClick={() => setConfirm(true)} color="primary">
+                            Cập nhật
+                        </Button>
+                    )}
                 </div>
             </DialogContent>
             <DialogActions>
-                <Button onClick={() => handleCloseDialog()} color="secondary">
-                    Huỷ chỉnh sửa và đóng
-                </Button>
+                <div className="doctor-spec-dialog-button">
+                    <Button onClick={() => openPrevDialog()}>
+                        <ArrowBack /> ­ ­ Quay lại
+                    </Button>
+                    <Button onClick={() => handleCloseDialog()} color="secondary">
+                        Huỷ chỉnh sửa và đóng
+                    </Button>
+                </div>
             </DialogActions>
         </Dialog>
     );

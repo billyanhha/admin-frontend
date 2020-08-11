@@ -133,8 +133,8 @@ function* watchCheckEmailExpired(action) {
 function* watchGetAllDoctor(action) {
     try {
         yield put(openLoading());
-        const result = yield staffService.getAllDoctor(action);
-        if (result && result.doctors.result) {
+        const result = yield staffService.getAllDoctor(action.data);
+        if (result && result?.doctors?.result) {
             yield put(getAllDoctorSuccessful(result.doctors.result));
         }
     } catch (error) {

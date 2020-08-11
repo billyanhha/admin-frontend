@@ -4,6 +4,7 @@ import {withRouter} from "react-router-dom";
 import {useForm, Controller} from "react-hook-form";
 import AvatarEditor from "react-avatar-editor";
 import _ from "lodash";
+import {NotificationManager} from "react-notifications";
 
 import {
     CallOutlined,
@@ -25,11 +26,12 @@ const EditDoctor = props => {
     const {isLoad} = useSelector(state => state.ui);
     const {control, handleSubmit, register, errors, reset} = useForm(props.data);
     const updateStatus = useSelector(state => state.doctor.updateStatus);
-    const uploadStatus = useSelector(state => state.doctor.uploadStatus);
-    const experience = useSelector(state => state.doctor.experience);
-    const language = useSelector(state => state.doctor.language);
+    const experienceData = useSelector(state => state.doctor.experience);
+    const languageData = useSelector(state => state.doctor.language);
 
     const dispatch = useDispatch();
+    const [experience, setExperience] = useState(null);
+    const [language, setLanguage] = useState(null);
     const [needEdit, setNeedEdit] = useState(false);
     const [avatarImg, setAvatarImg] = useState({preview: "", raw: ""});
     const [avatarVisible, setAvatarVisible] = useState(false);
@@ -41,9 +43,19 @@ const EditDoctor = props => {
         preview: null
     });
 
+    const resetAvatar = () => {
+        setAvatarImg({preview: null, raw: null});
+        setAvatarRef(null);
+        setAvatarVisible(false);
+        setAvatarName("");
+    };
+
     const handleCloseDialog = () => {
         props.closeDialog();
         setNeedEdit(false);
+        resetAvatar();
+        setExperience(null);
+        setLanguage(null);
     };
 
     const onSubmit = data => {
@@ -90,14 +102,14 @@ const EditDoctor = props => {
             const canvas = avatarRef.getImageScaledToCanvas();
             let file;
             canvas.toBlob(blob => {
-                file = new File([blob], avatarName == "" ? "noname.jpg" : avatarName);
+                file = new File([blob], avatarName === "" ? "noname.jpg" : avatarName);
 
                 const formData = new FormData();
-                formData.append("staffAvatar", file);
-                // dispatch(editStaffProfile(token, currentUser?.id, formData));
+                formData.append("doctorAvatar", file);
+                dispatch(updateDoctor(props.data.id, formData));
             });
         } else {
-            console.log("Upload Fail");
+            NotificationManager.error("Không thể xác nhận được ảnh tải lên.", "", 3000);
         }
     };
 
@@ -110,12 +122,6 @@ const EditDoctor = props => {
         } else {
             console.log("Nothing to preview!");
         }
-    };
-
-    const resetAvatar = () => {
-        setAvatarImg({preview: null, raw: null});
-        setAvatarRef(null);
-        setAvatarVisible(false);
     };
 
     const renderExperience = _.isEmpty(experience) ? (
@@ -147,12 +153,9 @@ const EditDoctor = props => {
     );
 
     useEffect(() => {
-        if (uploadStatus) {
-            resetAvatar();
-            // dispatch(setStatus(false));
-            // dispatch(getUser(token));
-        }
-    }, [uploadStatus]);
+        setExperience(experienceData);
+        setLanguage(languageData);
+    }, [experienceData, languageData]);
 
     useEffect(() => {
         if (props.data.id) {

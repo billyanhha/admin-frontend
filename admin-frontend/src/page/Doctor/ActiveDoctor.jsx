@@ -1,8 +1,10 @@
-import React, {useState, useEffect} from "react";
+import React, {useEffect} from "react";
 import {withRouter} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
+
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle} from "@material-ui/core";
-import {ErrorOutlineOutlined} from "@material-ui/icons";
+import { Alert, AlertTitle } from '@material-ui/lab';
+
 import {updateDoctor, updateDoctorSuccessful} from "../../redux/staff";
 
 const ActiveDoctor = props => {
@@ -23,16 +25,15 @@ const ActiveDoctor = props => {
     }, [updateStatus]);
 
     return (
-        <Dialog open={props.dialogVisible} onClose={props.closeDialog} aria-labelledby="form-dialog-title">
+        <Dialog maxWidth="md" open={props.dialogVisible} onClose={props.closeDialog} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Thay đổi thạng thái</DialogTitle>
             <DialogContent>
                 {props?.data?.active ? (
                     <div className="doctor-active-msg-warning">
-                        <b className="showoff-status-deactive">
-                            <ErrorOutlineOutlined style={{fontSize: 20}} />
-                            {" ­ "} Cảnh báo!
-                        </b>{" "}
-                        Vô hiệu hoá tài khoản Bác sĩ sẽ huỷ tất cả cuộc hẹn / gói sắp tới của Bác sĩ này!
+                        <Alert severity="warning">
+                            <AlertTitle><strong>Cảnh báo!</strong></AlertTitle>
+                            Vô hiệu hoá tài khoản sẽ <strong>HUỶ TẤT CẢ</strong> cuộc hẹn và gói sắp tới của Bác sĩ {props?.data?.fullname}!
+                        </Alert>
                     </div>
                 ) : (
                     ""

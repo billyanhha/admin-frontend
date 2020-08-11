@@ -68,11 +68,13 @@ staffService.checkEmailExpired = token =>
             .catch(err => reject(err));
     });
 
-staffService.getAllDoctor = () =>
+staffService.getAllDoctor = data =>
     new Promise((resolve, reject) => {
         const api = "/api/doctor";
         axios
-            .get(api)
+            .get(api, {
+                params: data
+            })
             .then(result => {
                 resolve(result.data);
             })

@@ -151,17 +151,17 @@
     text-align: center;
 }
 
-.doctor-language-add{
+.doctor-language-add {
     display: flex;
     max-width: 500px;
     margin: 20px 0;
 }
 
-.doctor-all-degree-input{
+.doctor-all-degree-input {
     display: flex;
 }
 
-.doctor-accepted-degree{
+.doctor-accepted-degree {
     margin-top: 20px;
     display: grid;
     place-items: center;
@@ -170,11 +170,11 @@
     column-gap: 10px;
     row-gap: 20px;
 }
-.doctor-accepted-degree div{
+.doctor-accepted-degree div {
     width: 100%;
 }
 
-.doctor-all-degree{
+.doctor-all-degree {
     padding: 20px;
     background-color: #fff;
     box-shadow: 0 0 8px 2px #f0f0f0;
@@ -185,13 +185,28 @@
     transition: 0.2s ease;
 }
 
-.doctor-all-degree:hover{
+.doctor-all-degree:hover {
     box-shadow: 0 0 5px 4px #f0f0f0;
+}
+
+.doctor-spec-dialog-button {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.doctor-spec-alert {
+    margin: 0 auto;
+    width: 60%;
 }
 
 @media screen and (max-width: 1600px) {
     .doctor-spec-preview {
-        max-height: 60vh;
+        max-height: 50vh;
+    }
+
+    .doctor-spec-alert {
+        width: 70%;
     }
 }
 
@@ -201,4 +216,7 @@
 
 /* Ipad Pro, Tablet, Wacom, Monitor */
 @media screen and (max-width: 1280px) {
+    .doctor-spec-alert {
+        width: 100%;
+    }
 }

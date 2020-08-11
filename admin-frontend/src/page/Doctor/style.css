@@ -10,6 +10,24 @@
     height: 90vh;
 }
 
+.doctor-table-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.doctor-table-header .doctor-table-title{
+    flex: 3;
+    margin-left: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.doctor-table-header .doctor-table-searchBar{
+    flex: 1;
+}
+
 .doctor-management {
     display: flex;
     margin-bottom: 20px;
@@ -243,16 +261,12 @@
 }
 
 .doctor-specification-button {
-    margin-top: 10px;
+    margin: 10px auto;
     text-align: center;
 }
 
 .doctor-specification-button button {
     font-weight: bold !important;
-}
-
-button {
-    font-family: "Open Sans", sans-serif !important;
 }
 
 .doctor-active-msg-warning {
