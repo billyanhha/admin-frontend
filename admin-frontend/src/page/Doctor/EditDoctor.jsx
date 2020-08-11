@@ -120,7 +120,7 @@ const EditDoctor = props => {
                 .then(res => res.blob())
                 .then(blob => setAvatarImg({preview: window.URL.createObjectURL(blob)}));
         } else {
-            console.log("Nothing to preview!");
+            NotificationManager.error("Không thể mở chế độ xem trước.", "", 3000);
         }
     };
 
@@ -425,7 +425,7 @@ const EditDoctor = props => {
                                 variant="outlined"
                                 size="small"
                                 color="primary"
-                                onClick={() => props.openSpecification(1, experience)}
+                                onClick={() => props.openSpecification(1, experienceData)}
                             >
                                 Cập nhật kinh nghiệm
                             </Button>
@@ -439,7 +439,7 @@ const EditDoctor = props => {
                                     variant="outlined"
                                     size="small"
                                     color="primary"
-                                    onClick={() => props.openSpecification(2, language)}
+                                    onClick={() => props.openSpecification(2, languageData)}
                                 >
                                     Cập nhật
                                 </Button>

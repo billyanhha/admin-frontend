@@ -31,11 +31,9 @@ const SpecificationDoctor = props => {
     };
 
     const openPrevDialog = () => {
-        props.openPreviousDialog(1);
+        props.openPreviousDialog(1, null);
         setPreview(false);
         setConfirm(false);
-        setSpecData([{}]);
-        setLangPool([{}]);
     };
 
     const delayedUpdatePreview = useRef(

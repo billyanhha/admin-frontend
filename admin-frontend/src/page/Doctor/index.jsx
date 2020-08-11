@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import MaterialTable from "material-table";
 import Pagination from "@material-ui/lab/Pagination";
-import {Avatar, Button, TextField, InputAdornment, Tooltip} from "@material-ui/core";
+import {Avatar, Button, TextField, InputAdornment, Tooltip, CircularProgress} from "@material-ui/core";
 import {Add, InfoOutlined, Block, Search} from "@material-ui/icons";
 import {debounce} from "lodash";
 
@@ -277,7 +277,11 @@ const Doctor = () => {
                                 />
                             </div>
                         ) : (
-                            ""
+                            <div className="doctor-loading">
+                                <CircularProgress size={40} />
+                                <br />
+                                Đang lấy dữ liệu
+                            </div>
                         )}
                     </div>
                 );
