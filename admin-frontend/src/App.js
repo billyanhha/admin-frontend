@@ -12,6 +12,7 @@ import ProfileStaff from "./page/Profile";
 import MyAccount from "./page/MyAccount";
 import NoMatch from "./page/NoMatch";
 import Staff from "./page/Staff";
+import Doctor from "./page/Doctor";
 import AdminOnlyRoute from "./routeConfig/AdminOnlyRoute";
 import Service from "./page/Service";
 import Statistic from "./page/Statistic";
@@ -53,6 +54,9 @@ const App = () => {
                 <AdminOnlyRoute exact path="/staff">
                     <Staff />
                 </AdminOnlyRoute>
+                <PrivateRoute exact path="/doctor">
+                    <Doctor />
+                </PrivateRoute>
                 <PrivateRoute exact path="/service">
                     <Service />
                 </PrivateRoute>
