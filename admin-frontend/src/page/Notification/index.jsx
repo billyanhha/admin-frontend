@@ -65,7 +65,7 @@ const Notification = () => {
                     {value?.content}
                 </p>
                 <div className="notify-date">
-                    {moment(value?.created_at).startOf('hour').fromNow()}
+                    {moment(value?.created_at).fromNow()}
                 </div>
             </div>
         )
