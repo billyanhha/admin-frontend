@@ -24,7 +24,7 @@ import DefaultAvatar from "../../assets/image/hhs-default_avatar.jpg";
 
 const EditDoctor = props => {
     const {isLoad} = useSelector(state => state.ui);
-    const {control, handleSubmit, register, errors, reset} = useForm(props.data);
+    const {control, handleSubmit, register, reset} = useForm(props.data);
     const updateStatus = useSelector(state => state.doctor.updateStatus);
     const experienceData = useSelector(state => state.doctor.experience);
     const languageData = useSelector(state => state.doctor.language);
@@ -54,8 +54,6 @@ const EditDoctor = props => {
         props.closeDialog();
         setNeedEdit(false);
         resetAvatar();
-        // setExperience(null);
-        // setLanguage(null);
     };
 
     const onSubmit = data => {
@@ -153,8 +151,6 @@ const EditDoctor = props => {
     );
 
     useEffect(() => {
-        console.log(experienceData)
-        console.log(languageData)
         setExperience(experienceData);
         setLanguage(languageData);
     }, [experienceData, languageData]);
@@ -317,7 +313,8 @@ const EditDoctor = props => {
                                 <Controller
                                     as={TextField}
                                     margin="normal"
-                                    label={needEdit ? "Email (không thể thay đổi)" : "Email"}
+                                    // label={needEdit ? "Email (không thể thay đổi)" : "Email"}
+                                    label="Email"
                                     name="email"
                                     type="email"
                                     fullWidth
@@ -327,10 +324,11 @@ const EditDoctor = props => {
                                                 <ContactMailOutlined />
                                             </InputAdornment>
                                         ),
-                                        readOnly: true
+                                        // readOnly: true
                                     }}
                                     control={control}
                                     defaultValue=""
+                                    required
                                 />
                                 <div className="doctor-sex-session">
                                     Giới tính

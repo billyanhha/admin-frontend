@@ -6,7 +6,8 @@ import MaterialTable from 'material-table';
 import { useSelector, useDispatch } from 'react-redux';
 import { getStaff } from '../../redux/user';
 import Pagination from '@material-ui/lab/Pagination';
-import { Avatar, Button } from '@material-ui/core';
+import { Avatar, Button, Tooltip } from '@material-ui/core';
+import { InfoOutlined } from '@material-ui/icons';
 import gender from '../../config/gender'
 import AddIcon from '@material-ui/icons/Add';
 import AddStaff from './AddStaff';
@@ -37,7 +38,18 @@ const columns = [
         )
     },
     {
-        title: 'Email', field: 'email'
+        title: 'Email', field: 'email', render: rowData => (
+            <div className="table-email">
+                {rowData.email}{" "}
+                {rowData.email && rowData.is_email_verified === false ? (
+                    <Tooltip title="Email chưa xác thực">
+                        <InfoOutlined fontSize="inherit" style={{color: "#faad14"}} />
+                    </Tooltip>
+                ) : (
+                    ""
+                )}
+            </div>
+        )
     },
     {
         title: 'Giới tính', field: 'gender', render: rowData => (
@@ -162,6 +174,9 @@ const Staff = () => {
                                     </div>
                                 )
                             }
+                        }}
+                        options={{
+                            actionsColumnIndex: -1
                         }}
                     />
                 </div>

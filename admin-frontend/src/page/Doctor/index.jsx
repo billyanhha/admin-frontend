@@ -22,14 +22,13 @@ const columns = [
     {
         title: "ID",
         field: "id",
-        editable: "never",
-        sorting: false,
-        width: 150
+        editable: "never"
+        // width: 150
     },
     {
         title: "Định danh",
         field: "fullname",
-        width: 220,
+        // width: 220,
         render: rowData => (
             <div className="doctor-info-basic">
                 <Avatar style={{width: "80px", height: "80px", marginBottom: "5px"}} alt={rowData.fullname} src={rowData.avatarurl} />
@@ -43,38 +42,42 @@ const columns = [
     {
         title: "Email",
         field: "email",
-        width: 150
+        render: rowData => (
+            <div className="table-email">
+                {rowData.email}{" "}
+                {rowData.email && rowData.is_email_verified === false ? (
+                    <Tooltip title="Email chưa xác thực">
+                        <InfoOutlined fontSize="inherit" style={{color: "#faad14"}} />
+                    </Tooltip>
+                ) : (
+                    ""
+                )}
+            </div>
+        )
     },
     {
         title: "Giới tính",
         field: "gender",
-        // width: 100,
-        render: rowData => <div>{gender[rowData.gender]}</div>,
-        searchable: false
+        render: rowData => <div>{gender[rowData.gender]}</div>
     },
     {
         title: "Địa chỉ",
-        field: "address",
-        width: 300
+        field: "address"
     },
     {
         title: "Số điện thoại",
         field: "phone",
-        type: "numeric",
-        // width: 150
+        type: "numeric"
     },
     {
-        title: "Trạng thái tài khoản",
+        title: "Trạng thái",
         field: "active",
-        // width: 100,
-        searchable: false,
         headerStyle: {
             textAlign: "center"
         },
         cellStyle: {
             textAlign: "center"
         },
-
         render: rowData => (
             <div className={rowData.active ? "staff-active" : "staff-deactive"}>{rowData.active ? "Hoạt động" : "Ngưng hoạt động"}</div>
         )
@@ -269,6 +272,7 @@ const Doctor = () => {
                                     options={{
                                         actionsColumnIndex: -1,
                                         search: false,
+                                        sorting: false,
                                         headerStyle: {
                                             fontWeight: "600"
                                         }
@@ -302,7 +306,10 @@ const Doctor = () => {
     }, [page, itemsPage]);
 
     useEffect(() => {
-        if (updateDocStatus || addDocStatus) dispatch(getAllDoctor());
+        if (updateDocStatus || addDocStatus) {
+            dispatch(getAllDoctor());
+            setPage(1);
+        }
     }, [addDocStatus, updateDocStatus]);
 
     useEffect(() => {

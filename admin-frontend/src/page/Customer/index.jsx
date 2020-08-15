@@ -3,7 +3,7 @@ import MiniDrawer from '../../component/Drawer';
 import Pagination from '@material-ui/lab/Pagination';
 import MaterialTable from 'material-table';
 import { useForm, Controller } from 'react-hook-form';
-import { TextField, Button, Avatar, Select } from '@material-ui/core';
+import { TextField, Button, Avatar, Select, Tooltip, Chip } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import gender from "../../config/gender"
 import { getCustomer, changeCustomerStatus, getCustomerPatient } from '../../redux/customer';
@@ -12,6 +12,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import {InfoOutlined} from '@material-ui/icons';
 import moment from "moment"
 import PatientDialog from '../../component/PatientDialog';
 
@@ -57,7 +58,23 @@ const columns = [
         title: 'Điện thoại', field: 'phone'
     },
     {
-        title: 'Email', field: 'email'
+        title: 'Email', field: 'email',
+        render: rowData => (
+            <div className="table-email">
+                {rowData.email}
+                {rowData.email ? (
+                    rowData.is_email_verified === false ? (
+                        <Tooltip title="Email chưa xác thực">
+                            <InfoOutlined fontSize="inherit" style={{color: "#faad14"}} />
+                        </Tooltip>
+                    ) : (
+                        <Chip size="small" className="chip-added" label={(rowData.mail_subscribe ? "Đã" : "Chưa") + " đăng kí"} />
+                    )
+                ) : (
+                    ""
+                )}
+            </div>
+        )
     },
     {
         title: 'Ngày sinh', field: 'dateofbirth'
@@ -228,6 +245,9 @@ const Customer = () => {
 
                             )
                         }
+                    }}
+                    options={{
+                        actionsColumnIndex: -1
                     }}
                 />
             </MiniDrawer>
