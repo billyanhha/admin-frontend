@@ -60,7 +60,7 @@ const columns = [
     {
         title: 'Email', field: 'email',
         render: rowData => (
-            <div className="table-email">
+            <div>
                 {rowData.email}
                 {rowData.email ? (
                     rowData.is_email_verified === false ? (
@@ -68,7 +68,10 @@ const columns = [
                             <InfoOutlined fontSize="inherit" style={{color: "#faad14"}} />
                         </Tooltip>
                     ) : (
-                        <Chip size="small" className="chip-added" label={(rowData.mail_subscribe ? "Đã" : "Chưa") + " đăng kí"} />
+                        <>
+                            <br/>
+                            <Chip size="small" className={rowData.mail_subscribe? "chip-added" : "chip-unsubscribe"} label={(rowData.mail_subscribe ? "Đã" : "Chưa") + " đăng kí"} />
+                        </>
                     )
                 ) : (
                     ""
