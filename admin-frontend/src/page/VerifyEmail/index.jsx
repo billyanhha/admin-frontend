@@ -2,11 +2,10 @@ import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory, withRouter} from "react-router-dom";
 
-import {LoadingOutlined} from "@ant-design/icons";
+import {CircularProgress, Button} from "@material-ui/core";
+import {verifyEmail} from "../../redux/email";
 
-import {verifyEmail} from "../../redux/user";
-
-import logo from "../../assest/logo/IkemenHHS_w.png";
+import logo from "../../assets/image/Ikemen_staff.png";
 import "./style.css";
 
 const VerifyEmail = props => {
@@ -18,11 +17,12 @@ const VerifyEmail = props => {
     const history = useHistory();
     const dispatch = useDispatch();
 
-    const redirectToHomepage = () => {
-        history.replace("/");
+    const redirectToLogin = () => {
+        history.replace("/login");
     };
 
     useEffect(() => {
+        console.log(verifyStatus)
         if (tokenMail) {
             dispatch(verifyEmail(tokenMail));
         }
@@ -30,7 +30,7 @@ const VerifyEmail = props => {
 
     return (
         <div className="verify-email-page">
-            <div className="verify-email-logo" onClick={() => redirectToHomepage()}>
+            <div className="verify-email-logo" onClick={() => redirectToLogin()}>
                 <img alt="logo" src={logo} />
             </div>
             <div className="verify-email-wrapper">
@@ -41,7 +41,7 @@ const VerifyEmail = props => {
                                 <img src="https://img.icons8.com/cotton/100/000000/-message-exchange.png" />
                             </div>
                             <div className="verify-email-msg">
-                                <LoadingOutlined /> Đang gửi yêu cầu...
+                                <CircularProgress size={20} /> Đang gửi yêu cầu...
                             </div>
                         </>
                     ) : (
@@ -70,9 +70,9 @@ const VerifyEmail = props => {
                     )}
                 </div>
                 <div className="verify-email-to-login">
-                    <button disabled={isLoad} className="recovery-button" onClick={() => redirectToHomepage()}>
-                        Đến trang chủ
-                    </button>
+                    <Button disabled={isLoad} className="forgot-button" variant="outlined" color="inherit" onClick={() => redirectToLogin()}>
+                        Đến trang đăng nhập
+                    </Button>
                 </div>
             </div>
         </div>

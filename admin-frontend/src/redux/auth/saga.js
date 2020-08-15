@@ -39,11 +39,6 @@ function* watchUserLogoutWorker(action) {
     }
 }
 
-
-
-
-
-
 export function* authSaga() {
     yield takeLatest(USER_LOGIN, watchUserLoginWorker);
     yield takeLatest(USER_LOGOUT, watchUserLogoutWorker);
