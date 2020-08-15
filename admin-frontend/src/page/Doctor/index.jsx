@@ -43,12 +43,12 @@ const columns = [
     {
         title: "Email",
         field: "email",
-        width: 200
+        width: 150
     },
     {
         title: "Giới tính",
         field: "gender",
-        width: 100,
+        // width: 100,
         render: rowData => <div>{gender[rowData.gender]}</div>,
         searchable: false
     },
@@ -61,12 +61,12 @@ const columns = [
         title: "Số điện thoại",
         field: "phone",
         type: "numeric",
-        width: 150
+        // width: 150
     },
     {
         title: "Trạng thái tài khoản",
         field: "active",
-        width: 200,
+        // width: 100,
         searchable: false,
         headerStyle: {
             textAlign: "center"

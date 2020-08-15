@@ -54,8 +54,8 @@ const EditDoctor = props => {
         props.closeDialog();
         setNeedEdit(false);
         resetAvatar();
-        setExperience(null);
-        setLanguage(null);
+        // setExperience(null);
+        // setLanguage(null);
     };
 
     const onSubmit = data => {
@@ -153,6 +153,8 @@ const EditDoctor = props => {
     );
 
     useEffect(() => {
+        console.log(experienceData)
+        console.log(languageData)
         setExperience(experienceData);
         setLanguage(languageData);
     }, [experienceData, languageData]);

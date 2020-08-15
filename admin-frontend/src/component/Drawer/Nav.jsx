@@ -117,8 +117,8 @@ const MenuAppBar = (props) => {
                         open={open}
                         onClose={handleClose}
                     >
-                        <MenuItem onClick={() => toNotifiPage()}><span className = "highlight">{unreadNotifyNumber || ''} Thông báo</span></MenuItem>
                         <MenuItem onClick={() => redirectToProfile()}>Thông tin cá nhân</MenuItem>
+                        <MenuItem onClick={() => toNotifiPage()}><span className = "highlight">{unreadNotifyNumber || ''} Thông báo</span></MenuItem>
                         <MenuItem onClick={() => redirectToAccountPage()}>Cài đặt</MenuItem>
                         <MenuItem onClick={logout}>Đăng xuất</MenuItem>
                     </Menu>
