@@ -23,7 +23,7 @@ const columns = [
         )
     },
     {
-        title: 'Loại dịch vụ', field: 'category_name', render: rowData => (
+        title: 'Tên', field: 'category_name', render: rowData => (
             <div className="service-category-field">
                 <Avatar style={{ width: '80px', height: '80px' }} alt={rowData.name} src={rowData.image} />
                 <h4>
