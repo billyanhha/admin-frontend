@@ -21,6 +21,8 @@ import Form from "./page/Form";
 import ForgotPassword from "./page/ForgotPassword";
 import Notify from "./component/Notify";
 import Notification from "./page/Notification";
+import VerifyEmail from './page/VerifyEmail';
+
 require('dotenv').config()
 
 
@@ -32,6 +34,8 @@ const App = () => {
             <Switch>
                 <Route exact path="/login" render={props => <SystemLogin {...props} />} />
                 <Route exact path="/forgot-password/:token" render={props => <ForgotPassword {...props} />} />
+                <Route exact path="/verify-email/:token" render={(props) => <VerifyEmail {...props} />} />
+
                 <PrivateRoute exact path="/">
                     <Home />
                 </PrivateRoute>

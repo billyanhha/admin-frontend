@@ -40,11 +40,6 @@
     border-width: 1.5px !important;
 }
 
-.chip-added {
-    background-color: #00bc9a !important;
-    color: #fff !important;
-}
-
 .doctor-spec-exp {
     transition: 0.5s ease;
     display: flex;

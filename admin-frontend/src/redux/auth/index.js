@@ -1,4 +1,4 @@
-import { USER_LOGIN, USER_LOGOUT, USER_LOGIN_SUCCESSFUL } from "./action"
+import { USER_LOGIN, USER_LOGOUT, USER_LOGIN_SUCCESSFUL  } from "./action"
 
 
 export const userLogin = (data) => {
@@ -20,7 +20,3 @@ export const userLoginSuccessful = (token) => {
         token
     }
 }
-
-
-
-

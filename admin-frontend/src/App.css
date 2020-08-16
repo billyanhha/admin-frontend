@@ -36,3 +36,16 @@ button {
     padding: 10px 0 !important;
 }
 
+.table-email{
+    display: flex;
+}
+
+.chip-added {
+    background-color: #00bc9a !important;
+    color: #fff !important;
+}
+
+.chip-unsubscribe {
+    background-color: #faad14 !important;
+    color: #fff !important;
+}

@@ -74,8 +74,16 @@ userService.changeStaffStatus = (data, token) => new Promise((reslove, reject) =
         .catch(err => reject(err))
 });
 
-
-
+userService.verifyEmail = token =>
+    new Promise((resolve, reject) => {
+        const api = `/api/auth/verify-email/${token} `;
+        axios
+            .put(api, {role: "staff"})
+            .then(result => {
+                resolve(result.data);
+            })
+            .catch(err => reject(err));
+    });
 
 
 export default userService;

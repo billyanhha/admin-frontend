@@ -10,6 +10,7 @@ import { staffSaga } from './staff/saga';
 import { statisticSaga } from './statistic/saga';
 import { formSaga } from './form/saga';
 import { notifySaga } from './notification/saga';
+import { emailSaga } from './email/saga';
 
 export function* rootSaga() {
   yield all([
@@ -23,6 +24,7 @@ export function* rootSaga() {
     statisticSaga(),
     customerSaga(),
     formSaga(),
-    notifySaga()
+    notifySaga(),
+    emailSaga()
   ]);
 }
