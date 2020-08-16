@@ -1,10 +1,11 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest, select } from 'redux-saga/effects';
 import authService from '../../service/authService'
 import { openLoading, closeLoading } from '../ui';
 import { USER_LOGIN, USER_LOGOUT } from './action';
 import { userLoginSuccessful } from '.';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { clearUserInfo } from '../user';
+import { clearIoInstance } from '../notification';
 
 function* watchUserLoginWorker(action) {
     try {
@@ -28,8 +29,13 @@ function* watchUserLoginWorker(action) {
 function* watchUserLogoutWorker(action) {
     try {
         yield put(openLoading())
+        const { io } = yield select(state => state.notify)
+        if(io){
+            io.emit("logout", "");
+        }
         yield put(clearUserInfo());
-        window.location.pathname = "/login"
+        yield put(clearIoInstance());
+
     } catch (error) {
         NotificationManager.error(error?.response?.data?.err || error?.response?.data?.message, 'Thông báo')
         console.log(error);

@@ -93,13 +93,16 @@ const MiniDrawer = (props) => {
 
   const auth = useSelector(state => state.auth);
   const {currentUser} = useSelector(state => state.user);
+  const { io } = useSelector(state => state.notify);
   const dispatch = useDispatch();
 
   useEffect(() => {
 
-    dispatch(getUser(auth?.token))
+    if(io) {
+      dispatch(getUser(auth?.token))
+    }
 
-  }, []);
+  }, [io]);
 
 
 

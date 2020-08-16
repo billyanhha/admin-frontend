@@ -33,7 +33,7 @@ const MenuAppBar = (props) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const { currentUser } = useSelector(state => state.user);
-    const { unreadNotifyNumber } = useSelector(state => state.notify);
+    const { unreadNotifyNumber , io } = useSelector(state => state.notify);
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -46,6 +46,10 @@ const MenuAppBar = (props) => {
         }
     }, [currentUser]);
 
+    useEffect(() => {
+
+    }, [io]);
+
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -55,7 +59,10 @@ const MenuAppBar = (props) => {
     };
 
     const logout = () => {
-        dispatch(userLogout())
+        if(io) {
+            dispatch(userLogout())
+
+        }
     }
 
     const redirectToProfile = () => {
