@@ -343,7 +343,7 @@ function* watchCreateDegree(action) {
         if (result?.degreeCreated) {
             yield put(createDegreeSuccessful(true));
             yield put(getAllDegree());
-            NotificationManager.success("Thêm ngôn ngữ thành công!", "", 3000);
+            NotificationManager.success("Thêm bằng cấp thành công!", "", 3000);
         }
     } catch (error) {
         NotificationManager.error(error?.response?.data?.err ?? "Hệ thống quá tải", "Thông báo");

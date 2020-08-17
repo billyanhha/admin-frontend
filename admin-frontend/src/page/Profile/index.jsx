@@ -44,7 +44,7 @@ const ProfileStaff = () => {
     ];
 
     const onSubmit = data => {
-        let phone = data.phone.replace(/\s+/g, "").substring(1);
+        let phone = data.phone.replace(/\s+/g, "");
         let staffEdit = {
             fullname: data.fullname,
             phone: phone,
@@ -145,7 +145,7 @@ const ProfileStaff = () => {
                                             <img id="Avatar-profile" src={currentUser?.avatarurl ?? DefaultAvatar} alt="Avatar" />
                                         </div>
                                         <div className={currentUser?.role === "admin" ? "profile-form-end avatar-action" : "profile-display-none"}>
-                                            <EditTwoTone id="Avatar-icon" twoToneColor="#00BC9A" onClick={() => setAvatarVisible(true)} />
+                                            <EditTwoTone id="Avatar-icon" style={{ color: "#3f51b5" }} fontSize="small" onClick={() => setAvatarVisible(true)} />
                                             <div className="avatar-note">Đổi ảnh đại diện</div>
                                         </div>
                                     </div>
@@ -313,6 +313,7 @@ const ProfileStaff = () => {
                                         mask="+84 999 999 999"
                                         placeholder="+84 912 345 678"
                                         autoComplete="off"
+                                        defaultValue=""
                                         maskChar={null}
                                         rules={{required: "Bạn hãy điền số điện thoại "}}
                                     />
