@@ -98,11 +98,11 @@ const MiniDrawer = (props) => {
 
   useEffect(() => {
 
-    if(io) {
+    if(auth?.token) {
       dispatch(getUser(auth?.token))
     }
 
-  }, [io]);
+  }, []);
 
 
 

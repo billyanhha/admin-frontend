@@ -22,18 +22,14 @@ const Notify = (props) => {
             dispatch(clearIoInstance())
         }
 
-    }, [token]);
-
-    useEffect(() => {
-
-
-        if (_.isEmpty(notify?.io)) {
+        if (_.isEmpty(notify?.io) && token) {
             const ioConnectData = io(process.env.REACT_APP_SERVER);
             dispatch(saveIoInstance(ioConnectData))
             ioConnectData.emit("client-send-userId", "staff")
         }
 
-    }, []);
+    }, [token]);
+
 
     const markReadNotifyFunc = (value) => {
         if (!value?.is_read) {

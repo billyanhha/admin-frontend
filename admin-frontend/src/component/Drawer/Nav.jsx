@@ -40,15 +40,13 @@ const MenuAppBar = (props) => {
 
     useEffect(() => {
 
-        if (currentUser?.id) {
+        if (currentUser?.id && io) {
             const data = { receiver_id: currentUser?.id }
             dispatch(countUnreadNotify(data))
         }
-    }, [currentUser]);
+    }, [currentUser, io]);
 
-    useEffect(() => {
 
-    }, [io]);
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
