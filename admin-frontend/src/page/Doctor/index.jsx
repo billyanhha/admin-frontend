@@ -274,7 +274,7 @@ const Doctor = () => {
                                         search: false,
                                         sorting: false,
                                         headerStyle: {
-                                            fontWeight: "600"
+                                            fontWeight: "500"
                                         }
                                     }}
                                     style={{marginTop: "20px"}}

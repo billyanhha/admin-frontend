@@ -56,6 +56,7 @@ const ManageSpecification = () => {
             if (editLang) {
                 setEditLang(false);
                 if (openAlert && (!editLang || !editDegree)) setOpenAlert(false);
+                if (addInput) setAddInput(false)
             } else {
                 setEditLang(true);
                 setOpenAlert(true);
@@ -65,6 +66,7 @@ const ManageSpecification = () => {
                 setEditDegree(false);
                 if (degreeID) setDegreeID(null);
                 if (openAlert && (!editLang || !editDegree)) setOpenAlert(false);
+                if (addInputDegree) setAddInputDegree(false);
             } else {
                 setEditDegree(true);
                 setOpenAlert(true);
@@ -273,7 +275,7 @@ const ManageSpecification = () => {
                         </div>
                     ) : (
                         <div className="doctor-accepted-cancel" onClick={() => toggleView(0)}>
-                            Về chế độ xem
+                            Đóng chỉnh sửa
                         </div>
                     )}
                 </div>
