@@ -106,6 +106,14 @@ const ServiceRequest = (props) => {
                 options={{
                     search: false
                 }}
+                localization={{
+                    body: {
+                        emptyDataSourceMessage: "Không có dữ liệu"
+                    },
+                    header: {
+                        actions: "Hành động"
+                    }
+                }}
                 columns={columns}
                 data={requests}
                 editable={{

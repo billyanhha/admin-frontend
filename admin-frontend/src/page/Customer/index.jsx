@@ -209,6 +209,14 @@ const Customer = () => {
                     title="Danh sách người dùng"
                     columns={columns}
                     data={customers}
+                    localization={{
+                        body: {
+                            emptyDataSourceMessage: "Không có dữ liệu"
+                        },
+                        header: {
+                            actions: "Hành động"
+                        }
+                    }}
                     actions={[
                         {
                             icon: 'save',

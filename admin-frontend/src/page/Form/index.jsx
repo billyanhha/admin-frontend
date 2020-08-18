@@ -57,7 +57,7 @@ const Form = () => {
                     onChange={handleChange}
                 >
                     <option value={'package_result_form'}>Văn bản kết quả gói</option>
-                    <option value={'appointment_result_form'}>Văn bản kết quả dịch vụ</option>
+                    <option value={'appointment_result_form'}>Văn bản kết quả cuộc hẹn</option>
                 </Select>
                 <div className="edit-form">
                     <JoditEditor
