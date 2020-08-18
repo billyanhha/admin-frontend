@@ -59,7 +59,7 @@ const EditServiceCategory = (props) => {
 
     return (
         <Dialog open={props.dialogVisible} onClose={props.closeDialog} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Thêm hạng mục dịch vụ</DialogTitle>
+            <DialogTitle id="form-dialog-title">Sửa hạng mục dịch vụ</DialogTitle>
             <DialogContent>
                 <div>
                     <form onSubmit={handleSubmit(onSubmit)}>

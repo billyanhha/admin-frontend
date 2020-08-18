@@ -207,9 +207,6 @@ const Customer = () => {
                 <MaterialTable
                     isLoading={isLoad}
                     title="Danh sách người dùng"
-                    options={{
-                        search: false
-                    }}
                     columns={columns}
                     data={customers}
                     actions={[
@@ -250,7 +247,8 @@ const Customer = () => {
                         }
                     }}
                     options={{
-                        actionsColumnIndex: -1
+                        actionsColumnIndex: -1,
+                        search: false
                     }}
                 />
             </MiniDrawer>

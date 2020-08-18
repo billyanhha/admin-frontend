@@ -6,13 +6,14 @@ import MaterialTable from 'material-table';
 import { useSelector, useDispatch } from 'react-redux';
 import { getStaff } from '../../redux/user';
 import Pagination from '@material-ui/lab/Pagination';
-import { Avatar, Button, Tooltip } from '@material-ui/core';
+import { Avatar, Button, Tooltip, TextField, Select } from '@material-ui/core';
 import { InfoOutlined } from '@material-ui/icons';
 import gender from '../../config/gender'
 import AddIcon from '@material-ui/icons/Add';
 import AddStaff from './AddStaff';
 import EditStaff from './EditStaff';
 import ActiveStaff from './ActiveStaff';
+import { Controller, useForm } from 'react-hook-form';
 
 const itemsPage = 5
 
@@ -31,7 +32,7 @@ const columns = [
         title: 'Tên', field: 'fullname', render: rowData => (
             <div className="staff-auth">
                 <Avatar style={{ width: '80px', height: '80px', marginRight: '10px' }} alt={rowData.fullname} src={rowData.avatarurl} />
-                <h4 style={{marginRight: 'auto'}}>
+                <h4 style={{ marginRight: 'auto' }}>
                     {rowData.fullname}
                 </h4>
             </div>
@@ -43,11 +44,11 @@ const columns = [
                 {rowData.email}{" "}
                 {rowData.email && rowData.is_email_verified === false ? (
                     <Tooltip title="Email chưa xác thực">
-                        <InfoOutlined fontSize="inherit" style={{color: "#faad14"}} />
+                        <InfoOutlined fontSize="inherit" style={{ color: "#faad14" }} />
                     </Tooltip>
                 ) : (
-                    ""
-                )}
+                        ""
+                    )}
             </div>
         )
     },
@@ -67,6 +68,8 @@ const columns = [
 
 const Staff = () => {
 
+    const { control, handleSubmit, reset } = useForm();
+
     const { staffs } = useSelector(state => state.userStaff);
     const { isLoad } = useSelector(state => state.ui);
     const dispatch = useDispatch();
@@ -75,12 +78,15 @@ const Staff = () => {
     const [editDialogVisible, seteditDialogVisible] = useState(false);
     const [activeDialogVisible, setactiveDialogVisible] = useState(false);
     const [currentStaffData, setCurrentStaffData] = useState({});
+    const [query, setquery] = useState('');
+    const [active, setactive] = useState('');
 
     useEffect(() => {
 
         getStaffData()
 
     }, []);
+
 
     const openAddDialog = () => {
         setdialogVisible(true)
@@ -92,7 +98,7 @@ const Staff = () => {
         setCurrentStaffData(data)
     }
 
-    const openActiveDialog= (data) => {
+    const openActiveDialog = (data) => {
         setactiveDialogVisible(true)
         setCurrentStaffData(data)
     }
@@ -104,17 +110,28 @@ const Staff = () => {
         setactiveDialogVisible(false)
     }
 
-    const getStaffData = () => {
-        let data = { role: 'coordinator', itemsPage: itemsPage, page: page };
-        dispatch(getStaff(data))
-    }
+    const onSubmit = data => { // search
+        setquery(data.query)
+        setpage(1)
+        getStaffData(1, data.query, active)
+    };
 
     const handleChangePage = (event, newPage) => { //change page paginaation
         setpage(newPage);
-        let data = { role: 'coordinator', itemsPage: itemsPage, page: newPage };
-        dispatch(getStaff(data))
+        getStaffData(newPage, query, active)
     };
 
+    
+    const handleActiveChange = (e) => {
+        setactive(e.target.value)
+        setpage(1)
+        getStaffData(1, query, e.target.value)
+    }
+
+    const getStaffData = (page , query, active) => {
+        let data = { role: 'coordinator', itemsPage: itemsPage, page: page, query: query, active: active };
+        dispatch(getStaff(data))
+    }
 
     const count = parseInt((Number(staffs?.[0]?.full_count) / itemsPage), 10) + (Number(staffs?.[0]?.full_count) % itemsPage === 0 ? 0 : 1)
 
@@ -122,8 +139,31 @@ const Staff = () => {
         <div>
             <MiniDrawer>
                 <AddStaff closeDialog={closeDialog} dialogVisible={dialogVisible} />
-                <EditStaff data = {currentStaffData} closeDialog={closeDialog} dialogVisible={editDialogVisible} />
-                <ActiveStaff data = {currentStaffData} closeDialog={closeDialog} dialogVisible={activeDialogVisible} />
+                <EditStaff data={currentStaffData} closeDialog={closeDialog} dialogVisible={editDialogVisible} />
+                <ActiveStaff data={currentStaffData} closeDialog={closeDialog} dialogVisible={activeDialogVisible} />
+                <div className="service-search">
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <Controller
+                            as={TextField}
+                            variant="outlined"
+                            className="packge-search-input"
+                            label="Tìm kiếm"
+                            name="query"
+                            control={control}
+                            defaultValue=''
+                        />
+                    </form>
+                    <Select
+                        native
+                        value={active}
+                        onChange={handleActiveChange}
+                    >
+                        <option value={''}>Tất cả</option>
+                        <option value={false}>Vô hiệu hóa</option>
+                        <option value={true}>Đang hoạt động</option>
+                    </Select>
+                </div>
+                <br/>
                 <Button
                     variant="contained"
                     color="primary"
@@ -176,7 +216,8 @@ const Staff = () => {
                             }
                         }}
                         options={{
-                            actionsColumnIndex: -1
+                            actionsColumnIndex: -1,
+                            search: false
                         }}
                     />
                 </div>

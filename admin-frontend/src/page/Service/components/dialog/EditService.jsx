@@ -81,7 +81,7 @@ const EditService = (props) => {
 
     return (
         <Dialog open={props.dialogVisible} onClose={props.closeDialog} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Thêm dịch vụ</DialogTitle>
+            <DialogTitle id="form-dialog-title">Sửa dịch vụ</DialogTitle>
             <DialogContent>
                 <div>
                     <form onSubmit={handleSubmit(onSubmit)}>
