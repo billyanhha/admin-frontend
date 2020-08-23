@@ -4,9 +4,10 @@ import MaterialTable from 'material-table';
 import { useForm, Controller } from 'react-hook-form';
 import { TextField, Button, Avatar, Select } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import AddServiceCategory from './AddServiceCategory';
+import AddServiceCategory from './dialog/AddServiceCategory';
 import Pagination from '@material-ui/lab/Pagination';
-import { getServiceCategory } from '../../redux/service';
+import { getServiceCategory } from '../../../redux/service';
+import EditServiceCategory from './dialog/EditServiceCategory';
 
 const itemsPage = 5
 
@@ -22,7 +23,7 @@ const columns = [
         )
     },
     {
-        title: 'Loại dịch vụ', field: 'category_name', render: rowData => (
+        title: 'Tên', field: 'category_name', render: rowData => (
             <div className="service-category-field">
                 <Avatar style={{ width: '80px', height: '80px' }} alt={rowData.name} src={rowData.image} />
                 <h4>
@@ -47,8 +48,10 @@ const ServiceCategory = (props) => {
     const [active, setactive] = useState('');
     const [query, setquery] = useState('');
     const dispatch = useDispatch()
+    const [editServiceDialogVisible, seteditServiceDialogVisible] = useState(false);
+    const [currentCategory, setcurrentCategory] = useState({});
 
-    
+
     const getServiceCategoryData = (page, query, active) => {
         const data = { itemsPage: itemsPage, page: page, query: query, active: active }
         dispatch(getServiceCategory(data))
@@ -90,7 +93,14 @@ const ServiceCategory = (props) => {
 
     const closeDialog = () => {
         setaddDialogVisible(false)
+        seteditServiceDialogVisible(false)
     }
+
+    const openEditDialog = (data) => {
+        setcurrentCategory(data)
+        seteditServiceDialogVisible(true)
+    }
+
 
     const count = parseInt((Number(categorires?.[0]?.full_count) / itemsPage), 10) + (Number(categorires?.[0]?.full_count) % itemsPage === 0 ? 0 : 1)
 
@@ -98,7 +108,8 @@ const ServiceCategory = (props) => {
     return (
         <div>
             <div>
-                <AddServiceCategory setpage = {setpage} closeDialog={closeDialog} dialogVisible={addDialogVisible} />
+                <EditServiceCategory currentCategory = {currentCategory} setpage={setpage} closeDialog={closeDialog} dialogVisible={editServiceDialogVisible} />
+                <AddServiceCategory setpage={setpage} closeDialog={closeDialog} dialogVisible={addDialogVisible} />
                 <div className="service-search">
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Controller
@@ -140,8 +151,23 @@ const ServiceCategory = (props) => {
                     options={{
                         search: false
                     }}
+                    localization={{
+                        body: {
+                            emptyDataSourceMessage: "Không có dữ liệu"
+                        },
+                        header: {
+                            actions: "Hành động"
+                        }
+                    }}
                     columns={columns}
                     data={categorires}
+                    actions={[
+                        {
+                            icon: 'save',
+                            tooltip: 'Save User',
+                            onClick: (event, rowData) => { }
+                        }
+                    ]}
                     components={{
                         Pagination: props => (
                             <div>
@@ -154,7 +180,21 @@ const ServiceCategory = (props) => {
                                 <br />
                             </div>
                         ),
+                        Action: props => {
+                            const { data } = props;
+
+                            return (
+                                <div className="staff-action">
+                                    <Button
+                                        onClick={() => openEditDialog(data)}
+                                        color="primary">
+                                        Sửa hạng mục
+                                    </Button>
+                                </div>
+                            )
+                        }
                     }}
+
                 />
             </div>
         </div>

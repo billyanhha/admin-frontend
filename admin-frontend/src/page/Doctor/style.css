@@ -1,0 +1,280 @@
+@import "./_spec.css";
+
+.doctor-loading {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    height: 90vh;
+}
+
+.doctor-table-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.doctor-table-header .doctor-table-title{
+    flex: 3;
+    margin-left: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.doctor-table-header .doctor-table-searchBar{
+    flex: 1;
+}
+
+.doctor-management {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.doctor-management span {
+    margin: 0 10px;
+    background-color: #f0f0f0;
+    height: 25px;
+    width: 1px;
+}
+
+.doctor-management-field-active {
+    border-bottom: 2px solid #3f51b5;
+    color: #3f51b5;
+}
+
+.doctor-management-field-active:hover {
+    border-bottom: 2px solid #3f51b5;
+    color: #3f51b5;
+}
+
+.doctor-management .doctor-management-field {
+    padding: 5px;
+    font-size: 1.2rem;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.doctor-management .doctor-management-field:hover {
+    color: #8794da;
+}
+
+.doctor-form-input {
+    font-size: 1rem;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #555555;
+    padding: 5px 0;
+    transition: all 0.2s ease-in-out;
+    outline: none;
+}
+
+.doctor-form-input::placeholder {
+    color: #dadada;
+}
+
+.doctor-form-input:focus {
+    border: none;
+    border-radius: 0;
+    border-bottom: 2px solid #3f51b5;
+    caret-color: #3f51b5;
+    outline: none;
+}
+
+.doctor-form-label {
+    font-size: 12px;
+    color: #0000008a;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.doctor-create-session {
+    margin: 40px 0;
+}
+
+.doctor-create-title {
+    font-size: 1rem;
+    font-weight: bold;
+    padding-top: 10px;
+    border-top: 0.5px solid #eeeeee;
+}
+
+.doctor-table-action {
+    min-width: 200px;
+}
+
+.doctor-table-action button {
+    width: 100%;
+    margin: 5px 0;
+}
+.doctor-table-action .doctor-action-active {
+    color: #00bc9a !important;
+    background-color: #fff !important;
+}
+
+.doctor-info-basic {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: bold;
+    padding: 0;
+}
+
+.doctor-sex-session {
+    margin-top: 20px;
+    font-size: 12px;
+}
+
+.doctor-sex-session select {
+    display: block;
+    margin: 5px 0;
+}
+
+.doctor-sex-session span {
+    font-size: 1rem;
+}
+
+.doctor-submit-session {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.doctor-form-disable-edit form {
+    pointer-events: none;
+}
+
+.doctor-edit-button {
+    padding: 0 5px 10px 15px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* 
+    ===============================================    Detail dialog  ===============================================
+*/
+
+.doctor-detail-dialog {
+    display: flex;
+}
+
+.doctor-basic-session {
+    align-self: center;
+    width: 350px;
+    margin-right: 20px;
+}
+
+.doctor-profile-session {
+    width: 350px;
+    margin: 0 20px;
+}
+
+.doctor-specification-session {
+    align-self: start;
+    margin-left: 20px;
+    width: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.doctor-profile-info {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.showoff-status-active {
+    color: #00bc9a;
+}
+
+.showoff-status-deactive {
+    color: #ff6347;
+}
+
+.doctor-basic-name {
+    margin-top: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: default;
+}
+
+.doctor-basic-showoff {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    cursor: default;
+}
+
+.doctor-basic-showoff span {
+    margin: 0 10px;
+    background-color: #dadada;
+    height: 0.8rem;
+    width: 1px;
+}
+
+.doctor-basic-showoff p {
+    margin: 0;
+    display: inline;
+    font-weight: bold;
+}
+
+.showoff-description {
+    justify-content: space-between;
+    margin: 10px auto;
+    width: 90%;
+    opacity: 0;
+    font-size: 0.6rem;
+    font-weight: 500;
+    transition: 0.2s ease-in;
+}
+
+.show-description:hover .showoff-description {
+    opacity: 1;
+}
+
+.doctor-specification-name {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.doctor-exp div {
+    margin-bottom: 5px;
+}
+
+.doctor-specification-language {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.doctor-specification-language div {
+    margin-right: 15px;
+}
+
+.doctor-specification-button {
+    margin: 10px auto;
+    text-align: center;
+}
+
+.doctor-specification-button button {
+    font-weight: bold !important;
+}
+
+.doctor-active-msg-warning {
+    font-size: 0.8rem;
+}
+
+.doctor-active-msg {
+    margin: 20px 0;
+    text-align: center;
+    font-size: 1.2rem;
+}

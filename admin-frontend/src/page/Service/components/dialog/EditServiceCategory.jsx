@@ -7,26 +7,34 @@ import DialogContent from '@material-ui/core/DialogContent';
 import { withRouter } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
-import { DialogTitle } from '@material-ui/core';
+import { DialogTitle, Select, MenuItem } from '@material-ui/core';
+import { addServiceCategory, editService, editServiceCategory } from '../../../../redux/service';
 
 
-const AddServiceCategory = (props) => {
+const EditServiceCategory = (props) => {
 
-    const { control, handleSubmit, register } = useForm();
+    const currentCategory = props?.currentCategory
+
+    const { control, handleSubmit, register, reset } = useForm(currentCategory);
     const dispatch = useDispatch()
-    const [imgFile, setfile] = useState({});
+    const [imgFile, setfile] = useState(null);
+    const [src, setSrc] = useState('')
 
     const onSubmit = data => {
 
         props.setpage(1)
-
+        data = { ...data, image: imgFile, id: currentCategory?.id }
+        dispatch(editServiceCategory(data));
+        props.closeDialog()
     };
 
 
     useEffect(() => {
-        
+
         setfile({})
-        
+        reset(props?.currentCategory)
+        setSrc(props?.currentCategory?.image)
+
     }, [props.dialogVisible]);
 
     const _handleFileChange = (e) => {
@@ -38,7 +46,7 @@ const AddServiceCategory = (props) => {
 
             reader.readAsDataURL(file || '')
             reader.onloadend = () => {
-                file = {...file , src: reader.result}
+                setSrc(reader.result)
                 setfile(file);
             }
         } catch (error) {
@@ -51,7 +59,7 @@ const AddServiceCategory = (props) => {
 
     return (
         <Dialog open={props.dialogVisible} onClose={props.closeDialog} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Thêm hạng mục dịch vụ</DialogTitle>
+            <DialogTitle id="form-dialog-title">Sửa hạng mục dịch vụ</DialogTitle>
             <DialogContent>
                 <div>
                     <form onSubmit={handleSubmit(onSubmit)}>
@@ -65,23 +73,37 @@ const AddServiceCategory = (props) => {
                             defaultValue=""
                             required
                         />
-                        <textarea required defaultValue={''} placeholder="Chú thích" name="description" className="form-text-area" />
-                        {imgFile?.src ? <a href={imgFile?.src} target="_blank"><img className="img-preview" src={imgFile?.src} /></a> :
-                            <img className="img-preview" src={imgFile?.src} />
+                        <textarea required defaultValue={''} placeholder="Chú thích" name="description" ref={register} className="form-text-area" />
+                        {src ? <a href={src} target="_blank"><img className="img-preview" src={src} /></a> :
+                            <img className="img-preview" src={src} />
                         }
                         <br />
                         <input type="file"
                             accept=".jpg, .gif ,.png, .jpeg, .svg"
                             onChange={_handleFileChange}
-                            required />
+                        />
                         <br />                    <br />
+                        <section>
+                            <Controller
+                                as={
+                                    <Select
+                                    >
+                                        <MenuItem value={true}>Hoạt động</MenuItem>
+                                        <MenuItem value={false}>Ngưng hoạt động</MenuItem>
+                                    </Select>
+                                }
+                                name="active"
+                                control={control}
+                            />
+                        </section>
+                        <br />
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"
                         >
-                            Thêm
+                            Sửa
                     </Button>
                     </form>
                 </div>
@@ -95,4 +117,4 @@ const AddServiceCategory = (props) => {
     );
 };
 
-export default withRouter(AddServiceCategory);
+export default withRouter(EditServiceCategory);

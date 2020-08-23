@@ -10,7 +10,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import packageStatus from "../../config/packageStatus";
-import { userLogin } from '../../redux/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPackage } from '../../redux/package';
 import RefreshIcon from '@material-ui/icons/Refresh';
@@ -155,7 +154,7 @@ const Home = (props) => {
             <FormControl className={classes.formControl}>
               <InputLabel>Trạng thái</InputLabel>
               <Select
-                defaultValue={status}
+                value={status}
                 onChange={handleChange}
               >
                 {renderStatus}
@@ -179,7 +178,7 @@ const Home = (props) => {
           {
             packages?.[0]?.full_count ? (
               <Pagination
-                defaultPage = {page}
+                page = {page}
                 onChange={handleChangePage}
                 count={count}
                 rowsPerPage={3}

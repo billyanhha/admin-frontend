@@ -99,6 +99,7 @@ function* watchUpdateAppointmentPackageWorker(action) {
         );
         if (!_.isEmpty(result)) {
             yield put(getAllAppointmentByPackage(action?.data?.packageId))
+            yield put(getPackageStatus(action?.data?.packageId))
             NotificationManager.success("Thay đổi trạng thái thành công", 'Thông báo');
         }
     } catch (error) {

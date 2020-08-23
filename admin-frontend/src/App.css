@@ -1,9 +1,51 @@
-.default-div {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+html {
+    scroll-behavior: smooth;
 }
 
-.highlight{
-  color: #40A9FF
+body{
+    font-family: "Open Sans", sans-serif !important;
+}
+
+button {
+    font-family: "Open Sans", sans-serif !important;
+}
+
+.default-div {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.highlight {
+    color: #40a9ff;
+}
+
+.error-text {
+    color: red !important;
+    transition: all 0.5s ease-in-out;
+}
+
+.notify-content{
+    font-weight: bold;
+
+}
+
+.notify-content > button {
+    color: #000;
+    font-weight: bold;
+    padding: 10px 0 !important;
+}
+
+.table-email{
+    display: flex;
+}
+
+.chip-added {
+    background-color: #00bc9a !important;
+    color: #fff !important;
+}
+
+.chip-unsubscribe {
+    background-color: #faad14 !important;
+    color: #fff !important;
 }

@@ -1,11 +1,12 @@
-import { SET_CURRENT_SERVICE_PAGE, SAVE_SERVICE, SAVE_SERVICE_CATEGORY } from "./action";
+import { SET_CURRENT_SERVICE_PAGE, SAVE_SERVICE, SAVE_SERVICE_CATEGORY, SAVE_SERVICE_REQUEST } from "./action";
 
 
 
 const initialState = {
-    currentServicePage: '2',
+    currentServicePage: '1',
     services: [],
-    categorires: []
+    categorires: [],
+    requests: []
 }
 
 export const serviceReducer = (state = initialState, action) => {
@@ -20,6 +21,10 @@ export const serviceReducer = (state = initialState, action) => {
         }
         case SAVE_SERVICE_CATEGORY : {
             state = {...state , categorires: action.categorires};
+            return state
+        }
+        case SAVE_SERVICE_REQUEST : {
+            state = {...state , requests: action.requests};
             return state
         }
         default:  {
