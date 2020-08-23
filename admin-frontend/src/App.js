@@ -12,6 +12,7 @@ import NoMatch from './page/NoMatch';
 import Staff from './page/Staff';
 import AdminOnlyRoute from './routeConfig/AdminOnlyRoute';
 import Sample from './page/Sample';
+import Service from './page/Service';
 
 const App = () => {
 
@@ -29,6 +30,9 @@ const App = () => {
         </PrivateRoute>
         <AdminOnlyRoute exact path='/staff'>
           <Staff />
+        </AdminOnlyRoute>
+        <AdminOnlyRoute exact path='/service'>
+          <Service />
         </AdminOnlyRoute>
         <PrivateRoute exact path='/sample'>
           <Sample />
