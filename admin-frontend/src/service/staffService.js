@@ -221,6 +221,55 @@ staffService.removeDoctorLanguage = (id, language_id) =>
             .catch(err => reject(err));
     });
 
+staffService.getDoctorDegree = id =>
+    new Promise((resolve, reject) => {
+        const api = `/api/doctor/${id}/degrees`;
+        axios
+            .get(api)
+            .then(result => {
+                resolve(result.data);
+            })
+            .catch(err => reject(err));
+    });
+
+staffService.updateDoctorDegree = (token, doc_id, data) =>
+    new Promise((resolve, reject) => {
+        const api = `/api/doctor/${doc_id}/degrees`;
+        axios
+            .post(api, data, {
+                headers: {
+                    Authorization: "Bearer " + token,
+                    Accept: "*/*"
+                }
+            })
+            .then(result => {
+                resolve(result.data);
+            })
+            .catch(err => reject(err));
+    });
+
+staffService.addDoctorDegree = (id, degree_id) =>
+    new Promise((resolve, reject) => {
+        const api = `/api/doctor/${id}/degrees/${degree_id}`;
+        axios
+            .post(api)
+            .then(result => {
+                resolve(result.data);
+            })
+            .catch(err => reject(err));
+    });
+
+staffService.removeDoctorDegree = (id, degree_id) =>
+    new Promise((resolve, reject) => {
+        const api = `/api/doctor/${id}/degrees/${degree_id}`;
+        axios
+            .delete(api)
+            .then(result => {
+                resolve(result.data);
+            })
+            .catch(err => reject(err));
+    });
+
 staffService.getAllLanguage = token =>
     new Promise((resolve, reject) => {
         const api = "/api/language";

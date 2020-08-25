@@ -6,18 +6,22 @@ import {isEmpty, debounce, throttle} from "lodash";
 import {Done, Add, Clear, CancelRounded, ArrowBack} from "@material-ui/icons";
 import Alert from "@material-ui/lab/Alert";
 import {Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Chip, CircularProgress, Tooltip} from "@material-ui/core";
-import {updateDoctorLanguage, updateDoctorLanguageSuccessful, updateDoctorExperience, updateDoctorExperienceSuccessful} from "../../redux/staff";
+import {updateDoctorLanguage, updateDoctorExperience, updateDoctorSuccessful, updateDoctorDegree} from "../../redux/staff";
 
 const SpecificationDoctor = props => {
     let typeSpec = props.type ?? 1;
 
     const {isLoad} = useSelector(state => state.ui);
     const allLanguage = useSelector(state => state.doctor.allLanguage);
+    const allDegree = useSelector(state => state.doctor.allDegree);
+
     const status = useSelector(state => state.doctor.updateStatus);
 
     const dispatch = useDispatch();
+
     const [specData, setSpecData] = useState([{}]);
     const [langPool, setLangPool] = useState([{}]);
+    const [degreePool, setDegreePool] = useState([{}]);
     const [expChange, setExpChange] = useState([]);
     const [preview, setPreview] = useState(false);
     const [confirm, setConfirm] = useState(false);
@@ -83,26 +87,45 @@ const SpecificationDoctor = props => {
     };
 
     const handleSubmit = () => {
-        if (typeSpec === 1) {
-            let submitExp = {exps: []};
-            if (!isEmpty(specData))
-                specData.map(data => {
-                    if (data?.content) {
-                        let newExp = data.content.trim();
-                        if (newExp.charAt(0) === "✓") submitExp.exps.push({content: newExp});
-                        else submitExp.exps.push({content: "✓ " + newExp});
-                    }
-                });
+        switch (typeSpec) {
+            case 1: //update exp
+                let submitExp = {exps: []};
+                if (!isEmpty(specData))
+                    specData.map(data => {
+                        if (data?.content) {
+                            let newExp = data.content.trim();
+                            if (newExp.charAt(0) === "✓") submitExp.exps.push({content: newExp});
+                            else submitExp.exps.push({content: "✓ " + newExp});
+                        }
+                    });
 
-            dispatch(updateDoctorExperience(props.doctorData?.id, submitExp));
-        } else if (typeSpec === 2) {
-            let submitLang = {languages: []};
-            if (!isEmpty(specData))
-                specData.forEach(data => {
-                    submitLang.languages.push({language_id: data.language_id});
-                });
+                dispatch(updateDoctorExperience(props.doctorData?.id, submitExp));
+                break;
 
-            dispatch(updateDoctorLanguage(props.doctorData?.id, submitLang));
+            case 2: //update lang
+                let submitLang = {languages: []};
+                if (!isEmpty(specData))
+                    specData.forEach(data => {
+                        submitLang.languages.push({language_id: data.language_id});
+                    });
+
+                dispatch(updateDoctorLanguage(props.doctorData?.id, submitLang));
+                break;
+
+            case 3: //update degree
+                let submitDegree = {degrees: []};
+                if (!isEmpty(specData))
+                    specData.forEach(data => {
+                        submitDegree.degrees.push({degree_id: data.degree_id});
+                    });
+                    
+                console.log(submitDegree);
+
+                dispatch(updateDoctorDegree(props.doctorData?.id, submitDegree));
+                break;
+
+            default:
+                break;
         }
     };
 
@@ -134,6 +157,34 @@ const SpecificationDoctor = props => {
         setLangPool(pool);
     };
 
+    const createDegreePool = () => {
+        if (isEmpty(allDegree)) {
+            setDegreePool(null);
+        } else {
+            let pool = allDegree;
+
+            //set addable == true where: degree_id (specData) << NOT MATCH >> id (allDegree)
+            let compareData = allDegree.filter(({id: id1}) => !props.data.some(({degree_id: id2}) => id2 === id1));
+            pool.map(data => {
+                compareData.map(compare => {
+                    if (compare.id === data.id) data.addable = true;
+                });
+            });
+            setDegreePool(pool);
+        }
+    };
+
+    const updateDegreePool = (isAddAble, degree_id) => {
+        let pool = degreePool;
+        for (const data of pool) {
+            if (data.id === degree_id) {
+                data.addable = isAddAble;
+                break;
+            }
+        }
+        setDegreePool(pool);
+    };
+
     const createExpWatching = () => {
         let exp = [];
         if (!isEmpty(props.data)) {
@@ -154,6 +205,18 @@ const SpecificationDoctor = props => {
         if (addLang.addable) {
             setSpecData(specData => [...specData, {language_id: addLang.id, language_name: addLang.name}]);
             updateLanguagePool(false, addLang.id);
+        }
+    };
+
+    const handleDeleteDegree = deleteDegree => {
+        setSpecData(data => data.filter(currentData => currentData.degree_id !== deleteDegree.degree_id));
+        updateDegreePool(true, deleteDegree.degree_id);
+    };
+
+    const handleAddDegree = addDegree => {
+        if (addDegree.addable) {
+            setSpecData(specData => [...specData, {degree_id: addDegree.id, degree_name: addDegree.name}]);
+            updateDegreePool(false, addDegree.id);
         }
     };
 
@@ -185,7 +248,7 @@ const SpecificationDoctor = props => {
                         </Button>
                     </div>
                 ))
-            ) : (
+            ) : typeSpec === 2 ? (
                 specData?.map(data => (
                     <div className="doctor-spec-chip" key={data.language_id}>
                         <Chip
@@ -193,6 +256,18 @@ const SpecificationDoctor = props => {
                             variant="outlined"
                             label={data.language_name ?? ""}
                             onDelete={() => handleDeleteLanguage(data)}
+                            color="secondary"
+                        />
+                    </div>
+                ))
+            ) : (
+                specData?.map(data => (
+                    <div className="doctor-spec-chip" key={data.degree_id}>
+                        <Chip
+                            className="spec-chip"
+                            variant="outlined"
+                            label={data.degree_name ?? ""}
+                            onDelete={() => handleDeleteDegree(data)}
                             color="secondary"
                         />
                     </div>
@@ -228,24 +303,61 @@ const SpecificationDoctor = props => {
               </div>
           ));
 
+    const renderDegreePool = isEmpty(degreePool)
+        ? "Không có dữ liệu"
+        : degreePool.map(data => (
+              <div key={data.id} className="doctor-spec-chip">
+                  {!data.addable ? (
+                      <Chip
+                          className="spec-chip chip-added"
+                          label={data.name}
+                          deleteIcon={<Done style={{color: "#fff"}} />}
+                          onClick={() => handleAddDegree(data)}
+                          onDelete={() => handleAddDegree(data)}
+                      />
+                  ) : (
+                      <Chip
+                          variant="outlined"
+                          className="spec-chip"
+                          label={data.name}
+                          deleteIcon={<Add />}
+                          onClick={() => handleAddDegree(data)}
+                          onDelete={() => handleAddDegree(data)}
+                      />
+                  )}
+              </div>
+          ));
+
     useEffect(() => {
         if (status) {
             handleCloseDialog();
-            dispatch(updateDoctorLanguageSuccessful(false));
-            dispatch(updateDoctorExperienceSuccessful(false));
+            dispatch(updateDoctorSuccessful(false));
         }
     }, [status]);
 
     useEffect(() => {
         setSpecData(props.data);
-        if (typeSpec === 1) createExpWatching();
-        if (typeSpec === 2) createLanguagePool();
-    }, [props.data, props.type, allLanguage]);
+        switch (typeSpec) {
+            case 1:
+                createExpWatching();
+                break;
+            case 2:
+                createLanguagePool();
+                break;
+            case 3:
+                createDegreePool();
+                break;
+
+            default:
+                break;
+        }
+    }, [props.data, props.type, allLanguage, allDegree]);
 
     return (
         <Dialog fullWidth={true} maxWidth="lg" open={props.dialogVisible} onClose={() => handleCloseDialog()} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">
-                {typeSpec === 1 ? "" : "Chỉnh sửa khả năng ngôn ngữ Bác sĩ " + props.doctorData?.fullname}
+                {typeSpec === 2 && "Chỉnh sửa khả năng ngôn ngữ Bác sĩ " + props.doctorData?.fullname}
+                {typeSpec === 3 && "Chỉnh sửa bằng cấp/chứng chỉ Bác sĩ " + props.doctorData?.fullname}
             </DialogTitle>
             <DialogContent>
                 {typeSpec === 1 ? (
@@ -272,7 +384,7 @@ const SpecificationDoctor = props => {
                             </div>
                         </div>
                     </>
-                ) : (
+                ) : typeSpec === 2 ? (
                     <div className="doctor-spec-wrapper">
                         <div className="doctor-spec-language-added">
                             <div className="doctor-specification-name">Khả năng ngôn ngữ hiện tại</div>
@@ -291,6 +403,28 @@ const SpecificationDoctor = props => {
                             <div className="doctor-spec-content">{renderLanguagePool}</div>
                             <p>
                                 <b>*</b>: Chỉ ngôn ngữ được chấp nhận bởi hệ thống
+                            </p>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="doctor-spec-wrapper">
+                        <div className="doctor-spec-language-added">
+                            <div className="doctor-specification-name">Bằng cấp, Chứng chỉ hiện tại</div>
+                            <div className="doctor-spec-desc">
+                                Nhấn <CancelRounded style={{fontSize: "16px", color: "#f50057"}} /> để xoá.
+                            </div>
+                            <div className="doctor-spec-content">{renderSpec}</div>
+                        </div>
+                        <div className="doctor-spec-language">
+                            <div className="doctor-specification-name">
+                                Danh sách bằng cấp & chứng chỉ<b>*</b>
+                            </div>
+                            <div className="doctor-spec-desc">
+                                Vào mục <i>Quản lý Kĩ năng</i> ­ để cập nhật bằng cấp/chứng chỉ.
+                            </div>
+                            <div className="doctor-spec-content">{renderDegreePool} </div>
+                            <p>
+                                <b>*</b>: Được chấp nhận bởi hệ thống
                             </p>
                         </div>
                     </div>
@@ -315,7 +449,8 @@ const SpecificationDoctor = props => {
                                     </div>
                                 }
                             >
-                                Xác nhận <strong>cập nhật</strong> {typeSpec === 1 ? "kinh nghiệm" : "khả năng ngôn ngữ"} của BS{" "}
+                                Xác nhận <strong>cập nhật</strong>{" "}
+                                {typeSpec === 1 ? "kinh nghiệm" : typeSpec === 2 ? "khả năng ngôn ngữ" : "bằng cấp/chứng chỉ"} của BS{" "}
                                 {props.doctorData?.fullname ?? "này"} như trên?
                             </Alert>
                         </div>

@@ -1,9 +1,9 @@
-import React, {useState, useRef, useEffect} from "react";
+import React, {useState, useRef, useEffect, useLayoutEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {useForm, Controller} from "react-hook-form";
 import AvatarEditor from "react-avatar-editor";
-import _ from "lodash";
+import {isEmpty} from "lodash";
 import {NotificationManager} from "react-notifications";
 
 import {
@@ -14,30 +14,36 @@ import {
     CardMembership,
     EditOutlined,
     CropOriginalTwoTone,
-    Star
+    Star,
+    SignalCellularNullRounded
 } from "@material-ui/icons";
 import {CircularProgress, Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, InputAdornment, Modal} from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
 
-import {updateDoctor, updateDoctorSuccessful, getDoctorExperience, getDoctorLanguage} from "../../redux/staff";
+import {updateDoctor, updateDoctorSuccessful, getDoctorExperience, getDoctorLanguage, getDoctorDegree} from "../../redux/staff";
 import DefaultAvatar from "../../assets/image/hhs-default_avatar.jpg";
 
 const EditDoctor = props => {
     const {isLoad} = useSelector(state => state.ui);
     const {control, handleSubmit, register, reset} = useForm(props.data);
+
+    const dispatch = useDispatch();
     const updateStatus = useSelector(state => state.doctor.updateStatus);
     const experienceData = useSelector(state => state.doctor.experience);
     const languageData = useSelector(state => state.doctor.language);
+    const degreeData = useSelector(state => state.doctor.degree);
 
-    const dispatch = useDispatch();
+    const [forceLoading, setForceLoading] = useState(true);
     const [experience, setExperience] = useState(null);
     const [language, setLanguage] = useState(null);
+    const [degree, setDegree] = useState(null);
+
     const [needEdit, setNeedEdit] = useState(false);
+
     const [avatarImg, setAvatarImg] = useState({preview: "", raw: ""});
     const [avatarVisible, setAvatarVisible] = useState(false);
     const [avatarRef, setAvatarRef] = useState(null);
     const [avatarName, setAvatarName] = useState("");
-
     const [avatarProperty, setAvatarProperty] = useState({
         scale: 1,
         preview: null
@@ -50,13 +56,21 @@ const EditDoctor = props => {
         setAvatarName("");
     };
 
-    const handleCloseDialog = () => {
-        props.closeDialog();
+    const resetState = () => {
+        setExperience(null);
+        setLanguage(null);
+        setDegree(null);
+        setForceLoading(true);
         setNeedEdit(false);
         resetAvatar();
     };
 
-    const onSubmit = data => {
+    const handleCloseDialog = () => {
+        props.closeDialog();
+        resetState();
+    };
+
+    const handleUpdateDoctor = data => {
         let req = {
             id: data.id,
             fullname: data.fullname,
@@ -122,26 +136,22 @@ const EditDoctor = props => {
         }
     };
 
-    const renderExperience = _.isEmpty(experience) ? (
-        isLoad ? (
-            <Skeleton variant="rect" width={450} height={150}>
-                Đang lấy dữ liệu...
-            </Skeleton>
-        ) : (
-            <div>Chưa có dữ liệu</div>
-        )
+    const renderExperience = forceLoading ? (
+        <Skeleton variant="rect" width={450} height={150}>
+            Đang lấy dữ liệu...
+        </Skeleton>
+    ) : isEmpty(experience) ? (
+        <div>Chưa có dữ liệu</div>
     ) : (
         experience?.map(data => <div key={data.id}>{data.content}</div>)
     );
 
-    const renderLanguage = _.isEmpty(language) ? (
-        isLoad ? (
-            <Skeleton variant="rect" width={450} height={50}>
-                Đang lấy dữ liệu...
-            </Skeleton>
-        ) : (
-            <div>Chưa có dữ liệu</div>
-        )
+    const renderLanguage = forceLoading ? (
+        <Skeleton variant="rect" width={450} height={50}>
+            Đang lấy dữ liệu...
+        </Skeleton>
+    ) : isEmpty(language) ? (
+        <div>Chưa có dữ liệu</div>
     ) : (
         language?.map(data => (
             <div key={data.language_id}>
@@ -150,16 +160,47 @@ const EditDoctor = props => {
         ))
     );
 
-    useEffect(() => {
+    const renderDegree = forceLoading ? (
+        <Skeleton variant="rect" width={450} height={50}>
+            Đang lấy dữ liệu...
+        </Skeleton>
+    ) : isEmpty(degree) ? (
+        <div>Chưa có dữ liệu</div>
+    ) : (
+        degree?.map(data => (
+            <div key={data.degree_id}>
+                <b>{data.degree_name}</b>
+            </div>
+        ))
+    );
+
+    useLayoutEffect(() => {
         setExperience(experienceData);
         setLanguage(languageData);
-    }, [experienceData, languageData]);
+        setDegree(degreeData);
+    }, [experienceData, languageData, degreeData]);
+
+    useLayoutEffect(() => {
+        if (experience && language && degree && !isLoad) {
+            setTimeout(() => {
+                setForceLoading(false);
+            }, 1000); //1s: estimate for "degree.map()" function that render degree done.
+        }
+    }, [experience, language, degree]);
+
+    // useEffect(() => {
+    //     console.log(forceLoading)
+    // }, [forceLoading]);
 
     useEffect(() => {
-        if (props.data.id) {
+        if (props.dialogVisible && props.data.id) {
             dispatch(getDoctorExperience(props.data.id));
             dispatch(getDoctorLanguage(props.data.id));
+            dispatch(getDoctorDegree(props.data.id));
         }
+    }, [props.dialogVisible]);
+
+    useEffect(() => {
         reset(props.data);
     }, [props.data]);
 
@@ -229,21 +270,17 @@ const EditDoctor = props => {
                                     onChange={handleAvatarChange}
                                 />
                             </div>
-                            {avatarRef ? (
+                            {avatarRef && (
                                 <div className={!avatarImg.preview ? "avatar-editor-submit custom-display-flex" : "avatar-editor-submit"}>
-                                    {!avatarImg.preview ? (
+                                    {!avatarImg.preview && (
                                         <div className="avatar-button-preview" onClick={() => convertImageToBlobURL()}>
                                             Xem trước
                                         </div>
-                                    ) : (
-                                        ""
                                     )}
                                     <Button disabled={isLoad} variant="contained" color="primary" onClick={handleAvatarUpload}>
-                                        {isLoad ? <CircularProgress size={20} /> : ""} Cập nhật
+                                        {isLoad && <CircularProgress size={20} />} Cập nhật
                                     </Button>
                                 </div>
-                            ) : (
-                                ""
                             )}
                         </div>
                     </div>
@@ -270,9 +307,7 @@ const EditDoctor = props => {
                                     <p>
                                         <CardMembership color="primary" style={{fontSize: 14}} /> {props.data?.license}
                                     </p>
-                                    {props.data?.average_rating == 0 ? (
-                                        ""
-                                    ) : (
+                                    {props.data?.average_rating != 0 && (
                                         <>
                                             <span></span>
                                             <p>
@@ -284,7 +319,7 @@ const EditDoctor = props => {
                                 <div className="doctor-basic-showoff showoff-description">
                                     <p>Trạng thái</p>
                                     <p>Giấy phép</p>
-                                    {props.data?.average_rating == 0 ? "" : <p>Đánh giá TB</p>}
+                                    {props.data?.average_rating != 0 && <p>Đánh giá TB</p>}
                                 </div>
                             </div>
                         </div>
@@ -292,7 +327,7 @@ const EditDoctor = props => {
                     <div className="doctor-profile-session">
                         <div className="doctor-specification-name">Thông tin cơ bản</div>
                         <div className={!needEdit || isLoad ? "doctor-form-disable-edit" : ""}>
-                            <form onSubmit={handleSubmit(onSubmit)}>
+                            <form onSubmit={handleSubmit(handleUpdateDoctor)}>
                                 <Controller
                                     as={TextField}
                                     margin="normal"
@@ -323,7 +358,7 @@ const EditDoctor = props => {
                                             <InputAdornment position="start">
                                                 <ContactMailOutlined />
                                             </InputAdornment>
-                                        ),
+                                        )
                                         // readOnly: true
                                     }}
                                     control={control}
@@ -421,7 +456,7 @@ const EditDoctor = props => {
                         <div className="doctor-exp">{renderExperience}</div>
                         <div className="doctor-specification-button">
                             <Button
-                                disabled={isLoad}
+                                disabled={isLoad || forceLoading}
                                 variant="outlined"
                                 size="small"
                                 color="primary"
@@ -435,11 +470,26 @@ const EditDoctor = props => {
                             <div className="doctor-specification-language">{renderLanguage}</div>
                             <div className="doctor-specification-button">
                                 <Button
-                                    disabled={isLoad}
+                                    disabled={isLoad || forceLoading}
                                     variant="outlined"
                                     size="small"
                                     color="primary"
                                     onClick={() => props.openSpecification(2, languageData)}
+                                >
+                                    Cập nhật
+                                </Button>
+                            </div>
+                        </div>
+                        <div className="doctor-specification-name">Bằng cấp & Chứng chỉ</div>
+                        <div>
+                            <div className="doctor-specification-language">{renderDegree}</div>
+                            <div className="doctor-specification-button">
+                                <Button
+                                    disabled={isLoad || forceLoading}
+                                    variant="outlined"
+                                    size="small"
+                                    color="primary"
+                                    onClick={() => props.openSpecification(3, degreeData)}
                                 >
                                     Cập nhật
                                 </Button>

@@ -14,7 +14,7 @@ import ActiveDoctor from "./ActiveDoctor";
 import SpecificationDoctor from "./SpecificationDoctor";
 import ManageSpecification from "./ManageSpecification";
 
-import {getAllDoctor, getAllLanguage} from "../../redux/staff";
+import {getAllDoctor, getAllLanguage, getAllDegree} from "../../redux/staff";
 
 import "./style.css";
 
@@ -292,7 +292,7 @@ const Doctor = () => {
             case 1:
                 return <ManageSpecification />;
             default:
-                return <div className="statistic-no-data">Hiện chưa có dữ liệu cho kiểu thống kê này!</div>;
+                return <div className="statistic-no-data">Hiện chưa có dữ liệu!</div>;
         }
     };
 
@@ -301,7 +301,6 @@ const Doctor = () => {
     }, [searchData]);
 
     useEffect(() => {
-        dispatch(getAllLanguage());
         getDoctorData();
     }, [page, itemsPage]);
 
@@ -313,8 +312,9 @@ const Doctor = () => {
     }, [addDocStatus, updateDocStatus]);
 
     useEffect(() => {
-        dispatch(getAllLanguage());
         getDoctorData();
+        dispatch(getAllLanguage());
+        dispatch(getAllDegree());
     }, []);
 
     return (
