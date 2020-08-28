@@ -13,6 +13,7 @@ import Appointment from './Appointment';
 import _ from "lodash"
 import package_status from "../../config/package_status"
 import CancelPackage from './CancelPackage';
+import Rating from '@material-ui/lab/Rating';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -55,13 +56,13 @@ const PackageDetail = (props) => {
         setredirect(true)
     }
 
-    if(redirect) {
+    if (redirect) {
         return <Redirect
-        to={{
-          pathname: "/",
-          state: { from: props.location }
-        }}
-      />
+            to={{
+                pathname: "/",
+                state: { from: props.location }
+            }}
+        />
     }
 
     const openDialog = () => {
@@ -72,8 +73,8 @@ const PackageDetail = (props) => {
         setdialogVisible(false)
     }
 
-    const renderCancelButton  = () => {
-        if(
+    const renderCancelButton = () => {
+        if (
             packageData?.status[packageData?.status.length - 1]?.package_status_detail_id === package_status.running
             ||
             packageData?.status[packageData?.status.length - 1]?.package_status_detail_id === package_status.waiting
@@ -81,10 +82,10 @@ const PackageDetail = (props) => {
         ) {
             return (
                 <div className="package-detail-header-operator">
-                <Button onClick = {openDialog} variant="outlined" color="secondary">
-                    Hủy gói
+                    <Button onClick={openDialog} variant="outlined" color="secondary">
+                        Hủy gói
                 </Button>
-            </div>
+                </div>
             )
         }
     }
@@ -139,9 +140,20 @@ const PackageDetail = (props) => {
                                     {packageInfo?.reason}
                                 </span>
                             </div>
+                            <div className="package-detail-header-info-item package-detail-header-info-rating">
+                                Đánh giá của khách hàng:
+                                {packageInfo?.star ? (
+                                    <span className="highlight">
+                                        <Rating size="medium" readOnly defaultValue={packageInfo?.star} />
+                                        <br />
+                                        {packageInfo?.comment ?? ''}
+                                    </span>
+                                ) : 'Chưa có đánh giá'}
+                            </div>
                         </div>
                         {renderCancelButton()}
                     </div>
+                    <br />
                     <br />
                     <div>
                         <Tabs
@@ -160,7 +172,7 @@ const PackageDetail = (props) => {
                         <Appointment tabIndex={tabIndex} />
                         <History tabIndex={tabIndex} />
                     </Fragment>
-                    <CancelPackage  dialogVisible = {dialogVisible} closeDialog = {closeDialog} openDialog = {openDialog}/>
+                    <CancelPackage dialogVisible={dialogVisible} closeDialog={closeDialog} openDialog={openDialog} />
                 </div>
             </MiniDrawer>
         </div>

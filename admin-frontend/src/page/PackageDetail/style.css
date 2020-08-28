@@ -11,7 +11,7 @@
     border: 1px solid #dadada;
     width: 90%;
     grid-gap: 20px;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     padding: 30px 20px;
     margin-bottom: 5px;
 }
@@ -22,6 +22,11 @@
     flex-wrap: wrap;
     align-items: center;
     font-weight: bold;
+}
+
+.package-detail-header-info-rating{
+    align-items: flex-start;
+
 }
 
 .package-detail-header-info-item > .highlight {
