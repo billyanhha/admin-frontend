@@ -24,10 +24,14 @@ const AddStaff = props => {
     password.current = watch("password", "");
 
     const onSubmit = data => {
-        let phone = data.phone.replace(/\s+/g, "").substring(1);
-        data.phone = phone;
+        if (data.password.match(/\s+/g)) {
+            NotificationManager.error("Mật khẩu không được chứa khoảng trắng", "Thông báo");
+        } else {
+            let phone = data.phone.replace(/\s+/g, "").substring(1);
+            data.phone = phone;
 
-        dispatch(createDoctor(data));
+            dispatch(createDoctor(data));
+        }
     };
 
     useEffect(() => {

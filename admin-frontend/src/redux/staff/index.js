@@ -40,7 +40,11 @@ import {
     CREATE_DEGREE_SUCCESSFUL,
     UPDATE_DEGREE,
     UPDATE_DEGREE_SUCCESSFUL,
-    DELETE_DEGREE
+    DELETE_DEGREE,
+    GET_DOCTOR_DEGREE,
+    GET_DOCTOR_DEGREE_SUCCESSFUL,
+    UPDATE_DOCTOR_DEGREE,
+    UPDATE_DOCTOR_DEGREE_SUCCESSFUL
 } from "./action";
 
 export const editStaffProfile = (token, id, data) => {
@@ -222,6 +226,35 @@ export const updateDoctorLanguage = (id, data) => {
 export const updateDoctorLanguageSuccessful = result => {
     return {
         type: UPDATE_DOCTOR_LANGUAGE_SUCCESSFUL,
+        result
+    };
+};
+
+export const getDoctorDegree = id => {
+    return {
+        type: GET_DOCTOR_DEGREE,
+        id
+    };
+};
+
+export const getDoctorDegreeSuccessful = result => {
+    return {
+        type: GET_DOCTOR_DEGREE_SUCCESSFUL,
+        result
+    };
+};
+
+export const updateDoctorDegree = (id, data) => {
+    return {
+        type: UPDATE_DOCTOR_DEGREE,
+        id,
+        data
+    };
+};
+
+export const updateDoctorDegreeSuccessful = result => {
+    return {
+        type: UPDATE_DOCTOR_DEGREE_SUCCESSFUL,
         result
     };
 };

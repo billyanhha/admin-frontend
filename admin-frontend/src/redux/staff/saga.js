@@ -22,7 +22,9 @@ import {
     GET_ALL_DEGREE,
     DELETE_DEGREE,
     UPDATE_DEGREE,
-    CREATE_DEGREE
+    CREATE_DEGREE,
+    GET_DOCTOR_DEGREE,
+    UPDATE_DOCTOR_DEGREE
 } from "./action";
 
 import {
@@ -46,7 +48,9 @@ import {
     getAllDegreeSuccessful,
     getAllDegree,
     createDegreeSuccessful,
-    updateDegreeSuccessful
+    updateDegreeSuccessful,
+    updateDoctorDegreeSuccessful,
+    getDoctorDegreeSuccessful
 } from ".";
 
 import staffService from "../../service/staffService";
@@ -238,6 +242,37 @@ function* watchUpdateDoctorLanguage(action) {
     }
 }
 
+function* watchGetDoctorDegree(action) {
+    try {
+        yield put(openLoading());
+        const result = yield staffService.getDoctorDegree(action.id);
+        if (result?.doctorDegrees) {
+            yield put(getDoctorDegreeSuccessful(result?.doctorDegrees));
+        }
+    } catch (error) {
+        NotificationManager.error(error?.response?.data?.err ?? "Hệ thống quá tải", "Thông báo");
+    } finally {
+        yield put(closeLoading());
+    }
+}
+
+function* watchUpdateDoctorDegree(action) {
+    try {
+        yield put(openLoading());
+        const {token} = yield select(state => state.auth);
+        const result = yield staffService.updateDoctorDegree(token, action.id, action.data);
+        console.log(result)
+        if (!_.isEmpty(result?.doctorDegreeCreated)) {
+            yield put(updateDoctorDegreeSuccessful(true));
+            NotificationManager.success("Thành công cập nhật bằng cấp cho bác sĩ!", "", 4000);
+        }
+    } catch (error) {
+        NotificationManager.error(error?.response?.data?.err ?? "Hệ thống quá tải", "Thông báo");
+    } finally {
+        yield put(closeLoading());
+    }
+}
+
 function* watchChangeDoctorStatus(action) {
     try {
         yield put(openLoading());
@@ -397,6 +432,8 @@ export function* staffSaga() {
     yield takeLatest(UPDATE_DOCTOR_EXPERIENCE, watchUpdateDoctorExperience);
     yield takeLatest(GET_DOCTOR_LANGUAGE, watchGetDoctorLanguage);
     yield takeLatest(UPDATE_DOCTOR_LANGUAGE, watchUpdateDoctorLanguage);
+    yield takeLatest(GET_DOCTOR_DEGREE, watchGetDoctorDegree);
+    yield takeLatest(UPDATE_DOCTOR_DEGREE, watchUpdateDoctorDegree);
     yield takeLatest(GET_ALL_LANGUAGE, watchGetAllLanguage);
     yield takeLatest(CREATE_LANGUAGE, watchCreateLanguage);
     yield takeLatest(UPDATE_LANGUAGE, watchUpdateLanguage);
