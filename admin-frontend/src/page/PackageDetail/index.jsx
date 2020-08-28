@@ -141,14 +141,14 @@ const PackageDetail = (props) => {
                                 </span>
                             </div>
                             <div className="package-detail-header-info-item package-detail-header-info-rating">
-                                Đánh giá của khách hàng:
+                                Đánh giá của khách hàng :
                                 {packageInfo?.star ? (
                                     <span className="highlight">
                                         <Rating size="medium" readOnly defaultValue={packageInfo?.star} />
                                         <br />
                                         {packageInfo?.comment ?? ''}
                                     </span>
-                                ) : 'Chưa có đánh giá'}
+                                ) : ' Chưa có đánh giá'}
                             </div>
                         </div>
                         {renderCancelButton()}
