@@ -29,8 +29,7 @@ const route = {
     "/doctor": {
         label: "Quản lý bác sĩ",
         icon: <PeopleOutline />,
-        visible: true,
-        role: "admin"
+        visible: true
     },
     "/service": {
         label: "Quản lý dịch vụ",

@@ -241,10 +241,18 @@
 }
 
 .doctor-specification-name {
-    margin-top: 20px;
     margin-bottom: 10px;
     font-size: 1.2rem;
     font-weight: bold;
+}
+
+.doctor-specification-name:not(:first-child) {
+    margin-top: 20px;
+}
+
+.doctor-exp{
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 .doctor-exp div {

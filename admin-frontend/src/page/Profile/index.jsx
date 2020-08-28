@@ -19,7 +19,7 @@ import DefaultAvatar from "../../assets/image/hhs-default_avatar.jpg";
 import "./style.css";
 
 const ProfileStaff = () => {
-    const {register, handleSubmit, watch, errors, control, reset} = useForm({validateCriteriaMode: "all"});
+    const {register, handleSubmit, errors, control, reset} = useForm({validateCriteriaMode: "all"});
     const dispatch = useDispatch();
     const {isLoad} = useSelector(state => state.ui);
     const token = useSelector(state => state.auth.token);
@@ -30,9 +30,6 @@ const ProfileStaff = () => {
     const [avatarVisible, setAvatarVisible] = useState(false);
     const [avatarRef, setAvatarRef] = useState(null);
     const [avatarName, setAvatarName] = useState("");
-
-    const [createNew, setCreateNew] = useState(false);
-
     const [avatarProperty, setAvatarProperty] = useState({
         scale: 1,
         preview: null,
@@ -47,7 +44,7 @@ const ProfileStaff = () => {
         let phone = data.phone.replace(/\s+/g, "");
         let staffEdit = {
             fullname: data.fullname,
-            phone: phone,
+            phone: phone.charAt(0) === "+" ? phone.substring(1) : phone,
             address: data.address,
             gender: data.gender.value,
             // dateofbirth: moment(data.Datepicker).format('YYYY-MM-DD')
@@ -121,12 +118,14 @@ const ProfileStaff = () => {
     }, [uploadStatus]);
 
     useEffect(() => {
+        
         //  Update defaultValue/value
         const needReset = {
             gender: currentUser?.gender === "Male" ? {value: "Male", label: "Nam"} : {value: "Female", label: "Nữ"},
             phone: currentUser?.phone ?? null,
             // Datepicker: currentUser?.dateofbirth ? new Date(currentUser?.dateofbirth) : null
         };
+        
         reset(needReset); // reset gender and dob form values
     }, [currentUser]);
 

@@ -17,7 +17,9 @@ import {
     CREATE_LANGUAGE_SUCCESSFUL,
     GET_ALL_DEGREE_SUCCESSFUL,
     CREATE_DEGREE_SUCCESSFUL,
-    UPDATE_DEGREE_SUCCESSFUL
+    UPDATE_DEGREE_SUCCESSFUL,
+    GET_DOCTOR_DEGREE_SUCCESSFUL,
+    UPDATE_DOCTOR_DEGREE_SUCCESSFUL
 } from "./action";
 
 import _ from "lodash";
@@ -35,6 +37,7 @@ const doctorState = {
     updateStatus: false,
     experience: null,
     language: null,
+    degree: null,
     allLanguage: null,
     manageLang:false,
     allDegree: null,
@@ -87,6 +90,8 @@ export const doctorReducer = (state = doctorState, action) => {
             state = {...state, updateStatus: action?.result};
             return state;
         }
+
+
         case GET_DOCTOR_EXPERIENCE_SUCCESSFUL: {
             state = {...state, experience: action?.result};
             return state;
@@ -103,6 +108,16 @@ export const doctorReducer = (state = doctorState, action) => {
             state = {...state, updateStatus: action?.result};
             return state;
         }
+        case GET_DOCTOR_DEGREE_SUCCESSFUL: {
+            state = {...state, degree: action?.result};
+            return state;
+        }
+        case UPDATE_DOCTOR_DEGREE_SUCCESSFUL: {
+            state = {...state, updateStatus: action?.result};
+            return state;
+        }
+
+        //CRUD all language, degree for doctor (system accepted only)  
         case GET_ALL_LANGUAGE_SUCCESSFUL: {
             state = {...state, allLanguage: action?.result};
             return state;
